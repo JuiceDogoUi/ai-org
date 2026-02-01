@@ -33,7 +33,8 @@ Scan the project without asking the user anything. Gather all available context:
 - Read ALL files in `.claude/agents/` — note each agent's name, model, tools, skills, and system prompt
 - Read ALL files in `.claude/commands/` — note each command's routing
 - Read ALL files in `.claude/guides/` — note what topics they cover
-- Check `.claude/strategy/` — note what exists (foundation, research, etc.)
+- Check `strategy/` at the project root — note what exists (foundation, research, etc.)
+- Check `.claude/strategy/` — detect if strategy is in the old location
 - Check `.claude/plans/` — note any existing plans
 
 ### 1.3 Understand Project Context
@@ -79,7 +80,7 @@ Present a clear summary to the user:
 - Agents: {count} found ({list names})
 - Commands: {count} found ({list names})
 - Guides: {count} found ({list names})
-- Strategy: {found/not found}
+- Strategy: {found at strategy/ / found at .claude/strategy/ (old location) / not found}
 
 ### Role Mapping
 The following existing agents match ai-org roles:
@@ -205,14 +206,18 @@ For uncovered roles only (roles where NO existing agent was mapped):
 - `development.md` — populated from detected package.json scripts, build tools, linting config
 - `contributing.md` — populated from detected code quality tools and conventions
 
-**Strategy** (if `.claude/strategy/` is missing or incomplete):
-- `foundation/personas.md` — template skeleton
-- `foundation/positioning.md` — template skeleton
-- `research/competitors/.gitkeep`
-- `research/market/.gitkeep`
+**Strategy** (if `strategy/` is missing or incomplete at the project root):
+- `strategy/foundation/personas.md` — template skeleton
+- `strategy/foundation/positioning.md` — template skeleton (structured per the positioning skill's canvas format)
+- `strategy/research/competitors/.gitkeep`
+- `strategy/research/market/.gitkeep`
+
+If strategy files are found at `.claude/strategy/` (old location), offer to move them to `strategy/` at the project root with a backup.
+
+**Commands** (if `.claude/commands/` is missing or empty):
+Generate project-level commands that route to the project's agents (using actual agent names from the role mapping). Generate the same set as onboard: core commands (plan, build, feature, review, test, docs) plus stack-specific commands based on detected tech stack and existing agents. Each command includes project-specific context (detected tech stack, project name from README). Read the corresponding ai-org plugin command files and adapt their workflows to reference the project's specifics.
 
 **Directories** (if missing):
-- `.claude/commands/`
 - `.claude/plans/`
 
 ## Phase 5: Migration Report
@@ -245,11 +250,18 @@ After execution, present a clear report:
 ### Orchestrator
 - {updated routing to map all agents / created new}
 
+### Commands Generated
+- {count} project commands created in .claude/commands/
+- {list each command and which agent it routes to}
+
 ### Created (new files)
 - {each file with purpose}
 
 ### Backed Up
 - All backups in: .claude/backup/{timestamp}/
+
+### Folder Restructuring
+- Strategy location: {strategy/ at root / moved from .claude/strategy/ to strategy/ / created new}
 
 ### Next Steps
 - Review the orchestrator's routing table — ensure it maps to the right agents

@@ -91,7 +91,7 @@ Content:
   - Spring Boot: `./gradlew bootRun`, `./gradlew build`, `./gradlew test`
   - Swift: `swift run`, `swift build`, `swift test`
   - Populate for any stack chosen.
-- **Project structure** section describing the directory layout
+- **Project structure** section describing the directory layout (include `initiatives/` and `strategy/` at the project root)
 - **Agent reference table** listing ALL generated agents with name, model, and one-line purpose
 - **Interaction model**: commands route to agents, orchestrator handles multi-domain requests
 - **Model tiers**: opus/sonnet/haiku
@@ -153,7 +153,7 @@ For EACH agent:
    - Mention the specific tech stack: "This project uses {framework} with {language} and {css approach}."
    - Include the business context and target audience
    - Add: "Always read `CLAUDE.md` for project conventions before starting work."
-   - Add: "Read relevant files in `.claude/guides/` and `.claude/strategy/` for additional context."
+   - Add: "Read relevant files in `.claude/guides/` and `strategy/` for additional context."
 4. Keep the same section structure: intro paragraph, ## Approach, ## Standards, ## What You Do NOT Do
 5. Preserve read-only restrictions for security/performance/compliance/reviewer agents
 
@@ -175,11 +175,11 @@ Create in `.claude/guides/`:
 
 ### 4.5 Strategy Skeleton
 
-Create in `.claude/strategy/`:
+Create in `strategy/` (at the project root, NOT inside `.claude/`):
 
 **`foundation/personas.md`** — Pre-populate the first persona slot using the business context answer from Phase 3. Use the target audience as the primary persona archetype, with sections for: demographics, pain points, current solutions, desires, and buying triggers. Leave two more persona slots as templates.
 
-**`foundation/positioning.md`** — Pre-populate the target customer section using the business context answer. Include template sections for: competitive alternatives, unique attributes, value hierarchy, market category (following April Dunford framework).
+**`foundation/positioning.md`** — Pre-populate the target customer section using the business context answer. Structure follows the positioning skill's canvas template (see `skills/positioning/positioning-canvas.md`): competitive alternatives, unique attributes, value mapping, target customer characteristics, market category, relevant trends. Include the positioning statement template at the end.
 
 **`research/competitors/.gitkeep`** and **`research/market/.gitkeep`**
 
@@ -204,19 +204,80 @@ If the project is truly empty, create directories and minimal config files:
 
 Generate config files with sensible defaults. Include `.gitignore` with appropriate patterns for the stack (node_modules, .env, dist, .next, etc.). Include `.env.example` for database projects listing required variables. Do NOT generate application code — only structure and configuration.
 
-### 4.7 Empty Directories
+### 4.7 Project Commands
+
+Generate project-level commands in `.claude/commands/`. These commands include project-specific context (tech stack, conventions) and route to the project's agents. They shadow the plugin's generic commands with tailored versions.
+
+Each command file has YAML frontmatter (name, description, argument-hint if applicable, context: fork, agent) followed by a brief prompt that includes project-specific context. The prompt should mention the project name, tech stack, and reference CLAUDE.md.
+
+**Core commands (always generate):**
+
+| Command | Agent | Description |
+|---------|-------|-------------|
+| `plan.md` | orchestrator | Create an implementation plan for {project name} |
+| `build.md` | orchestrator | Build a feature end-to-end |
+| `feature.md` | orchestrator | Full product workflow — understand, research, build, review |
+| `review.md` | orchestrator | 3-round review — functional, quality, compliance |
+| `test.md` | eng-testing | Write tests using the project's test framework |
+| `docs.md` | writer-technical | Generate documentation |
+
+**Add if project has frontend:**
+| `component.md` | eng-frontend | Scaffold a UI component using {framework} |
+
+**Add if project has backend:**
+| `api.md` | eng-api | Design or build an API endpoint |
+
+**Add if project has database:**
+| `migration.md` | eng-database | Create a database migration for {database} |
+
+**Add if content writing = yes:**
+| `article.md` | writer-content | Write a blog post or article |
+
+**Add if marketing = yes:**
+| `copy.md` | orchestrator | Marketing or UX copy |
+
+**Add if compliance = yes:**
+| `audit.md` | orchestrator | Security and accessibility audit |
+
+**Add if team size is small team or larger:**
+| `sprint.md` | project-manager | Sprint planning |
+| `estimate.md` | project-manager | Effort estimation |
+
+Each command prompt should follow this template:
+
+```
+---
+name: {command-name}
+description: {description tailored to project}
+argument-hint: "{appropriate hint}"
+context: fork
+agent: {agent-name}
+---
+
+{Action} for **{project name}** ({project description}).
+
+Tech stack: {framework}, {language}, {css approach}, {database}.
+
+Read `CLAUDE.md` for project conventions before starting.
+
+{Command-specific instructions from the corresponding ai-org plugin command — copy the workflow/phases relevant to this command, but replace generic references with project-specific details.}
+```
+
+For the command-specific instructions, read the corresponding command file from the ai-org plugin's `commands/` directory and adapt its workflow to reference the project's tech stack and conventions.
+
+### 4.8 Empty Directories
 
 Create with `.gitkeep`:
-- `.claude/commands/`
 - `.claude/plans/`
 
 ## Phase 5: Summary
 
 After generating everything, present:
 1. A tree view of all files created
-2. The total number of agents generated and their names
+2. The total number of agents and commands generated, listing their names
 3. How to start using the project:
    - "Run `{dev command}` to start the dev server"
+   - "Use `/feature` to run the full product workflow (understand → research → build → review)"
    - "Use `/plan` to plan your first feature"
    - "Use `/build` to implement it"
    - "Use `/review` to review your code before committing"

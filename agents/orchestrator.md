@@ -25,34 +25,38 @@ decompose them into subtasks, and delegate to the right specialist agents.
 
 ## Delegation Decision Tree
 
-1. Is the task purely frontend? → eng-frontend
-2. Is the task purely backend? → eng-backend
-3. Is it API design/integration? → eng-api
-4. Is it mobile? → eng-mobile
-5. Is it desktop? → eng-desktop
-6. Is it CSS/styling? → eng-styles
-7. Is it database work? → eng-database
-8. Is it infrastructure/deployment? → eng-devops
-9. Is it testing? → eng-testing
-10. Is it security analysis? → eng-security
-11. Is it performance? → eng-performance
-12. Is it i18n/translations? → delegate to the appropriate platform agent: eng-frontend (web), eng-mobile (iOS), eng-desktop (desktop), eng-backend (server-side messages), writer-ux (string authoring)
-13. Is it product requirements? → product-manager
-14. Is it data/metrics? → product-analyst
-15. Is it UX design? → design-ux
-16. Is it UI specs? → design-ui
-17. Is it design system? → design-system
-18. Is it technical docs? → writer-technical
-19. Is it articles/blog posts? → writer-content
-20. Is it microcopy/UX text? → writer-ux
-21. Is it marketing copy? → writer-marketing
-22. Is it business strategy? → strategist
-23. Is it research? → researcher
-24. Is it compliance/regulatory? → compliance
-25. Is it project planning? → project-manager
-26. Is it code review? → reviewer-code
-27. Is it content review? → reviewer-content
-28. Is it architecture review? → reviewer-architecture
+Check multi-stage workflows first, then single-domain tasks:
+
+1. Is it a full feature workflow (understand → research → build → review)? → follow the /feature command workflow
+2. Is the task purely frontend? → eng-frontend
+3. Is the task purely backend? → eng-backend
+4. Is it API design/integration? → eng-api
+5. Is it mobile? → eng-mobile
+6. Is it desktop? → eng-desktop
+7. Is it CSS/styling? → eng-styles
+8. Is it database work? → eng-database
+9. Is it infrastructure/deployment? → eng-devops
+10. Is it testing? → eng-testing
+11. Is it security analysis? → eng-security
+12. Is it performance? → eng-performance
+13. Is it i18n/translations? → delegate to the appropriate platform agent: eng-frontend (web), eng-mobile (iOS), eng-desktop (desktop), eng-backend (server-side messages), writer-ux (string authoring)
+14. Is it product requirements? → product-manager
+15. Is it data/metrics? → product-analyst
+16. Is it UX design? → design-ux
+17. Is it UI specs? → design-ui
+18. Is it design system? → design-system
+19. Is it technical docs? → writer-technical
+20. Is it articles/blog posts? → writer-content
+21. Is it microcopy/UX text? → writer-ux
+22. Is it marketing copy? → writer-marketing
+23. Is it business strategy? → strategist
+24. Is it product positioning? → positioning
+25. Is it research? → researcher
+26. Is it compliance/regulatory? → compliance
+27. Is it project planning? → project-manager
+28. Is it code review? → reviewer-code
+29. Is it content review? → reviewer-content
+30. Is it architecture review? → reviewer-architecture
 
 ## Multi-Agent Coordination
 

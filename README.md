@@ -1,6 +1,6 @@
 # ai-org
 
-A reusable AI organization plugin for Claude Code. Provides **28 specialist agents**, **23 commands**, and **22 skill domains** — a complete foundation for AI-assisted software development, product management, content creation, and operations.
+A reusable AI organization plugin for Claude Code. Provides **29 specialist agents**, **25 commands**, and **23 skill domains** — a complete foundation for AI-assisted software development, product management, content creation, and operations.
 
 Install once, use across every project. Personalize per project with `/onboard` or `/migrate`.
 
@@ -77,6 +77,12 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 
 ## Commands
 
+### Workflow
+
+| Command | Description | Routed To |
+|---------|-------------|-----------|
+| `/feature` | Full product workflow — understand, research, build, review | orchestrator |
+
 ### Planning
 
 | Command | Description | Routed To |
@@ -84,6 +90,7 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 | `/plan` | Create an implementation plan | orchestrator |
 | `/research` | Deep research with synthesis | researcher |
 | `/prd` | Product requirements document | product-manager |
+| `/position` | Define product positioning (April Dunford framework) | positioning |
 | `/adr` | Architecture Decision Record | orchestrator |
 | `/estimate` | Effort estimation | project-manager |
 
@@ -91,7 +98,7 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 
 | Command | Description | Routed To |
 |---------|-------------|-----------|
-| `/build` | Build a feature end-to-end | orchestrator |
+| `/build` | Build a feature end-to-end (with auto-review) | orchestrator |
 | `/component` | Scaffold a UI component | eng-frontend |
 | `/api` | Design or build an API endpoint | eng-api |
 | `/migration` | Create a database migration | eng-database |
@@ -101,7 +108,7 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 
 | Command | Description | Routed To |
 |---------|-------------|-----------|
-| `/review` | Code review | reviewer-code |
+| `/review` | 3-round review — functional, quality, compliance | orchestrator |
 | `/audit` | Security and accessibility audit | orchestrator |
 | `/refactor` | Refactor with pre/post review | orchestrator |
 | `/perf` | Performance analysis | eng-performance |
@@ -119,7 +126,7 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 
 | Command | Description | Routed To |
 |---------|-------------|-----------|
-| `/deploy` | Deployment workflow (requires confirmation at each step) | eng-devops |
+| `/deploy` | Deployment workflow (requires confirmation at each step, model invocation disabled for safety) | eng-devops |
 | `/sprint` | Sprint planning | project-manager |
 | `/status` | Project status report | haiku (direct) |
 
@@ -165,13 +172,14 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 | writer-technical | sonnet | technical-writing | API docs, READMEs, architecture docs |
 | writer-content | opus | content-strategy | Blog posts, articles, thought leadership |
 | writer-ux | sonnet | ux-writing, i18n | Microcopy, error messages, UI text |
-| writer-marketing | sonnet | marketing-copy, content-strategy | Landing pages, emails, ad copy |
+| writer-marketing | sonnet | marketing-copy, content-strategy, positioning | Landing pages, emails, ad copy |
 
-### Strategy & Operations (4)
+### Strategy & Operations (5)
 
 | Agent | Model | Skills | Role |
 |-------|-------|--------|------|
 | strategist | opus | competitive-analysis | Business strategy, market research, tech evaluation |
+| positioning | opus | positioning, competitive-analysis, content-strategy | Product positioning using April Dunford's framework |
 | researcher | opus | — | Deep research, literature review, synthesis |
 | compliance | sonnet | compliance-frameworks, accessibility | GDPR, WCAG, license audits (read-only) |
 | project-manager | sonnet | project-planning | Sprint planning, task breakdown, estimation |
@@ -210,6 +218,7 @@ Skills are domain knowledge packages — conventions, patterns, and reference ma
 | javascript | Modern JS patterns, async/await, DOM APIs, module patterns |
 | marketing-copy | Landing page frameworks, email templates, conversion copy |
 | performance | Core Web Vitals, profiling patterns, optimization techniques |
+| positioning | April Dunford's "Obviously Awesome" positioning methodology |
 | product-management | PRD templates, user story format, prioritization frameworks |
 | project-planning | Sprint templates, estimation methods, dependency mapping |
 | security | OWASP Top 10, auth patterns (JWT, OAuth), vulnerability checklist |
@@ -226,18 +235,18 @@ Skills are domain knowledge packages — conventions, patterns, and reference ma
 Most commands route directly to a single specialist agent — no orchestrator overhead. Only complex, multi-domain, or ambiguous requests go through the orchestrator, which decomposes work and delegates via the Task tool.
 
 ```
-/review  →  reviewer-code         (direct — single domain)
-/build   →  orchestrator          (multi-domain — decomposes and delegates)
-            ├→ eng-frontend       (parallel)
-            ├→ eng-backend        (parallel)
-            └→ eng-testing        (sequential, after implementation)
+/test    →  eng-testing           (direct — single domain)
+/component → eng-frontend         (direct — single domain)
+/review  →  orchestrator          (3-round — functional, quality, compliance)
+/build   →  orchestrator          (multi-domain — decomposes, delegates, auto-reviews)
+/feature →  orchestrator          (4-stage — understand, research, build, review)
 ```
 
 ### Model Tiers
 
 | Tier | Agents | Use Case |
 |------|--------|----------|
-| Opus (6) | orchestrator, product-manager, writer-content, strategist, researcher, reviewer-architecture | Complex reasoning, architecture, strategy |
+| Opus (7) | orchestrator, product-manager, writer-content, strategist, positioning, researcher, reviewer-architecture | Complex reasoning, architecture, strategy |
 | Sonnet (22) | All engineering, design, other writing, operations, review | Standard implementation, focused tasks |
 | Haiku (2 commands) | changelog, status | Fast lookup, simple aggregation |
 
@@ -264,8 +273,10 @@ ai-org provides a general foundation. Real projects need specific context — yo
 ### The Layering Model
 
 ```
-Project .claude/              ←  Project-specific: agents, guides, strategy,
-│                                personas, positioning, business rules
+Project root
+├── .claude/                  ←  Agent infrastructure: agents, guides, commands, plans
+├── strategy/                 ←  Product artifacts: personas, positioning, research
+├── initiatives/              ←  Feature workflows: initiative docs, specs, reviews
 │
 └── ai-org plugin (installed) ←  General: coding patterns, frameworks,
                                   security checklists, writing conventions
