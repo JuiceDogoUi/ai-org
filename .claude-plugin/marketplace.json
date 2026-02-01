@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "ai-org",
-      "source": ".",
+      "source": "./",
       "description": "28 specialist agents, 23 commands, and 22 skill domains for AI-assisted software development, product management, content creation, and operations.",
       "version": "1.0.0",
       "author": {
