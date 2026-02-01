@@ -6,9 +6,11 @@ Install once, use across every project. Personalize per project with `/onboard` 
 
 ## Installation
 
+All installation commands run **inside a Claude Code session** (not your regular terminal). Start Claude Code first, then type these commands at the Claude Code prompt.
+
 ### 1. Add ai-org as a marketplace source
 
-```bash
+```
 # From local path
 /plugin marketplace add /path/to/ai-org
 
@@ -18,7 +20,7 @@ Install once, use across every project. Personalize per project with `/onboard` 
 
 ### 2. Install the plugin
 
-```bash
+```
 # User scope (default — available across all projects)
 /plugin install ai-org@ai-org
 
