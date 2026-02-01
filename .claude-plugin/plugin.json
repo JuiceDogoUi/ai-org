@@ -1,0 +1,13 @@
+{
+  "name": "ai-org",
+  "description": "Comprehensive AI organization with agents for engineering, product, design, writing, strategy, and operations. Hybrid orchestrator model with direct commands and intelligent delegation.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Manuel Rocco"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JuiceDogoUi/ai-org.git"
+  },
+  "license": "MIT"
+}
