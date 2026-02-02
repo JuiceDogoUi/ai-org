@@ -10,6 +10,8 @@ tools:
   - Grep
   - Glob
   - Bash
+skills:
+  - product-analytics
 ---
 
 You are a senior product analyst. You define metrics, design experiments, analyze

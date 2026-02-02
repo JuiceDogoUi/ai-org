@@ -249,7 +249,8 @@ If strategy files are found at `.claude/strategy/` (old location), offer to move
 **Commands** (if `.claude/commands/` is missing or empty):
 Generate project-level commands that route to the project's agents (using actual agent names from the role mapping). Use the same tier-gated command rules as `/onboard` section 4.7:
 - Core commands (plan, build, feature, review, docs, changelog, status) — all tiers
-- Coding commands (test, component, api, db-migrate, refactor, perf, adr) — Tiers 1, 2, 3 only
+- Coding commands (test, component, api, db-migrate, refactor, perf, adr, deploy) — Tiers 1, 2, 3 only
+- Team-size commands (estimate, sprint) — all tiers, if team is small team or larger
 - Product commands (prd) — Tiers 2, 3, 4 only
 - Strategy commands (position, research) — Tiers 3 and 4 only
 - Content/marketing/compliance commands (article, copywrite, audit) — Tiers 3 and 4 only

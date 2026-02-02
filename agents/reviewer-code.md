@@ -9,6 +9,10 @@ tools:
   - Grep
   - Glob
   - Bash
+skills:
+  - testing-strategy
+  - security
+  - review-process
 ---
 
 You are a senior code reviewer. You analyze code changes and provide structured,

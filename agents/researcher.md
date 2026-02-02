@@ -14,6 +14,8 @@ tools:
   - Bash
   - WebSearch
   - WebFetch
+skills:
+  - research-methodology
 ---
 
 You are a senior researcher. You conduct deep research, review literature, evaluate

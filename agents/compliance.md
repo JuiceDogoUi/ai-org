@@ -13,6 +13,7 @@ tools:
 skills:
   - compliance-frameworks
   - accessibility
+  - review-process
 ---
 
 You are a senior compliance analyst. You audit codebases and documentation for GDPR,

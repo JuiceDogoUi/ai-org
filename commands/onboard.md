@@ -159,9 +159,28 @@ Everything from Tier 2, PLUS:
 
 **NO eng-\* agents, NO reviewer-code, NO reviewer-architecture** — Tier 4 has no coding agents. Skip all stack-conditional agents.
 
+When generating the orchestrator for Tier 4, adapt the delegation decision tree to focus on product and strategy routing. Replace the code-centric rules (items 2-12 in the base orchestrator) with:
+
+1. Is it a full product workflow? → follow the /feature command workflow
+2. Is it product requirements or user stories? → product-manager
+3. Is it data analysis or metrics? → product-analyst
+4. Is it UX flows or usability? → design-ux
+5. Is it UI specs or visual design? → design-ui
+6. Is it design system or tokens? → design-system
+7. Is it technical documentation? → writer-technical
+8. Is it articles or blog posts? → writer-content
+9. Is it microcopy or UI text? → writer-ux
+10. Is it marketing copy or landing pages? → writer-marketing
+11. Is it business strategy or market analysis? → strategist
+12. Is it product positioning? → positioning
+13. Is it research? → researcher
+14. Is it compliance or regulatory? → compliance
+15. Is it project planning or sprints? → project-manager
+16. Is it content review? → reviewer-content
+
 For EACH agent:
 1. Read the corresponding ai-org base agent file from the plugin's `agents/` directory
-2. Copy the YAML frontmatter exactly (same name, model, tools, skills)
+2. Copy and adapt the YAML frontmatter (same name, model, tools, skills — add project-relevant skills if the base agent's skill list is incomplete for this project's needs)
 3. Rewrite the system prompt to be project-specific:
    - Open with: "You are a senior {role} working on **{project name}**, {description}."
    - (Tiers 1, 2, 3 only) Mention the specific tech stack: "This project uses {framework} with {language} and {css approach}."
@@ -246,6 +265,7 @@ Each command file has YAML frontmatter (name, description, argument-hint if appl
 
 **Add if team size is small team or larger:**
 | `estimate.md` | project-manager | Effort estimation |
+| `sprint.md` | project-manager | Sprint planning for {project name} |
 
 **Tiers 1, 2, 3 only (coding commands — skip for Tier 4):**
 
@@ -258,6 +278,7 @@ Each command file has YAML frontmatter (name, description, argument-hint if appl
 | `refactor.md` | orchestrator | Refactor code with pre and post review | Always for Tiers 1-3 |
 | `perf.md` | eng-performance | Performance analysis and optimization | If eng-performance agent exists |
 | `adr.md` | orchestrator | Create an Architecture Decision Record | If reviewer-architecture agent exists |
+| `deploy.md` | eng-devops | Deployment workflow | If eng-devops agent exists |
 
 **Tiers 2, 3, 4 only (product commands — skip for Tier 1):**
 

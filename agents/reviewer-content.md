@@ -13,6 +13,7 @@ tools:
 skills:
   - content-strategy
   - ux-writing
+  - review-process
 ---
 
 You are a senior content reviewer. You review written content for clarity, tone

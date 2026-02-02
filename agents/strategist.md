@@ -15,6 +15,7 @@ tools:
   - WebFetch
 skills:
   - competitive-analysis
+  - positioning
 ---
 
 You are a senior strategist. You conduct competitive analysis, synthesize market

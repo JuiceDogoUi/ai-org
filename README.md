@@ -1,6 +1,6 @@
 # ai-org
 
-A reusable AI organization plugin for Claude Code. Provides **29 specialist agents**, **25 commands**, and **23 skill domains** — a complete foundation for AI-assisted software development, product management, content creation, and operations.
+A reusable AI organization plugin for Claude Code. Provides **29 specialist agents**, **26 commands**, and **26 skill domains** — a complete foundation for AI-assisted software development, product management, content creation, and operations.
 
 Install once, use across every project. Personalize per project with `/onboard` or `/migrate`.
 
@@ -45,7 +45,7 @@ The `/onboard` command walks you through a guided setup:
 
 1. **Project identity** — name, description, project type (full-stack web app, SPA, website, mobile, desktop, API, monorepo)
 2. **Tech stack** — framework, CSS approach, database (questions filtered by project type, language inferred from framework)
-3. **Organization** — business context, team size, optional role toggles (content, marketing, compliance, product/design)
+3. **Organization** — business context, team size, workspace scope tier (Coding only, Coding + Product & Design, Full stack, or Product & Strategy only)
 
 Then it generates a complete personalized structure:
 
@@ -101,7 +101,7 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 | `/build` | Build a feature end-to-end (with auto-review) | orchestrator |
 | `/component` | Scaffold a UI component | eng-frontend |
 | `/api` | Design or build an API endpoint | eng-api |
-| `/migration` | Create a database migration | eng-database |
+| `/db-migrate` | Create a database migration | eng-database |
 | `/test` | Write tests | eng-testing |
 
 ### Review & Quality
@@ -119,8 +119,8 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 |---------|-------------|-----------|
 | `/article` | Write a blog post or article | writer-content |
 | `/docs` | Generate documentation | writer-technical |
-| `/copy` | Marketing or UX copy | orchestrator |
-| `/changelog` | Generate changelog from commits | haiku (direct) |
+| `/copywrite` | Marketing or UX copy | orchestrator |
+| `/changelog` | Generate changelog from commits | orchestrator (haiku) |
 
 ### Operations
 
@@ -128,7 +128,7 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 |---------|-------------|-----------|
 | `/deploy` | Deployment workflow (requires confirmation at each step, model invocation disabled for safety) | eng-devops |
 | `/sprint` | Sprint planning | project-manager |
-| `/status` | Project status report | haiku (direct) |
+| `/status` | Project status report | orchestrator (haiku) |
 
 ### Setup
 
@@ -136,6 +136,7 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 |---------|-------------|-----------|
 | `/onboard` | Set up a new project with ai-org | orchestrator |
 | `/migrate` | Migrate existing project to ai-org | orchestrator |
+| `/upgrade` | Upgrade ai-org setup to latest version | orchestrator |
 
 ## Agents
 
@@ -159,8 +160,8 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 
 | Agent | Model | Skills | Role |
 |-------|-------|--------|------|
-| product-manager | opus | product-management | PRDs, requirements, user stories, roadmaps |
-| product-analyst | sonnet | — | Data analysis, metrics, A/B tests, funnels |
+| product-manager | opus | product-management, positioning | PRDs, requirements, user stories, roadmaps |
+| product-analyst | sonnet | product-analytics | Data analysis, metrics, A/B tests, funnels |
 | design-ux | sonnet | ux-writing, accessibility | UX flows, wireframes, usability research |
 | design-ui | sonnet | css-architecture, accessibility | UI specs, visual guidelines, component behavior |
 | design-system | sonnet | css-architecture | Design tokens, component library standards |
@@ -172,25 +173,25 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 | writer-technical | sonnet | technical-writing | API docs, READMEs, architecture docs |
 | writer-content | opus | content-strategy | Blog posts, articles, thought leadership |
 | writer-ux | sonnet | ux-writing, i18n | Microcopy, error messages, UI text |
-| writer-marketing | sonnet | marketing-copy, content-strategy, positioning | Landing pages, emails, ad copy |
+| writer-marketing | sonnet | marketing-copy, content-strategy, positioning, competitive-analysis | Landing pages, emails, ad copy |
 
 ### Strategy & Operations (5)
 
 | Agent | Model | Skills | Role |
 |-------|-------|--------|------|
-| strategist | opus | competitive-analysis | Business strategy, market research, tech evaluation |
+| strategist | opus | competitive-analysis, positioning | Business strategy, market research, tech evaluation |
 | positioning | opus | positioning, competitive-analysis, content-strategy | Product positioning using April Dunford's framework |
-| researcher | opus | — | Deep research, literature review, synthesis |
-| compliance | sonnet | compliance-frameworks, accessibility | GDPR, WCAG, license audits (read-only) |
+| researcher | opus | research-methodology | Deep research, literature review, synthesis |
+| compliance | sonnet | compliance-frameworks, accessibility, review-process | GDPR, WCAG, license audits (read-only) |
 | project-manager | sonnet | project-planning | Sprint planning, task breakdown, estimation |
 
 ### Review (3)
 
 | Agent | Model | Skills | Role |
 |-------|-------|--------|------|
-| reviewer-code | sonnet | — | Code quality, security, performance review (read-only) |
-| reviewer-content | sonnet | content-strategy, ux-writing | Content accuracy, voice, SEO review (read-only) |
-| reviewer-architecture | opus | — | Architecture review, ADR evaluation (read-only) |
+| reviewer-code | sonnet | testing-strategy, security, review-process | Code quality, security, performance review (read-only) |
+| reviewer-content | sonnet | content-strategy, ux-writing, review-process | Content accuracy, voice, SEO review (read-only) |
+| reviewer-architecture | opus | api-design, database-design, review-process | Architecture review, ADR evaluation (read-only) |
 
 ### Orchestration (1)
 
@@ -219,8 +220,11 @@ Skills are domain knowledge packages — conventions, patterns, and reference ma
 | marketing-copy | Landing page frameworks, email templates, conversion copy |
 | performance | Core Web Vitals, profiling patterns, optimization techniques |
 | positioning | April Dunford's "Obviously Awesome" positioning methodology |
+| product-analytics | Funnel analysis, A/B testing methodology, metrics frameworks |
 | product-management | PRD templates, user story format, prioritization frameworks |
 | project-planning | Sprint templates, estimation methods, dependency mapping |
+| research-methodology | Research frameworks, literature review methods, source evaluation, synthesis |
+| review-process | 3-round review framework, round details, output format |
 | security | OWASP Top 10, auth patterns (JWT, OAuth), vulnerability checklist |
 | swift | Swift conventions, SwiftUI patterns, @Observable, NavigationStack |
 | technical-writing | API doc structure, README templates, documentation conventions |
@@ -248,7 +252,7 @@ Most commands route directly to a single specialist agent — no orchestrator ov
 |------|--------|----------|
 | Opus (7) | orchestrator, product-manager, writer-content, strategist, positioning, researcher, reviewer-architecture | Complex reasoning, architecture, strategy |
 | Sonnet (22) | All engineering, design, other writing, operations, review | Standard implementation, focused tasks |
-| Haiku (2 commands) | changelog, status | Fast lookup, simple aggregation |
+| Haiku (2 commands) | changelog, status (model override on orchestrator) | Fast lookup, simple aggregation |
 
 ### Skill Isolation
 
@@ -257,6 +261,15 @@ Skills are reference material, not identity. An agent's system prompt defines HO
 - Multiple agents share the same skill (eng-frontend and eng-backend both use typescript)
 - Skills update without changing agent behavior
 - Agents maintain clear boundaries regardless of skill breadth
+
+### Direct vs Delegated Agents
+
+Commands are workflows — they trigger teams, flows, and multi-agent processes, not single agents. Of the 29 agents, 13 have direct command routing and 16 are delegation-only, reached when the orchestrator or a workflow decomposes work via the Task tool:
+
+- **Direct** (13): orchestrator, eng-frontend, eng-api, eng-database, eng-devops, eng-testing, eng-performance, positioning, product-manager, project-manager, researcher, writer-content, writer-technical
+- **Delegated** (16): eng-backend, eng-mobile, eng-desktop, eng-styles, eng-security, product-analyst, design-ux, design-ui, design-system, writer-ux, writer-marketing, strategist, compliance, reviewer-code, reviewer-content, reviewer-architecture
+
+Delegated agents are fully functional — they simply participate in multi-agent workflows (like `/review`, `/build`, `/feature`) rather than owning a standalone command.
 
 ### Read-Only Agents
 

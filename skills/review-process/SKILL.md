@@ -1,3 +1,9 @@
+---
+name: review-process
+description: 3-round review framework for functional, quality, and compliance review
+user-invocable: false
+---
+
 # 3-Round Review Process
 
 This is the canonical review framework used by `/review`, `/build` (auto-review), and `/feature` (Stage 4).
@@ -43,3 +49,8 @@ For each finding include:
 ### Summary
 
 Consolidated summary across all three rounds with overall assessment.
+
+## References
+
+- [Round Details](round-details.md) — Detailed guidance for each review round
+- [Output Format](review-output-format.md) — Structured format for review findings
