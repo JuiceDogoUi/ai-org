@@ -8,6 +8,8 @@ agent: orchestrator
 
 Create a detailed implementation plan for: $ARGUMENTS
 
+> After planning, use `/build` to implement, `/estimate` to size the work, or `/feature` for the full workflow (understand → research → build → review).
+
 ## Process
 
 1. Research the existing codebase to understand current architecture
@@ -16,7 +18,7 @@ Create a detailed implementation plan for: $ARGUMENTS
 4. Flag risks and dependencies
 5. Identify open questions
 
-## Output Format
+## Output
 
 ### Overview
 Brief summary of the task and approach.

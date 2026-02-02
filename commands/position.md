@@ -11,7 +11,7 @@ Define or refine positioning for: $ARGUMENTS
 ## Process
 
 1. Read existing strategy documents (personas, competitive analysis, positioning) in `strategy/` and any available product context in `CLAUDE.md`
-2. Research the competitive landscape using web search
+2. Research the competitive landscape using web search. If web search is unavailable, research from existing strategy documents, codebase context, and `CLAUDE.md` instead
 3. Work through the six-component positioning framework in order:
    - Competitive alternatives
    - Unique attributes
@@ -36,3 +36,5 @@ Primary message, supporting messages, and proof points derived from the position
 
 ### Next Steps
 How to apply this positioning to marketing copy, sales materials, and product decisions.
+
+> Related: `/copywrite` to create copy aligned with this positioning, `/prd` to ensure product requirements reflect the positioning.

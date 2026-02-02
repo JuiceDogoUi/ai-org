@@ -24,3 +24,11 @@ Write tests for: $ARGUMENTS
 - Avoid testing implementation details -- test public interfaces
 - Include setup and teardown where appropriate
 - Mock external dependencies, not internal code
+
+## Output
+
+- Test file(s) following the project's test file naming convention (e.g., `*.test.ts`, `*.spec.ts`, `*Test.java`)
+- All new tests passing
+- Coverage of happy path, edge cases, and error cases
+
+> Related: `/build` to implement the feature these tests cover, `/review` to review test quality.

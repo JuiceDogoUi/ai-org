@@ -14,7 +14,9 @@ Perform an audit on: $ARGUMENTS
 - Accessibility audit → delegate to compliance agent
 - Both → coordinate both agents and synthesize findings
 
-## Output Format
+Skip any agent that is not available in the project. If only one audit type is possible (because the other agent is missing), run that one and note the gap.
+
+## Output
 
 ### Findings
 Organized by severity: Critical, High, Medium, Low.
@@ -27,3 +29,5 @@ For each finding:
 
 ### Summary
 Total findings by severity, overall risk assessment, and recommended priority order for fixes.
+
+> Related: `/review` for a general code review, `/refactor` to fix issues found during the audit.

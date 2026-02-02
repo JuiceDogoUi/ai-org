@@ -22,3 +22,5 @@ Design and implement an API endpoint: $ARGUMENTS
 - Request/response type definitions
 - Test covering happy path and error cases
 - API documentation (inline or OpenAPI)
+
+> Related: `/component` to scaffold the frontend, `/db-migrate` for schema changes, `/docs` to document the API.

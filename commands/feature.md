@@ -33,7 +33,7 @@ initiatives/{feature-name}-{mmm}-{yyyy}/
 
 ### 1.3 Write Initiative Document
 
-Delegate to **product-manager** to write `initiative.md` inside the initiative folder created in step 1.2. Contents:
+Delegate to **product-manager** (if available, otherwise orchestrator) to write `initiative.md` inside the initiative folder created in step 1.2. Contents:
 - Problem statement
 - Hypothesis
 - Target users
@@ -53,7 +53,7 @@ Present the initiative document to the user.
 
 ### 2.1 Parallel Research
 
-Delegate to **researcher** to run 3 parallel WebSearch tasks:
+Delegate to **researcher** (if available) to run 3 parallel WebSearch tasks. If the researcher agent is not available, the orchestrator performs the research directly.
 
 1. **Pain points** — Search Reddit, X/Twitter, Hacker News, and forums for user pain points related to this feature area. Write findings to `research/pain-points.md`
 2. **UX best practices** — Search NNGroup, Smashing Magazine, and similar sources for UX patterns. Write findings to `research/ux-best-practices.md`
@@ -65,7 +65,7 @@ All paths are relative to the initiative folder.
 
 ### 2.2 Synthesize
 
-Delegate to **researcher** to synthesize the three research documents into a summary covering:
+Delegate to **researcher** (if available, otherwise orchestrator) to synthesize the three research documents into a summary covering:
 - Top pain points
 - Recommended UX patterns
 - Competitor approaches
@@ -77,7 +77,7 @@ Delegate to **researcher** to synthesize the three research documents into a sum
 
 ### 2.4 Update Initiative
 
-Delegate to **product-manager** to update `initiative.md` with:
+Delegate to **product-manager** (if available, otherwise orchestrator) to update `initiative.md` with:
 - Research summary
 - Decisions log (what was decided based on research)
 
@@ -87,7 +87,7 @@ Delegate to **product-manager** to update `initiative.md` with:
 
 ### 3.1 Create Spec
 
-Delegate to **product-manager** to create `spec.md` in the initiative folder containing:
+Delegate to **product-manager** (if available, otherwise orchestrator) to create `spec.md` in the initiative folder containing:
 - Epics
 - User stories with acceptance criteria
 - Technical approach
@@ -112,48 +112,18 @@ Report what was built. Auto-trigger Stage 4 (no gate).
 
 ## Stage 4: Review (3 Automatic Rounds)
 
-Run three review rounds automatically without user gates between them. Skip any agent that is not available in the project.
-
-### Round 1 — Functional
-
-- **eng-testing**: Run tests, verify all pass
-- **reviewer-code**: Verify acceptance criteria from each user story in the spec
-
-### Round 2 — Quality
-
-- **reviewer-code**: Full code review (style, patterns, bugs)
-- **eng-performance** (if available): Performance review
-- **reviewer-architecture** (if available): Architecture and component design review
-
-### Round 3 — Compliance
-
-- **compliance** (if available): GDPR and WCAG compliance check
-- **reviewer-content** (if available): SEO and schema review
-- **positioning** (if available): Verify alignment with product positioning and guidelines
-
-### Review Report
+Run three review rounds automatically without user gates between them. Follow the 3-round review process defined in `skills/review-process/SKILL.md`.
 
 Write `review-report.md` in the initiative folder with consolidated findings from all three rounds.
 
-Organize feedback by severity:
-
-#### Critical (must fix before merge)
-Issues that will cause bugs, security vulnerabilities, or data loss.
-
-#### Warning (should fix)
-Issues that may cause problems or degrade quality over time.
-
-#### Suggestion (consider improving)
-Improvements to readability, performance, or maintainability.
-
-For each finding include:
-- **File:line** — exact location
-- **Issue** — what the problem is
-- **Why** — why it matters
-- **Fix** — specific recommended change
-
-#### Summary
-
-Consolidated summary across all three rounds with overall assessment.
-
 Present the review report to the user.
+
+## Output
+
+All deliverables are written to the initiative folder (`initiatives/{feature-name}-{mmm}-{yyyy}/`):
+
+- `initiative.md` — problem statement, scope, research summary, decisions log
+- `research/` — pain points, UX best practices, competitor solutions
+- `spec.md` — epics, user stories with acceptance criteria, technical approach
+- `review-report.md` — consolidated review findings by severity
+- Working implementation across all affected source files

@@ -15,7 +15,7 @@ Analyze performance of: $ARGUMENTS
 3. Measure or estimate current metrics
 4. Recommend optimizations with expected impact
 
-## Output Format
+## Output
 
 ### Current State
 Metrics and observations about current performance.
@@ -28,3 +28,5 @@ Ranked list of performance issues with evidence.
 |-------|-----|----------------|--------|
 
 Prioritized by effort-to-impact ratio.
+
+> Related: `/refactor` to implement the recommended optimizations, `/review` to verify performance changes.

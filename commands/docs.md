@@ -23,3 +23,12 @@ Generate documentation for: $ARGUMENTS
 - Use concrete examples over abstract descriptions
 - Keep paragraphs short and scannable
 - If updating existing docs, preserve the existing structure
+
+## Output
+
+- If target is a file/module: create or update a doc file adjacent to the source (e.g., `README.md` in the module directory)
+- If target is "project": create or update the project root `README.md`
+- If target is an API: create or update docs in the project's API documentation location
+- Preserve existing documentation structure — update in place, don't create duplicates
+
+> Related: `/api` for API endpoint docs, `/component` for component documentation, `/prd` for product requirements.

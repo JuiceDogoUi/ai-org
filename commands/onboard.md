@@ -228,20 +228,31 @@ Each command file has YAML frontmatter (name, description, argument-hint if appl
 | `api.md` | eng-api | Design or build an API endpoint |
 
 **Add if project has database:**
-| `migration.md` | eng-database | Create a database migration for {database} |
+| `db-migrate.md` | eng-database | Create a database migration for {database} |
 
 **Add if content writing = yes:**
 | `article.md` | writer-content | Write a blog post or article |
 
 **Add if marketing = yes:**
-| `copy.md` | orchestrator | Marketing or UX copy |
+| `copywrite.md` | orchestrator | Marketing or UX copy |
 
 **Add if compliance = yes:**
 | `audit.md` | orchestrator | Security and accessibility audit |
 
 **Add if team size is small team or larger:**
-| `sprint.md` | project-manager | Sprint planning |
 | `estimate.md` | project-manager | Effort estimation |
+
+**Additional specialized commands (generate based on available agents):**
+
+| Command | Agent | Description | When to include |
+|---------|-------|-------------|-----------------|
+| `refactor.md` | orchestrator | Refactor code with pre and post review | Always (uses reviewer-code + engineering agents) |
+| `adr.md` | orchestrator | Create an Architecture Decision Record | If reviewer-architecture agent exists |
+| `research.md` | researcher | Deep research on a topic | If researcher agent exists |
+| `perf.md` | eng-performance | Performance analysis and optimization | If eng-performance agent exists |
+| `changelog.md` | orchestrator | Generate a changelog from recent commits | Always |
+| `status.md` | orchestrator | Generate project status report | Always |
+| `position.md` | positioning | Define or refine product positioning | If product/design agents enabled |
 
 Each command prompt should follow this template:
 

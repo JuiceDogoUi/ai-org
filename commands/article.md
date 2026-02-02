@@ -22,3 +22,5 @@ Write an article about: $ARGUMENTS
 - Meta description (under 160 characters)
 - Full article in markdown
 - Suggested tags/categories
+
+> Related: `/research` to deep-dive into the topic first, `/copywrite` for marketing copy instead of long-form content.

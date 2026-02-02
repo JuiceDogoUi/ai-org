@@ -8,9 +8,10 @@ agent: orchestrator
 
 Build the following feature: $ARGUMENTS
 
+> Use `/plan` first to create a detailed implementation plan.
 > For the full product workflow (understand → research → build → review), use `/feature` instead.
 
-## Orchestration Workflow
+## Process
 
 1. Analyze what needs to be built and which domains are involved
 2. Create a plan decomposing the work into agent-appropriate subtasks
@@ -19,7 +20,7 @@ Build the following feature: $ARGUMENTS
 5. Have the testing agent verify the implementation
 6. Summarize what was built and any follow-up items
 
-## Rules
+## Standards
 
 - Delegate to specialist agents -- do not implement directly
 - Launch independent subtasks in parallel where possible
@@ -29,44 +30,13 @@ Build the following feature: $ARGUMENTS
 
 ## Auto-Review
 
-After the build completes, automatically run a 3-round review. Skip any agent that is not available in the project.
+After the build completes, automatically run the 3-round review process defined in `skills/review-process/SKILL.md`.
 
-### Round 1 — Functional
+## Output
 
-- **eng-testing**: Run tests, verify all pass
-- **reviewer-code**: Verify acceptance criteria and code correctness
+- Working implementation across all affected domains
+- All tests passing
+- Auto-review report with findings organized by severity
+- Summary of what was built, which agents contributed, and any remaining items
 
-### Round 2 — Quality
-
-- **reviewer-code**: Full code review (style, patterns, bugs, security)
-- **eng-performance** (if available): Performance review
-- **reviewer-architecture** (if available): Architecture and component design review
-
-### Round 3 — Compliance
-
-- **compliance** (if available): GDPR and WCAG compliance check
-- **reviewer-content** (if available): SEO and schema review
-- **positioning** (if available): Verify alignment with product positioning and guidelines
-
-### Auto-Review Output
-
-Organize feedback by severity:
-
-#### Critical (must fix before merge)
-Issues that will cause bugs, security vulnerabilities, or data loss.
-
-#### Warning (should fix)
-Issues that may cause problems or degrade quality over time.
-
-#### Suggestion (consider improving)
-Improvements to readability, performance, or maintainability.
-
-For each finding include:
-- **File:line** — exact location
-- **Issue** — what the problem is
-- **Why** — why it matters
-- **Fix** — specific recommended change
-
-#### Summary
-
-Consolidated summary across all three rounds with overall assessment.
+> Related: `/deploy` to ship the build, `/perf` for performance analysis.

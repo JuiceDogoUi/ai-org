@@ -23,3 +23,12 @@ Create a new component: $ARGUMENTS
 - Use the same styling approach (CSS modules, SCSS, Tailwind, etc.)
 - Include all standard files the project uses per component
 - Follow the naming convention found in existing components
+
+## Output
+
+- Component file(s) following the project's component structure (detected in step 2)
+- Styles file in the project's CSS approach
+- Unit test file
+- Export from the appropriate barrel/index file if the project uses them
+
+> Related: `/api` to build the backend endpoint, `/test` to add tests, `/docs` to document the component.
