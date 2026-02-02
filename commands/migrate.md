@@ -43,6 +43,17 @@ Scan the project without asking the user anything. Gather all available context:
 - Read `DESIGN_SYSTEM.md` or similar design docs if they exist
 - Examine key source directories to understand architecture patterns
 
+### 1.4 Auto-Detect Workspace Scope Tier
+
+Based on the scan results, determine the suggested installation tier:
+
+- **Has eng-\* agents or code source files, but NO product/design/strategy agents** → suggest **Tier 1: Coding only**
+- **Has eng-\* agents or code files AND product/design agents (product-manager, design-ux, etc.)** → suggest **Tier 2: Coding + Product & Design**
+- **Has code + product agents AND strategy/writing/marketing agents** → suggest **Tier 3: Full stack**
+- **Has product/design/strategy agents but NO eng-\* agents and NO code source files** → suggest **Tier 4: Product & Strategy only**
+
+If ambiguous (e.g., code files exist but no agents at all), default to suggesting Tier 1 and let the user choose.
+
 ## Phase 2: Role Mapping and Questions
 
 ### 2.1 Map Existing Agents to ai-org Roles
@@ -89,18 +100,32 @@ The following existing agents match ai-org roles:
 - ...
 
 ### Uncovered Roles
-These ai-org roles have no equivalent existing agent:
+These ai-org roles have no equivalent existing agent (full list — will be filtered to your chosen tier in the next step):
 - {ai-org-role}: {what it does}
 - {ai-org-role}: {what it does}
 - ...
 ```
 
+Then present the suggested tier:
+
+```
+### Suggested Workspace Scope
+
+Based on your project, we suggest **{tier name}**: {tier description}.
+
+Reason: {explain what was detected that led to this suggestion}
+```
+
 Then ask:
 1. Is the role mapping correct? Should any mappings be changed?
-2. Do you want agents created for the uncovered roles?
-3. Do you need **content and marketing** agents? (if not already covered)
-4. Do you need **compliance and regulatory** agents? (if not already covered)
-5. Do you need **product and design** agents? (if not already covered)
+2. **Workspace scope** — is the suggested tier correct? (present all 4 options):
+   - **Coding only** — engineering agents, code review, technical docs
+   - **Coding + Product & Design** — adds PRDs, UX research, UI specs, design system
+   - **Full stack** — adds strategy, positioning, content writing, marketing, compliance
+   - **Product & Strategy only** — no coding agents; only product, design, strategy, and writing
+3. Do you want agents created for the uncovered roles within the chosen tier?
+
+The confirmed tier controls which uncovered roles get offered for creation. Do NOT offer to create agents outside the chosen tier scope (e.g., don't offer eng-frontend for Tier 4, don't offer strategist for Tier 1).
 
 ## Phase 3: Present Migration Plan
 
@@ -125,8 +150,9 @@ Based on scan results, role mapping, and user answers, create a categorized migr
 - Add: Model Tiers, Skill Isolation sections
 - Do NOT modify any existing content above the delimiter
 
-**CREATE** — New files only for UNCOVERED roles:
-- Only create new ai-org agents for roles that NO existing agent covers
+**CREATE** — New files only for UNCOVERED roles within the chosen tier:
+- Only create new ai-org agents for roles that NO existing agent covers AND that fall within the user's chosen workspace scope tier
+- Use the same tier-to-agent mapping as `/onboard` (see onboard.md section 4.3 for the full mapping per tier)
 - New agents get project-specific system prompts based on scan results
 - Each new agent's prompt includes: "Always read CLAUDE.md for project conventions before starting work."
 - List each file and its purpose
@@ -194,7 +220,11 @@ Use existing agent names where they exist. Use ai-org agent names only for newly
 
 ### 4.5 Create Missing Agents
 
-For uncovered roles only (roles where NO existing agent was mapped):
+For uncovered roles only (roles where NO existing agent was mapped) AND within the chosen tier:
+- Only create agents that belong to the user's confirmed workspace scope tier (see `/onboard` section 4.3 for tier-to-agent mapping)
+- For Tier 1: do NOT create strategist, positioning, researcher, writer-content, writer-marketing, writer-ux, reviewer-content, compliance, or product/design agents
+- For Tier 2: do NOT create strategist, positioning, researcher, writer-content, writer-marketing, reviewer-content, or compliance
+- For Tier 4: do NOT create any eng-\* agents, reviewer-code, or reviewer-architecture
 - Use ai-org frontmatter (name, model, tools, skills)
 - Write project-specific system prompts using information from the scan
 - Each new agent includes: "Always read CLAUDE.md for project conventions before starting work."
@@ -203,10 +233,12 @@ For uncovered roles only (roles where NO existing agent was mapped):
 ### 4.6 Create Missing Structure
 
 **Guides** (if `.claude/guides/` is missing or incomplete):
-- `development.md` — populated from detected package.json scripts, build tools, linting config
+- `development.md` — For Tiers 1-3: populated from detected package.json scripts, build tools, linting config. For Tier 4: document workflow overview, folder structure conventions, available slash commands.
 - `contributing.md` — populated from detected code quality tools and conventions
+- `content-creation.md` — Tiers 3 and 4 only. Content workflow: brand voice, target personas, SEO, review process, publishing checklist.
 
-**Strategy** (if `strategy/` is missing or incomplete at the project root):
+**Strategy** (Tiers 2, 3, and 4 only — skip for Tier 1):
+If `strategy/` is missing or incomplete at the project root:
 - `strategy/foundation/personas.md` — template skeleton
 - `strategy/foundation/positioning.md` — template skeleton (structured per the positioning skill's canvas format)
 - `strategy/research/competitors/.gitkeep`
@@ -215,7 +247,13 @@ For uncovered roles only (roles where NO existing agent was mapped):
 If strategy files are found at `.claude/strategy/` (old location), offer to move them to `strategy/` at the project root with a backup.
 
 **Commands** (if `.claude/commands/` is missing or empty):
-Generate project-level commands that route to the project's agents (using actual agent names from the role mapping). Generate the same set as onboard: core commands (plan, build, feature, review, test, docs) plus stack-specific commands based on detected tech stack and existing agents. Each command includes project-specific context (detected tech stack, project name from README). Read the corresponding ai-org plugin command files and adapt their workflows to reference the project's specifics.
+Generate project-level commands that route to the project's agents (using actual agent names from the role mapping). Use the same tier-gated command rules as `/onboard` section 4.7:
+- Core commands (plan, build, feature, review, docs, changelog, status) — all tiers
+- Coding commands (test, component, api, db-migrate, refactor, perf, adr) — Tiers 1, 2, 3 only
+- Product commands (prd) — Tiers 2, 3, 4 only
+- Strategy commands (position, research) — Tiers 3 and 4 only
+- Content/marketing/compliance commands (article, copywrite, audit) — Tiers 3 and 4 only
+Each command includes project-specific context (detected tech stack, project name from README). Read the corresponding ai-org plugin command files and adapt their workflows to reference the project's specifics.
 
 **Directories** (if missing):
 - `.claude/plans/`
@@ -229,6 +267,9 @@ After execution, present a clear report:
 
 ### Detected Stack
 - {list all detected technologies}
+
+### Workspace Scope
+- Tier: {tier name} ({auto-detected / user-selected})
 
 ### Role Mapping Applied
 | ai-org Role | Agent Used | Source |
@@ -267,14 +308,14 @@ After execution, present a clear report:
 - Review the orchestrator's routing table — ensure it maps to the right agents
 - Review enhanced CLAUDE.md — merge ai-org sections as needed
 - Review skills added to existing agents — verify they are appropriate
-- Fill in strategy templates if not already done
+- (Tiers 2, 3, 4 only) Fill in strategy templates if not already done
 ```
 
 ## Rules
 
 - NEVER delete existing files
 - NEVER overwrite existing files without creating a backup first
-- NEVER modify existing system prompt content in agent files (only add/fix frontmatter)
+- NEVER modify existing system prompt content in agent files (only add/fix frontmatter) — **exception**: the orchestrator's system prompt may have an agent routing section added (see UPDATE ORCHESTRATOR in Phase 3)
 - NEVER create a new agent for a role already covered by an existing agent
 - NEVER rename existing agent files
 - Always preserve existing content when enhancing files

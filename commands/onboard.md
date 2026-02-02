@@ -24,8 +24,13 @@ Ask the user these questions. Wait for answers before proceeding.
    - Desktop app (Electron)
    - API / Backend service (no frontend)
    - Monorepo (multiple apps/packages)
+   - Documentation / Strategy repo (no code — product docs, strategy, content)
+
+If the user chose "Documentation / Strategy repo", note that this typically pairs with **Product & Strategy only** (Tier 4) in question 10. If the user selects a coding tier (Tier 1, 2, or 3) with this project type, warn them that no tech stack was collected and coding agents will have no stack context — confirm they want to proceed.
 
 ## Phase 2: Gather Tech Stack
+
+**Skip this entire phase if the user chose "Documentation / Strategy repo"** — there is no tech stack to gather. Proceed directly to Phase 3.
 
 Ask ONLY the questions relevant to the project type chosen above. Skip irrelevant questions. If a choice implies the language (e.g., Next.js implies TypeScript, Spring Boot implies Java, SwiftUI implies Swift), do NOT ask the language question — infer it.
 
@@ -64,15 +69,15 @@ Ask ONLY the questions relevant to the project type chosen above. Skip irrelevan
 
 8. **Business context**: What is the product? Who is the target audience? What industry? (one paragraph is fine)
 9. **Team size**: Solo developer, small team (2-5), or larger team (6+)?
-10. **Additional agents** (yes or no for each):
-    - Do you need **content writing** agents? (blog posts, articles, SEO content)
-    - Do you need **marketing** agents? (landing pages, email campaigns, ad copy)
-    - Do you need **compliance and regulatory** agents? (GDPR, WCAG, license audits, industry regulations)
-    - Do you need **product and design** agents? (adds 5 agents: PRDs, UX research, UI specs, design system, analytics)
+10. **Workspace scope** (pick one):
+    - **Coding only** — engineering agents, code review, technical docs (app repo where product/strategy lives elsewhere)
+    - **Coding + Product & Design** — adds PRDs, UX research, UI specs, design system (repo that needs product specs alongside code)
+    - **Full stack** — adds strategy, positioning, content writing, marketing, compliance (everything lives together)
+    - **Product & Strategy only** — no coding agents; only product, design, strategy, and writing (doc management or strategy repo)
 
 ## Phase 4: Generate Project Structure
 
-After ALL answers are collected, generate the following. Check if `package.json` or other project files already exist — if so, SKIP the project scaffold (section 4.5) and tell the user you detected an existing project and only generated the `.claude/` structure. Warn if any `.claude/` files already exist and ask before overwriting.
+After ALL answers are collected, generate the following. Use the workspace scope tier from question 10 to determine which agents, commands, guides, and strategy files to install. Check if `package.json` or other project files already exist — if so, SKIP the project scaffold (section 4.6) and tell the user you detected an existing project and only generated the `.claude/` structure. Warn if any `.claude/` files already exist and ask before overwriting.
 
 ### 4.1 Read the ai-org base agents
 
@@ -84,76 +89,86 @@ Create `CLAUDE.md` at the project root. This is the operational playbook that ev
 
 Content:
 - **Project name and description** (from Phase 1)
-- **Tech stack table** (from Phase 2)
-- **Commands section** with actual dev/build/test/lint commands for the chosen stack:
+- **Tech stack table** (from Phase 2) — omit for Tier 4 / Documentation repos where Phase 2 was skipped
+- **Commands section** (Tiers 1, 2, 3 only) with actual dev/build/test/lint commands for the chosen stack:
   - Next.js: `npm run dev`, `npm run build`, `npm test`, `npm run lint`
   - Angular: `ng serve`, `ng build`, `ng test`, `ng lint`
   - Spring Boot: `./gradlew bootRun`, `./gradlew build`, `./gradlew test`
   - Swift: `swift run`, `swift build`, `swift test`
   - Populate for any stack chosen.
-- **Project structure** section describing the directory layout (include `initiatives/` and `strategy/` at the project root)
+  - For Tier 4: replace with a **Workflows section** listing available slash commands (`/prd`, `/position`, `/research`, `/article`, etc.) instead of dev commands
+- **Project structure** section describing the directory layout (include `initiatives/` at the project root; include `strategy/` for Tiers 2, 3, and 4 only)
 - **Agent reference table** listing ALL generated agents with name, model, and one-line purpose
 - **Interaction model**: commands route to agents, orchestrator handles multi-domain requests
 - **Model tiers**: opus/sonnet/haiku
 - **Skill isolation**: skills are knowledge, not identity
 - **Business context** (paste the user's answer from Phase 3 question 8)
-- **Project conventions** section with sensible defaults for the stack:
+- **Project conventions** section with sensible defaults:
   - Commit format: Conventional Commits
   - Branching: trunk-based development (solo) or feature branches (team)
-  - Code style: ESLint + Prettier (TypeScript/JS), Checkstyle (Java), SwiftLint (Swift)
+  - (Tiers 1, 2, 3 only) Code style: ESLint + Prettier (TypeScript/JS), Checkstyle (Java), SwiftLint (Swift)
+  - (Tier 4 only) Document conventions: file naming, review workflow, publishing checklist
 
 ### 4.3 Project Agents
 
-Create agents in `.claude/agents/`. Scale to team size:
+Create agents in `.claude/agents/`. Use the workspace scope tier and team size to determine which agents to create.
 
-**Core agents (always, any team size):**
+#### Tier 1: Coding only
+
+**Core agents (always):**
 - orchestrator.md, eng-testing.md, eng-security.md, reviewer-code.md, writer-technical.md
 
 **Add for small team (2-5) or larger:**
 - eng-devops.md, eng-performance.md, reviewer-architecture.md, project-manager.md
 
-**Add for larger team (6+):**
-- researcher.md, strategist.md
+**Stack-conditional (based on project type):**
+- eng-frontend.md, eng-styles.md — if project has frontend
+- eng-backend.md, eng-api.md — if project has backend
+- eng-database.md — if project has database
+- eng-mobile.md — if mobile project
+- eng-desktop.md — if desktop project
 
-**Add if project has frontend:**
-- eng-frontend.md, eng-styles.md
+#### Tier 2: Coding + Product & Design
 
-**Add if project has backend:**
-- eng-backend.md, eng-api.md
+Everything from Tier 1, PLUS:
+- product-manager.md, product-analyst.md, design-ux.md, design-ui.md, design-system.md, writer-ux.md
 
-**Add if project has database:**
-- eng-database.md
+#### Tier 3: Full stack
 
-**Add if mobile project:**
-- eng-mobile.md
+Everything from Tier 2, PLUS:
+- strategist.md, positioning.md, researcher.md, writer-content.md, writer-marketing.md, reviewer-content.md, compliance.md
 
-**Add if desktop project:**
-- eng-desktop.md
+(Do NOT gate strategist/researcher on team size — include them for all Tier 3 projects regardless of team size.)
 
-**Add if content writing = yes:**
-- writer-content.md
+#### Tier 4: Product & Strategy only
 
-**Add if marketing = yes:**
-- writer-marketing.md, reviewer-content.md
+**Core:**
+- orchestrator.md, project-manager.md, writer-technical.md
 
-**Add if content OR marketing = yes, AND has frontend:**
-- writer-ux.md
+**Product & Design:**
+- product-manager.md, product-analyst.md, design-ux.md, design-ui.md, design-system.md
 
-**Add if compliance = yes:**
+**Strategy:**
+- strategist.md, positioning.md, researcher.md
+
+**Writing & Marketing:**
+- writer-content.md, writer-marketing.md, writer-ux.md, reviewer-content.md
+
+**Compliance:**
 - compliance.md
 
-**Add if product/design = yes:**
-- product-manager.md, product-analyst.md, design-ux.md, design-ui.md, design-system.md
+**NO eng-\* agents, NO reviewer-code, NO reviewer-architecture** — Tier 4 has no coding agents. Skip all stack-conditional agents.
 
 For EACH agent:
 1. Read the corresponding ai-org base agent file from the plugin's `agents/` directory
 2. Copy the YAML frontmatter exactly (same name, model, tools, skills)
 3. Rewrite the system prompt to be project-specific:
    - Open with: "You are a senior {role} working on **{project name}**, {description}."
-   - Mention the specific tech stack: "This project uses {framework} with {language} and {css approach}."
+   - (Tiers 1, 2, 3 only) Mention the specific tech stack: "This project uses {framework} with {language} and {css approach}."
    - Include the business context and target audience
    - Add: "Always read `CLAUDE.md` for project conventions before starting work."
-   - Add: "Read relevant files in `.claude/guides/` and `strategy/` for additional context."
+   - (Tiers 2, 3, 4 only) Add: "Read relevant files in `.claude/guides/` and `strategy/` for additional context."
+   - (Tier 1 only) Add: "Read relevant files in `.claude/guides/` for additional context."
 4. Keep the same section structure: intro paragraph, ## Approach, ## Standards, ## What You Do NOT Do
 5. Preserve read-only restrictions for security/performance/compliance/reviewer agents
 
@@ -161,21 +176,26 @@ For EACH agent:
 
 Create in `.claude/guides/`:
 
-**Always generate:**
+**Generate for Tiers 1, 2, 3 (code projects):**
 - `development.md` — Local setup, environment variables, dev/build/test/lint commands. Include `.env.example` content listing required variables (e.g., `DATABASE_URL` for database projects). Populated with actual commands for the chosen stack.
 
+**Generate for Tier 4 (documentation/strategy repos):**
+- `development.md` — Document workflow overview, tool setup (if any), folder structure conventions, and available slash commands for content creation and review.
+
 **Generate for team (2+ developers):**
-- `contributing.md` — Code style conventions, PR process template, commit message format. Populated from the stack's conventions.
+- `contributing.md` — For Tiers 1-3: code style conventions, PR process template, commit message format. Populated from the stack's conventions. For Tier 4: document style conventions, naming rules, PR process template, commit message format.
 
 **If project has backend/infrastructure:**
 - `deployment.md` — Deployment checklist skeleton, environment config, health check verification.
 
-**If content writing or marketing = yes:**
+**If workspace scope is Tier 3 (Full stack) or Tier 4 (Product & Strategy only):**
 - `content-creation.md` — Content workflow with sections for: brand voice and tone guidelines, target personas (reference `strategy/foundation/personas.md`), SEO requirements, review process, publishing checklist.
 
 ### 4.5 Strategy Skeleton
 
-Create in `strategy/` (at the project root, NOT inside `.claude/`):
+**Skip this section entirely for Tier 1 (Coding only)** — coding-only repos don't need positioning or personas.
+
+For Tiers 2, 3, and 4, create in `strategy/` (at the project root, NOT inside `.claude/`):
 
 **`foundation/personas.md`** — Pre-populate the first persona slot using the business context answer from Phase 3. Use the target audience as the primary persona archetype, with sections for: demographics, pain points, current solutions, desires, and buying triggers. Leave two more persona slots as templates.
 
@@ -184,6 +204,8 @@ Create in `strategy/` (at the project root, NOT inside `.claude/`):
 **`research/competitors/.gitkeep`** and **`research/market/.gitkeep`**
 
 ### 4.6 Project Scaffold
+
+**Skip this section entirely for Tier 4 (Product & Strategy only)** — no code scaffold for product-only repos.
 
 **IMPORTANT: If `package.json`, `pom.xml`, `Package.swift`, or any project config file already exists, SKIP this entire section.** Tell the user: "Detected existing project files — skipping scaffold. Only `.claude/` structure was generated."
 
@@ -210,49 +232,53 @@ Generate project-level commands in `.claude/commands/`. These commands include p
 
 Each command file has YAML frontmatter (name, description, argument-hint if applicable, context: fork, agent) followed by a brief prompt that includes project-specific context. The prompt should mention the project name, tech stack, and reference CLAUDE.md.
 
-**Core commands (always generate):**
+**Core commands (always generate, all tiers):**
 
 | Command | Agent | Description |
 |---------|-------|-------------|
 | `plan.md` | orchestrator | Create an implementation plan for {project name} |
-| `build.md` | orchestrator | Build a feature end-to-end |
-| `feature.md` | orchestrator | Full product workflow — understand, research, build, review |
+| `build.md` | orchestrator | Build a feature end-to-end (adapts behavior based on available agents) |
+| `feature.md` | orchestrator | Full product workflow — understand, research, build, review (adapts behavior based on available agents) |
 | `review.md` | orchestrator | 3-round review — functional, quality, compliance |
-| `test.md` | eng-testing | Write tests using the project's test framework |
 | `docs.md` | writer-technical | Generate documentation |
-
-**Add if project has frontend:**
-| `component.md` | eng-frontend | Scaffold a UI component using {framework} |
-
-**Add if project has backend:**
-| `api.md` | eng-api | Design or build an API endpoint |
-
-**Add if project has database:**
-| `db-migrate.md` | eng-database | Create a database migration for {database} |
-
-**Add if content writing = yes:**
-| `article.md` | writer-content | Write a blog post or article |
-
-**Add if marketing = yes:**
-| `copywrite.md` | orchestrator | Marketing or UX copy |
-
-**Add if compliance = yes:**
-| `audit.md` | orchestrator | Security and accessibility audit |
+| `changelog.md` | orchestrator | Generate a changelog from recent commits |
+| `status.md` | orchestrator | Generate project status report |
 
 **Add if team size is small team or larger:**
 | `estimate.md` | project-manager | Effort estimation |
 
-**Additional specialized commands (generate based on available agents):**
+**Tiers 1, 2, 3 only (coding commands — skip for Tier 4):**
 
-| Command | Agent | Description | When to include |
-|---------|-------|-------------|-----------------|
-| `refactor.md` | orchestrator | Refactor code with pre and post review | Always (uses reviewer-code + engineering agents) |
-| `adr.md` | orchestrator | Create an Architecture Decision Record | If reviewer-architecture agent exists |
-| `research.md` | researcher | Deep research on a topic | If researcher agent exists |
+| Command | Agent | Description | Condition |
+|---------|-------|-------------|-----------|
+| `test.md` | eng-testing | Write tests using the project's test framework | Always for Tiers 1-3 |
+| `component.md` | eng-frontend | Scaffold a UI component using {framework} | If project has frontend |
+| `api.md` | eng-api | Design or build an API endpoint | If project has backend |
+| `db-migrate.md` | eng-database | Create a database migration for {database} | If project has database |
+| `refactor.md` | orchestrator | Refactor code with pre and post review | Always for Tiers 1-3 |
 | `perf.md` | eng-performance | Performance analysis and optimization | If eng-performance agent exists |
-| `changelog.md` | orchestrator | Generate a changelog from recent commits | Always |
-| `status.md` | orchestrator | Generate project status report | Always |
-| `position.md` | positioning | Define or refine product positioning | If product/design agents enabled |
+| `adr.md` | orchestrator | Create an Architecture Decision Record | If reviewer-architecture agent exists |
+
+**Tiers 2, 3, 4 only (product commands — skip for Tier 1):**
+
+| Command | Agent | Description |
+|---------|-------|-------------|
+| `prd.md` | product-manager | Create a product requirements document |
+
+**Tiers 3 and 4 only (strategy commands — positioning and researcher agents required):**
+
+| Command | Agent | Description |
+|---------|-------|-------------|
+| `position.md` | positioning | Define or refine product positioning |
+| `research.md` | researcher | Deep research on a topic |
+
+**Tiers 3 and 4 only (content, marketing, compliance commands):**
+
+| Command | Agent | Description |
+|---------|-------|-------------|
+| `article.md` | writer-content | Write a blog post or article |
+| `copywrite.md` | orchestrator | Marketing or UX copy |
+| `audit.md` | orchestrator | Security and accessibility audit |
 
 Each command prompt should follow this template:
 
@@ -268,6 +294,7 @@ agent: {agent-name}
 {Action} for **{project name}** ({project description}).
 
 Tech stack: {framework}, {language}, {css approach}, {database}.
+(Omit the Tech stack line for Tier 4 — replace with: "This is a documentation/strategy project. See CLAUDE.md for workflows and available agents.")
 
 Read `CLAUDE.md` for project conventions before starting.
 
@@ -286,14 +313,16 @@ Create with `.gitkeep`:
 After generating everything, present:
 1. A tree view of all files created
 2. The total number of agents and commands generated, listing their names
-3. How to start using the project:
-   - "Run `{dev command}` to start the dev server"
+3. How to start using the project (adapt to tier):
+   - (Tiers 1, 2, 3 only) "Run `{dev command}` to start the dev server"
    - "Use `/feature` to run the full product workflow (understand → research → build → review)"
    - "Use `/plan` to plan your first feature"
-   - "Use `/build` to implement it"
-   - "Use `/review` to review your code before committing"
+   - (Tiers 1, 2, 3 only) "Use `/build` to implement it"
+   - (Tiers 1, 2, 3 only) "Use `/review` to review your code before committing"
+   - (Tiers 2, 3, 4 only) "Use `/prd` to draft a product requirements document"
+   - (Tiers 3, 4 only) "Use `/position` to define your product positioning"
 4. Suggested next steps:
-   - Flesh out personas in `strategy/foundation/personas.md` (first slot is pre-populated)
-   - Complete positioning in `strategy/foundation/positioning.md`
    - Customize agent prompts in `.claude/agents/` as your project patterns emerge
    - Add project-specific conventions to `CLAUDE.md` as you establish them
+   - (Tiers 2, 3, 4 only) Flesh out personas in `strategy/foundation/personas.md` (first slot is pre-populated)
+   - (Tiers 2, 3, 4 only) Complete positioning in `strategy/foundation/positioning.md`
