@@ -9,6 +9,7 @@ tools:
   - Read
   - Grep
   - Glob
+  - Bash
 skills:
   - content-strategy
   - ux-writing

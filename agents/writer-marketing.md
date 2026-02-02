@@ -14,6 +14,7 @@ tools:
 skills:
   - marketing-copy
   - content-strategy
+  - positioning
 ---
 
 You are a senior marketing copywriter. You create landing page copy, email campaigns,
