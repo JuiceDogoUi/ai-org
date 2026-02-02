@@ -123,15 +123,14 @@ Create agents in `.claude/agents/`. Use the workspace scope tier and team size t
 
 **Stack-conditional (based on project type):**
 - eng-frontend.md, eng-styles.md — if project has frontend
-- eng-backend.md, eng-api.md — if project has backend
-- eng-database.md — if project has database
+- eng-backend.md, eng-api.md — if project has backend (eng-backend includes database work)
 - eng-mobile.md — if mobile project
 - eng-desktop.md — if desktop project
 
 #### Tier 2: Coding + Product & Design
 
 Everything from Tier 1, PLUS:
-- product-manager.md, product-analyst.md, design-ux.md, design-ui.md, design-system.md, writer-ux.md
+- product-manager.md, product-analyst.md, design-lead.md, writer-ux.md
 
 #### Tier 3: Full stack
 
@@ -146,7 +145,7 @@ Everything from Tier 2, PLUS:
 - orchestrator.md, project-manager.md, writer-technical.md
 
 **Product & Design:**
-- product-manager.md, product-analyst.md, design-ux.md, design-ui.md, design-system.md
+- product-manager.md, product-analyst.md, design-lead.md
 
 **Strategy:**
 - strategist.md, positioning.md, researcher.md
@@ -164,19 +163,17 @@ When generating the orchestrator for Tier 4, adapt the delegation decision tree 
 1. Is it a full product workflow? → follow the /feature command workflow
 2. Is it product requirements or user stories? → product-manager
 3. Is it data analysis or metrics? → product-analyst
-4. Is it UX flows or usability? → design-ux
-5. Is it UI specs or visual design? → design-ui
-6. Is it design system or tokens? → design-system
-7. Is it technical documentation? → writer-technical
-8. Is it articles or blog posts? → writer-content
-9. Is it microcopy or UI text? → writer-ux
-10. Is it marketing copy or landing pages? → writer-marketing
-11. Is it business strategy or market analysis? → strategist
-12. Is it product positioning? → positioning
-13. Is it research? → researcher
-14. Is it compliance or regulatory? → compliance
-15. Is it project planning or sprints? → project-manager
-16. Is it content review? → reviewer-content
+4. Is it UX/UI design or design system? → design-lead
+5. Is it technical documentation? → writer-technical
+6. Is it articles or blog posts? → writer-content
+7. Is it microcopy or UI text? → writer-ux
+8. Is it marketing copy or landing pages? → writer-marketing
+9. Is it business strategy or market analysis? → strategist
+10. Is it product positioning? → positioning
+11. Is it research? → researcher
+12. Is it compliance or regulatory? → compliance
+13. Is it project planning or sprints? → project-manager
+14. Is it content review? → reviewer-content
 
 For EACH agent:
 1. Read the corresponding ai-org base agent file from the plugin's `agents/` directory
@@ -274,7 +271,7 @@ Each command file has YAML frontmatter (name, description, argument-hint if appl
 | `test.md` | eng-testing | Write tests using the project's test framework | Always for Tiers 1-3 |
 | `component.md` | eng-frontend | Scaffold a UI component using {framework} | If project has frontend |
 | `api.md` | eng-api | Design or build an API endpoint | If project has backend |
-| `db-migrate.md` | eng-database | Create a database migration for {database} | If project has database |
+| `db-migrate.md` | eng-backend | Create a database migration for {database} | If project has database |
 | `refactor.md` | orchestrator | Refactor code with pre and post review | Always for Tiers 1-3 |
 | `perf.md` | eng-performance | Performance analysis and optimization | If eng-performance agent exists |
 | `adr.md` | orchestrator | Create an Architecture Decision Record | If reviewer-architecture agent exists |

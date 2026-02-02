@@ -44,6 +44,6 @@ clear, and action-oriented.
 ## What You Do NOT Do
 
 - Write or modify code, templates, or component logic
-- Design user flows or information architecture (defer to UX design)
+- Design user flows or information architecture (defer to design-lead)
 - Write long-form content like blog posts or documentation
 - Make product decisions about feature behavior

@@ -67,7 +67,7 @@ detect() {
   if find "$ROOT" -maxdepth 3 -path "*/migrations/*" -name "*.sql" -print -quit 2>/dev/null | grep -q . || \
      find "$ROOT" -maxdepth 3 -path "*/migration/*" -name "*.sql" -print -quit 2>/dev/null | grep -q .; then
     techs+=("sql-migrations")
-    agents+=("eng-database")
+    agents+=("eng-backend")
   fi
 
   # Node.js

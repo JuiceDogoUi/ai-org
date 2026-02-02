@@ -1,6 +1,6 @@
 # ai-org
 
-A reusable AI organization plugin for Claude Code. Provides **29 specialist agents**, **26 commands**, and **26 skill domains** — a complete foundation for AI-assisted software development, product management, content creation, and operations.
+A reusable AI organization plugin for Claude Code. Provides **26 specialist agents**, **26 commands**, and **26 skill domains** — a complete foundation for AI-assisted software development, product management, content creation, and operations.
 
 Install once, use across every project. Personalize per project with `/onboard` or `/migrate`.
 
@@ -101,7 +101,7 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 | `/build` | Build a feature end-to-end (with auto-review) | orchestrator |
 | `/component` | Scaffold a UI component | eng-frontend |
 | `/api` | Design or build an API endpoint | eng-api |
-| `/db-migrate` | Create a database migration | eng-database |
+| `/db-migrate` | Create a database migration | eng-backend |
 | `/test` | Write tests | eng-testing |
 
 ### Review & Quality
@@ -140,14 +140,13 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 
 ## Agents
 
-### Engineering (11)
+### Engineering (10)
 
 | Agent | Model | Skills | Role |
 |-------|-------|--------|------|
-| eng-frontend | sonnet | typescript, angular, javascript, css-architecture, i18n | Frontend components, pages, SPA architecture |
-| eng-backend | sonnet | java, typescript, database-design, i18n | Services, APIs, business logic, data access |
-| eng-api | sonnet | api-design, typescript, java | REST/GraphQL endpoint design and contracts |
-| eng-database | sonnet | database-design | Schema design, migrations, query optimization |
+| eng-frontend | sonnet | typescript, angular, javascript, i18n | Frontend components, pages, SPA architecture |
+| eng-backend | sonnet | api-design, database-design, security, i18n | Services, business logic, data access, schema, migrations, queries |
+| eng-api | sonnet | api-design | REST/GraphQL endpoint design and contracts |
 | eng-mobile | sonnet | swift, i18n | iOS/mobile features, platform patterns |
 | eng-desktop | sonnet | typescript, javascript, i18n | Desktop app features (Electron) |
 | eng-styles | sonnet | css-architecture | CSS architecture, responsive design, theming |
@@ -156,15 +155,13 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 | eng-security | sonnet | security | Security analysis, vulnerability assessment (read-only) |
 | eng-performance | sonnet | performance | Performance profiling, optimization (read-only) |
 
-### Product & Design (5)
+### Product & Design (3)
 
 | Agent | Model | Skills | Role |
 |-------|-------|--------|------|
 | product-manager | opus | product-management, positioning | PRDs, requirements, user stories, roadmaps |
 | product-analyst | sonnet | product-analytics | Data analysis, metrics, A/B tests, funnels |
-| design-ux | sonnet | ux-writing, accessibility | UX flows, wireframes, usability research |
-| design-ui | sonnet | css-architecture, accessibility | UI specs, visual guidelines, component behavior |
-| design-system | sonnet | css-architecture | Design tokens, component library standards |
+| design-lead | opus | css-architecture, accessibility, ux-writing | UI/UX direction, design system governance, component specs |
 
 ### Writing & Content (4)
 
@@ -182,7 +179,7 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 | strategist | opus | competitive-analysis, positioning | Business strategy, market research, tech evaluation |
 | positioning | opus | positioning, competitive-analysis, content-strategy | Product positioning using April Dunford's framework |
 | researcher | opus | research-methodology | Deep research, literature review, synthesis |
-| compliance | sonnet | compliance-frameworks, accessibility, review-process | GDPR, WCAG, license audits (read-only) |
+| compliance | opus | compliance-frameworks, accessibility, review-process | Regulatory compliance audits with web research (read-only) |
 | project-manager | sonnet | project-planning | Sprint planning, task breakdown, estimation |
 
 ### Review (3)
@@ -209,7 +206,7 @@ Skills are domain knowledge packages — conventions, patterns, and reference ma
 | angular | Angular 17+ patterns, signals, standalone components, testing |
 | api-design | REST conventions, error handling, pagination, versioning |
 | competitive-analysis | Porter's Five Forces, SWOT, JTBD, value chain frameworks |
-| compliance-frameworks | GDPR checklist, WCAG checklist, SOX controls |
+| compliance-frameworks | Audit methodology, regulatory landscape, concern-based compliance frameworks |
 | content-strategy | Article structure, SEO guidelines, content planning |
 | css-architecture | BEM/ITCSS methodologies, design tokens, responsive patterns |
 | database-design | Schema conventions, migration patterns, query optimization |
@@ -250,8 +247,8 @@ Most commands route directly to a single specialist agent — no orchestrator ov
 
 | Tier | Agents | Use Case |
 |------|--------|----------|
-| Opus (7) | orchestrator, product-manager, writer-content, strategist, positioning, researcher, reviewer-architecture | Complex reasoning, architecture, strategy |
-| Sonnet (22) | All engineering, design, other writing, operations, review | Standard implementation, focused tasks |
+| Opus (8) | orchestrator, product-manager, writer-content, strategist, positioning, researcher, reviewer-architecture, compliance | Complex reasoning, architecture, strategy, regulatory analysis |
+| Sonnet (21) | All engineering, design, other writing, operations, review | Standard implementation, focused tasks |
 | Haiku (2 commands) | changelog, status (model override on orchestrator) | Fast lookup, simple aggregation |
 
 ### Skill Isolation
@@ -264,10 +261,10 @@ Skills are reference material, not identity. An agent's system prompt defines HO
 
 ### Direct vs Delegated Agents
 
-Commands are workflows — they trigger teams, flows, and multi-agent processes, not single agents. Of the 29 agents, 13 have direct command routing and 16 are delegation-only, reached when the orchestrator or a workflow decomposes work via the Task tool:
+Commands are workflows — they trigger teams, flows, and multi-agent processes, not single agents. Of the 26 agents, 13 have direct command routing and 13 are delegation-only, reached when the orchestrator or a workflow decomposes work via the Task tool:
 
-- **Direct** (13): orchestrator, eng-frontend, eng-api, eng-database, eng-devops, eng-testing, eng-performance, positioning, product-manager, project-manager, researcher, writer-content, writer-technical
-- **Delegated** (16): eng-backend, eng-mobile, eng-desktop, eng-styles, eng-security, product-analyst, design-ux, design-ui, design-system, writer-ux, writer-marketing, strategist, compliance, reviewer-code, reviewer-content, reviewer-architecture
+- **Direct** (13): orchestrator, eng-frontend, eng-backend, eng-api, eng-devops, eng-testing, eng-performance, positioning, product-manager, project-manager, researcher, writer-content, writer-technical
+- **Delegated** (13): eng-mobile, eng-desktop, eng-styles, eng-security, product-analyst, design-lead, writer-ux, writer-marketing, strategist, compliance, reviewer-code, reviewer-content, reviewer-architecture
 
 Delegated agents are fully functional — they simply participate in multi-agent workflows (like `/review`, `/build`, `/feature`) rather than owning a standalone command.
 
@@ -277,6 +274,7 @@ These agents have no Write or Edit tools — they analyze and recommend but cann
 
 - **Security-sensitive**: eng-security, eng-performance, compliance
 - **Review**: reviewer-code, reviewer-content, reviewer-architecture
+- **Design**: design-lead
 - **Analysis**: product-analyst
 
 ## Project Customization

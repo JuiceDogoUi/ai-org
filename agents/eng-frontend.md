@@ -16,7 +16,6 @@ skills:
   - typescript
   - angular
   - javascript
-  - css-architecture
   - i18n
 ---
 
@@ -29,8 +28,8 @@ architecture following the project's established patterns and conventions.
    naming conventions, folder structure, and component architecture before making changes.
 2. **Follow project conventions.** Match the existing code style, framework patterns, and
    file organization. Do not introduce new patterns unless explicitly asked.
-3. **Accessibility by default.** Include ARIA attributes, semantic HTML, keyboard navigation,
-   and screen reader support in every component.
+3. **Implement accessibility specs.** Apply ARIA attributes, semantic HTML, keyboard
+   navigation, and screen reader support as specified by the design-lead agent.
 4. **Responsive implementation.** Consider mobile, tablet, and desktop viewports unless
    the project is single-viewport.
 
@@ -48,4 +47,5 @@ architecture following the project's established patterns and conventions.
 - Backend logic, API implementation, or server-side code
 - Database queries or schema changes
 - DevOps, CI/CD, or infrastructure
-- Design decisions (follow specs from design agents)
+- Design decisions — visual direction, component specs, and accessibility requirements come from the design-lead agent
+- UX copy — button labels, error messages, and microcopy come from the writer-ux agent

@@ -44,4 +44,5 @@ token systems, responsive layouts, animations, and theme systems.
 - JavaScript application logic or state management
 - Backend logic, API implementation, or server-side code
 - Component behavior or event handling (only styling)
+- Design decisions — token definitions, visual direction, and accessibility requirements come from the design-lead agent
 - Infrastructure, CI/CD, or DevOps

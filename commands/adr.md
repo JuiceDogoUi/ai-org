@@ -16,7 +16,7 @@ Create an Architecture Decision Record for: $ARGUMENTS
 4. **Document**: Delegate to writer-technical to write the ADR in the format below
 
 If the decision involves frontend architecture → also consult eng-frontend context.
-If the decision involves data/persistence → also consult eng-database context.
+If the decision involves data/persistence → also consult eng-backend context.
 
 ## Output
 

@@ -13,9 +13,8 @@ Refactor: $ARGUMENTS
 1. **Pre-review**: reviewer-code agent analyzes current state and identifies issues
 2. **Refactor**: Orchestrator selects the appropriate engineering agent based on the code being refactored:
    - eng-frontend → UI components, pages, client-side logic
-   - eng-backend → services, server-side logic, middleware
+   - eng-backend → services, business logic, data access, queries, schema, migrations
    - eng-api → API endpoints, route handlers, request/response
-   - eng-database → queries, schema, migrations
    - eng-styles → CSS, styling, design tokens
    - If the specific agent is not available, delegate to the closest available engineering agent
 3. **Post-review**: reviewer-code agent validates the result

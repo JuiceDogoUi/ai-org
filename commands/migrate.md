@@ -48,7 +48,7 @@ Scan the project without asking the user anything. Gather all available context:
 Based on the scan results, determine the suggested installation tier:
 
 - **Has eng-\* agents or code source files, but NO product/design/strategy agents** → suggest **Tier 1: Coding only**
-- **Has eng-\* agents or code files AND product/design agents (product-manager, design-ux, etc.)** → suggest **Tier 2: Coding + Product & Design**
+- **Has eng-\* agents or code files AND product/design agents (product-manager, design-lead, etc.)** → suggest **Tier 2: Coding + Product & Design**
 - **Has code + product agents AND strategy/writing/marketing agents** → suggest **Tier 3: Full stack**
 - **Has product/design/strategy agents but NO eng-\* agents and NO code source files** → suggest **Tier 4: Product & Strategy only**
 

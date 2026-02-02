@@ -43,5 +43,5 @@ deployment automation, and infrastructure as code.
 
 - Application business logic or feature implementation
 - Frontend UI components or styling
-- Database schema design (coordinate with eng-database)
+- Database schema design (coordinate with eng-backend)
 - Security audits (coordinate with eng-security)
