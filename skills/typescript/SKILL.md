@@ -39,12 +39,12 @@ user-invocable: false
 
 ## Avoid
 
-- **`as` type assertions** — Use type guards or redesign types; assertions bypass safety
-- **`any` type** — Use `unknown` and narrow with type guards
-- **`!` non-null assertion** — Only use when you can prove value exists; prefer optional chaining
-- **`@ts-ignore` / `@ts-expect-error`** — Fix the type error instead of suppressing it
-- **`enum` for simple values** — Use union types (`type Status = 'pending' | 'done'`) for better tree-shaking
-- **`Function` type** — Use specific signatures (`() => void`, `(x: string) => number`)
-- **`object` type** — Use `Record<string, unknown>` or specific interfaces
+- **"as" type assertions** — Use type guards or redesign types; assertions bypass safety
+- **"any" type** — Use unknown and narrow with type guards
+- **Non-null assertion (!)** — Only use when you can prove value exists; prefer optional chaining
+- **@ts-ignore / @ts-expect-error** — Fix the type error instead of suppressing it
+- **enum for simple values** — Use union types (type Status = 'pending' | 'done') for better tree-shaking
+- **Function type** — Use specific signatures like () => void or (x: string) => number
+- **object type** — Use Record<string, unknown> or specific interfaces
 - **Type assertions in tests** — Tests should validate real types, not bypass them
-- **Overusing generics** — If `T` is always `string`, just use `string`
+- **Overusing generics** — If T is always string, just use string

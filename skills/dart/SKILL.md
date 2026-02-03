@@ -59,7 +59,7 @@ user-invocable: false
 - **`late` without justification** — Can cause runtime errors; prefer constructor initialization
 - **`setState` for cross-widget state** — Use Provider, Riverpod, or other state management
 - **Huge `build()` methods** — Extract widgets; improves readability and rebuild performance
-- **`!` null assertion operator** — Use `??` with defaults or null-aware operators
+- **Null assertion operator (!)** — Use ?? with defaults or null-aware operators
 - **Mutable global state** — Use scoped state management; globals make testing difficult
 - **`print()` for logging** — Use `debugPrint()` or a logging package for production
 - **Inline styles for repeated values** — Define in `ThemeData` or constants
