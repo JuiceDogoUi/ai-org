@@ -194,7 +194,7 @@ Wait for confirmation before proceeding. If the user wants changes, ask which sp
 
 ## Phase 4: Generate Project Structure
 
-After ALL answers are collected, generate the following. Use the workspace scope tier from question 10 to determine which agents, commands, guides, and strategy files to install. Check if `package.json` or other project files already exist — if so, SKIP the project scaffold (section 4.7) and tell the user you detected an existing project and only generated the `.claude/` structure. Warn if any `.claude/` files already exist and ask before overwriting.
+After ALL answers are collected, generate the following. Use the workspace scope tier from question 10 to determine which agents, commands, guides, and strategy files to install. Check if `package.json` or other project files already exist — if so, SKIP the project scaffold (section 4.8) and tell the user you detected an existing project and only generated the `.claude/` structure. Warn if any `.claude/` files already exist and ask before overwriting.
 
 ### 4.1 Determine Skills to Install
 
@@ -548,7 +548,10 @@ Create `.claude/version.json`:
 
 After generating everything, present:
 1. A tree view of all files created
-2. The total number of agents and commands generated, listing their names
+2. The total number of agents, commands, and skills generated:
+   - Agents: {count} — {list names}
+   - Commands: {count} — {list names}
+   - Skills: {count} copied to .claude/skills/ — {list names}
 3. How to start using the project (adapt to tier):
    - (Tiers 1, 2, 3 only) "Run `{dev command}` to start the dev server"
    - "Use `/feature` to run the full product workflow (understand → research → build → review)"
@@ -559,6 +562,7 @@ After generating everything, present:
    - (Tiers 3, 4 only) "Use `/position` to define your product positioning"
 4. Suggested next steps:
    - Customize agent prompts in `.claude/agents/` as your project patterns emerge
+   - Customize skills in `.claude/skills/` to match your project's conventions
    - Add project-specific conventions to `CLAUDE.md` as you establish them
    - (Tiers 2, 3, 4 only) Flesh out personas in `strategy/foundation/personas.md` (first slot is pre-populated)
    - (Tiers 2, 3, 4 only) Complete positioning in `strategy/foundation/positioning.md`

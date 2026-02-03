@@ -210,7 +210,7 @@ Based on scan results, role mapping, and user answers, create a categorized migr
 
 **CREATE** — New files only for UNCOVERED roles within the chosen tier:
 - Only create new ai-org agents for roles that NO existing agent covers AND that fall within the user's chosen workspace scope tier
-- Use the tier-to-agent mapping defined in section 4.6 below
+- Use the tier-to-agent mapping defined in section 4.7 below
 - New agents get project-specific system prompts based on scan results
 - Each new agent's prompt includes: "Always read CLAUDE.md for project conventions before starting work."
 - List each file and its purpose
@@ -451,6 +451,11 @@ After execution, present a clear report:
 - {count} project commands created in .claude/commands/
 - {list each command and which agent it routes to}
 
+### Skills Copied
+- {count} skills copied to .claude/skills/
+- {list each skill}
+- Skipped (already existed): {list any skills that were not copied because they already existed}
+
 ### Created (new files)
 - {each file with purpose}
 
@@ -464,6 +469,7 @@ After execution, present a clear report:
 - Review the orchestrator's routing table — ensure it maps to the right agents
 - Review enhanced CLAUDE.md — merge ai-org sections as needed
 - Review skills added to existing agents — verify they are appropriate
+- Customize skills in `.claude/skills/` to match your project's conventions
 - (Tiers 2, 3, 4 only) Fill in strategy templates if not already done
 ```
 
