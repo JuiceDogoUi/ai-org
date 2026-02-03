@@ -89,9 +89,9 @@ Claude Code acts as the workflow coordinator. Commands define explicit stages an
 | Command | Description | Model |
 |---------|-------------|-------|
 | `/plan` | Create an implementation plan | sonnet |
-| `/research` | Deep research with synthesis (spawns researcher) | sonnet |
-| `/prd` | Product requirements document (spawns product-lead) | sonnet |
-| `/position` | Define product positioning (spawns positioning) | sonnet |
+| `/research` | Deep research with synthesis | opus (researcher) |
+| `/prd` | Product requirements document | opus (product-lead) |
+| `/position` | Define product positioning | opus (positioning) |
 | `/refactor` | Refactor code with pre/post review | sonnet |
 
 ### Building
@@ -116,9 +116,9 @@ Claude Code acts as the workflow coordinator. Commands define explicit stages an
 
 | Command | Description | Model |
 |---------|-------------|-------|
-| `/article` | Write a blog post or article (spawns writer-lead) | sonnet |
-| `/docs` | Generate documentation (spawns writer-lead) | sonnet |
-| `/copywrite` | Marketing or UX copy (spawns writer-lead) | sonnet |
+| `/article` | Write a blog post or article | opus (writer-lead) |
+| `/docs` | Generate documentation | opus (writer-lead) |
+| `/copywrite` | Marketing or UX copy | opus (writer-lead) |
 | `/changelog` | Generate changelog from commits | haiku |
 
 ### Operations

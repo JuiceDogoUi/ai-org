@@ -1,6 +1,6 @@
 {
   "name": "ai-org",
-  "description": "Comprehensive AI organization with agents for engineering, product, design, writing, strategy, and operations. Hybrid orchestrator model with direct commands and intelligent delegation.",
+  "description": "Comprehensive AI organization with agents for engineering, product, design, writing, strategy, and operations. Claude Code coordinates workflows, spawning specialist agents at each stage.",
   "version": "1.0.0",
   "author": {
     "name": "Manuel Rocco"
