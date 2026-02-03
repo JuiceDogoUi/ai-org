@@ -62,3 +62,16 @@ See [Synthesis Patterns](synthesis-patterns.md) for detailed patterns.
 - Collect all references in a dedicated section at the end
 - Include URLs and access dates for web sources
 - Distinguish between facts (cited) and analysis (your synthesis)
+
+## Avoid
+
+- **Single-source conclusions** — Always corroborate claims across multiple independent sources
+- **Outdated sources without verification** — Tech sources >2 years old need current confirmation
+- **Confusing secondary for primary** — Blog summaries are not original research
+- **Presenting opinion as fact** — Clearly distinguish analysis from cited evidence
+- **Source-by-source organization** — Organize thematically; source lists aren't synthesis
+- **Ignoring contrary evidence** — Address and explain conflicting findings
+- **Overconfidence** — Assign appropriate confidence levels; acknowledge limitations
+- **Bias blindness** — Consider commercial, institutional, and ideological motivations
+- **Scope creep** — Answer the research question; flag tangents for future work
+- **Missing methodology** — Always document how research was conducted and what sources were used

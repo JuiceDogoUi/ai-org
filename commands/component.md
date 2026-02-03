@@ -31,4 +31,4 @@ Create a new component: $ARGUMENTS
 - Unit test file
 - Export from the appropriate barrel/index file if the project uses them
 
-> Related: `/api` to build the backend endpoint, `/test` to add tests, `/docs` to document the component.
+> Related: `/build` to build the full feature, `/test` to add tests, `/docs` to document the component.

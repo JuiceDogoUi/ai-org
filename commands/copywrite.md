@@ -3,7 +3,7 @@ name: copywrite
 description: Write marketing or UX copy
 argument-hint: "[type: landing|email|ux|social] [context]"
 context: fork
-agent: orchestrator
+agent: writer-lead
 ---
 
 Write copy: $ARGUMENTS
@@ -12,9 +12,9 @@ If strategy/foundation/positioning.md exists, read it first and align copy with 
 
 ## Routing
 
-- Landing page, email, social media → writer-marketing agent
-- UX microcopy, in-app text, error messages → writer-ux agent
-- Mixed or unclear → coordinate both agents
+All copy tasks route to **writer-lead**, which adapts its approach based on copy type:
+- Landing pages, emails, social media → marketing copy approach
+- UX microcopy, in-app text, error messages → UX writing approach
 
 ## Standards
 

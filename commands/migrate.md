@@ -15,16 +15,59 @@ Scan the project without asking the user anything. Gather all available context:
 
 ### 1.1 Detect Tech Stack
 
+#### Web / General
 - Check for `package.json` (name, dependencies, scripts, devDependencies)
 - Check for `tsconfig.json` or `tsconfig.base.json`
 - Check for `angular.json` or `.angular-cli.json`
-- Check for `next.config.*` or `nuxt.config.*` or `vite.config.*`
-- Check for `pom.xml`, `build.gradle`, `build.gradle.kts`
-- Check for `Package.swift`, `*.xcodeproj`
+- Check for `next.config.*`, `nuxt.config.*`, `vite.config.*`, `svelte.config.*`, `astro.config.*`, `remix.config.*`
+- Check for `pom.xml`, `build.gradle`, `build.gradle.kts` (without Android plugin)
 - Check for `Dockerfile`, `docker-compose.yml`
 - Check for `.github/workflows/` (CI/CD patterns)
 - Check for `.eslintrc*`, `.prettierrc*`, `jest.config.*`, `vitest.config.*` (code quality tools)
-- Examine `src/` directory structure to understand the project layout
+
+#### Python
+- Check for `requirements.txt`, `pyproject.toml`, `setup.py`, `Pipfile`
+- Check for `manage.py` (Django indicator)
+- Check for FastAPI/Flask imports in main entry files
+
+#### Go
+- Check for `go.mod`, `go.sum`
+- Check for `main.go` or `cmd/` directory structure
+
+#### Ruby
+- Check for `Gemfile`, `Gemfile.lock`
+- Check for `config/routes.rb` (Rails indicator)
+
+#### ORM / Database Tools
+- Check for `prisma/schema.prisma` (Prisma)
+- Check for `drizzle.config.*` (Drizzle)
+- Check for `ormconfig.*` or `typeorm` in dependencies (TypeORM)
+- Check for `sequelize` in dependencies (Sequelize)
+- Check for `alembic/` directory (SQLAlchemy migrations)
+
+#### Monorepo
+- Check for `turbo.json` (Turborepo)
+- Check for `nx.json` (Nx)
+- Check for `lerna.json` (Lerna)
+- Check for `pnpm-workspace.yaml` (pnpm workspaces)
+- Check for `packages/` or `apps/` directories
+- If monorepo detected, scan each app/package for its own stack
+
+#### Mobile
+- Check for `Package.swift`, `*.xcodeproj`, `*.xcworkspace` → iOS native (Swift)
+- Check for `build.gradle.kts` with `com.android.application` plugin → Android native (Kotlin)
+- Check for `package.json` with `react-native` dependency → React Native
+- Check for `pubspec.yaml` with `flutter` dependency → Flutter (Dart)
+
+#### Desktop
+- Check for `package.json` with `electron` dependency → Electron
+- Check for `src-tauri/` directory or `tauri.conf.json` → Tauri (Rust backend)
+- Check for `*.xcodeproj` with macOS target → Native macOS (Swift/AppKit)
+- Check for `*.csproj` with WPF/WinUI references → Native Windows
+
+#### Examine project structure
+- Examine `src/`, `app/`, `lib/` directory structure to understand the project layout
+- Record the detected platform: web, iOS, Android, cross-platform-mobile, desktop
 
 ### 1.2 Scan Existing Claude Configuration
 
@@ -35,6 +78,7 @@ Scan the project without asking the user anything. Gather all available context:
 - Read ALL files in `.claude/guides/` — note what topics they cover
 - Check `strategy/` at the project root — note what exists (foundation, research, etc.)
 - Check `.claude/strategy/` — detect if strategy is in the old location
+- Check `initiatives/` at the project root — note if it exists and what initiatives are present
 - Check `.claude/plans/` — note any existing plans
 
 ### 1.3 Understand Project Context
@@ -47,12 +91,27 @@ Scan the project without asking the user anything. Gather all available context:
 
 Based on the scan results, determine the suggested installation tier:
 
-- **Has eng-\* agents or code source files, but NO product/design/strategy agents** → suggest **Tier 1: Coding only**
-- **Has eng-\* agents or code files AND product/design agents (product-manager, design-lead, etc.)** → suggest **Tier 2: Coding + Product & Design**
-- **Has code + product agents AND strategy/writing/marketing agents** → suggest **Tier 3: Full stack**
-- **Has product/design/strategy agents but NO eng-\* agents and NO code source files** → suggest **Tier 4: Product & Strategy only**
+- **Tier 1 (Coding only)**: Has eng-* agents or code source files, but NO product-lead, design-lead, positioning, or researcher
+- **Tier 2 (Coding + Product & Design)**: Has eng-* agents or code files AND product-lead/design-lead, but NO positioning or researcher
+- **Tier 3 (Full stack)**: Has eng-* agents or code files AND product-lead AND positioning/researcher/compliance
+- **Tier 4 (Product & Strategy only)**: Has product-lead, positioning, researcher but NO eng-* agents and NO code source files
 
-If ambiguous (e.g., code files exist but no agents at all), default to suggesting Tier 1 and let the user choose.
+**Edge cases and resolution**:
+- Code files exist but no agents at all → Suggest Tier 1, let user choose higher
+- Has eng-* + positioning but no product-lead → Suggest Tier 1 (positioning is an orphan); recommend completing Tier 2 first or removing positioning
+- Has eng-* + product-lead + researcher but no positioning → Incomplete Tier 3; suggest completing Tier 3 by adding positioning
+- Has only orchestrator → Ask user which tier they want
+- Has strategy/ directory but no strategy agents → Suggest Tier 2 minimum to make use of strategy docs
+- CLAUDE.md mentions a tier explicitly → Use that as the starting suggestion
+
+### 1.5 Idempotency Check
+
+Before proceeding, check if this project has already been migrated:
+- Look for `<!-- ai-org enhanced sections below -->` delimiter in CLAUDE.md
+- Check for `.claude/version.json`
+- Check if existing agents already have `skills:` fields in frontmatter
+
+If ALL of these are present, report: "This project appears to already have ai-org setup. Consider using `/upgrade` instead to update to the latest version." Ask user if they want to proceed anyway (will re-apply migration, potentially duplicating enhancements).
 
 ## Phase 2: Role Mapping and Questions
 
@@ -63,11 +122,14 @@ This is critical. For each existing agent, determine which ai-org role it covers
 | ai-org Role | Existing Agent | Confidence | Notes |
 |-------------|---------------|------------|-------|
 | eng-frontend | nextjs-developer | high | Both handle frontend component implementation |
-| writer-content | content-writer | high | Both write articles and blog posts |
+| writer-lead | content-writer | high | Both handle writing tasks |
 | eng-security | security-auditor | high | Both do security analysis |
 | eng-testing | test-engineer | high | Both handle test strategy and writing |
 | compliance | compliance-regulator | high | Both handle regulatory compliance |
-| eng-devops | — | — | No existing agent covers this role |
+| eng-devops | (none) | n/a | No existing agent covers this role — will CREATE if user approves |
+| eng-backend | (none) | n/a | No existing agent covers this role — will CREATE if user approves |
+
+Use `(none)` for uncovered roles. One existing agent may cover multiple ai-org roles (e.g., a "full-stack-dev" agent might cover both eng-frontend and eng-backend). In that case, list it for each role it covers.
 
 An existing agent COVERS an ai-org role if its system prompt describes substantially the same responsibilities, even if the name is different. One existing agent may cover multiple ai-org roles, or one ai-org role may be split across multiple existing agents.
 
@@ -104,11 +166,7 @@ These ai-org roles have no equivalent existing agent (full list — will be filt
 - {ai-org-role}: {what it does}
 - {ai-org-role}: {what it does}
 - ...
-```
 
-Then present the suggested tier:
-
-```
 ### Suggested Workspace Scope
 
 Based on your project, we suggest **{tier name}**: {tier description}.
@@ -119,13 +177,13 @@ Reason: {explain what was detected that led to this suggestion}
 Then ask:
 1. Is the role mapping correct? Should any mappings be changed?
 2. **Workspace scope** — is the suggested tier correct? (present all 4 options):
-   - **Coding only** — engineering agents, code review, technical docs
-   - **Coding + Product & Design** — adds PRDs, UX research, UI specs, design system
-   - **Full stack** — adds strategy, positioning, content writing, marketing, compliance
-   - **Product & Strategy only** — no coding agents; only product, design, strategy, and writing
+   - **Tier 1 (Coding only)** — engineering agents, code review, technical docs
+   - **Tier 2 (Coding + Product & Design)** — adds PRDs, UX research, UI specs, design system
+   - **Tier 3 (Full stack)** — adds strategy, positioning, content writing, marketing, compliance
+   - **Tier 4 (Product & Strategy only)** — no coding agents; only product, design, strategy, and writing
 3. Do you want agents created for the uncovered roles within the chosen tier?
 
-The confirmed tier controls which uncovered roles get offered for creation. Do NOT offer to create agents outside the chosen tier scope (e.g., don't offer eng-frontend for Tier 4, don't offer strategist for Tier 1).
+The confirmed tier controls which uncovered roles get offered for creation. Do NOT offer to create agents outside the chosen tier scope (e.g., don't offer eng-frontend for Tier 4, don't offer positioning for Tier 1).
 
 ## Phase 3: Present Migration Plan
 
@@ -141,7 +199,7 @@ Based on scan results, role mapping, and user answers, create a categorized migr
 
 **ENHANCE** — Existing files that will have ai-org enhancements added:
 - Existing agents: add `skills:` field to frontmatter if missing (mapping to appropriate ai-org skill domains based on the agent's detected role)
-- A backup will be created before any modification
+- Backup location: `.claude/backup/{ISO-date-timestamp}/{original-filename}` — created before any modification
 - Do NOT change the agent's name, model, tools, or system prompt — only add skills references
 
 **ENHANCE CLAUDE.md** (if exists):
@@ -152,7 +210,7 @@ Based on scan results, role mapping, and user answers, create a categorized migr
 
 **CREATE** — New files only for UNCOVERED roles within the chosen tier:
 - Only create new ai-org agents for roles that NO existing agent covers AND that fall within the user's chosen workspace scope tier
-- Use the same tier-to-agent mapping as `/onboard` (see onboard.md section 4.3 for the full mapping per tier)
+- Use the tier-to-agent mapping defined in section 4.6 below
 - New agents get project-specific system prompts based on scan results
 - Each new agent's prompt includes: "Always read CLAUDE.md for project conventions before starting work."
 - List each file and its purpose
@@ -179,30 +237,71 @@ Only proceed after user confirms.
 
 Create `.claude/backup/{ISO-date-timestamp}/` containing an exact copy of every file that will be modified (ENHANCE category only). Do NOT back up files that are only being created.
 
-### 4.2 Enhance Existing Agents
+### 4.2 Determine Skills to Install
+
+Based on the detected tech stack from Phase 1, determine which skills are relevant. **Only install skills that match the project's actual stack.**
+
+| Stack / Framework | Skills to Install |
+|-------------------|-------------------|
+| TypeScript/JavaScript (any) | typescript, javascript |
+| Angular | angular, typescript, css-architecture, accessibility |
+| React / Next.js / Remix | react, typescript, javascript, css-architecture, accessibility |
+| Vue / Nuxt | vue, typescript, javascript, css-architecture, accessibility |
+| Svelte / SvelteKit | svelte, typescript, javascript, css-architecture, accessibility |
+| Astro | typescript, javascript, css-architecture, accessibility |
+| Swift / iOS | swift |
+| Kotlin / Android | kotlin |
+| React Native | react, javascript, typescript, accessibility |
+| Flutter / Dart | dart, accessibility |
+| Electron | electron, typescript, javascript |
+| Tauri | typescript, javascript, rust |
+| Spring Boot / Java | java |
+| Django / FastAPI / Flask | (no Python skill yet — note in CLAUDE.md) |
+| Gin / Echo / Go | (no Go skill yet — note in CLAUDE.md) |
+| Rails / Ruby | (no Ruby skill yet — note in CLAUDE.md) |
+| Any with database | database-design |
+| Any with API | api-design |
+| Any with backend/infrastructure | devops |
+
+Universal skills (always install for coding tiers): i18n, testing-strategy, security, performance
+
+Product/Strategy skills (Tiers 2, 3, 4): product-management, product-analytics, positioning, research-methodology, competitive-analysis, content-strategy, ux-writing, marketing-copy, technical-writing, compliance-frameworks, review-process
+
+### 4.3 Enhance Existing Agents
 
 For each existing agent that maps to an ai-org role:
-- Add `skills:` field to frontmatter if missing, mapping to the appropriate ai-org skill domains:
-  - Frontend agent → skills: [typescript, css-architecture, i18n] + the detected framework skill (angular OR javascript, not both)
-  - Backend agent → skills: [database-design, i18n] + the detected language skill (java OR typescript, not both)
-  - Content agent → skills: [content-strategy]
+- Add `skills:` field to frontmatter if missing, mapping to the appropriate ai-org skill domains **from the installed skills list only**:
+  - Frontend agent → skills from: [react, angular, vue, svelte, typescript, javascript, css-architecture, accessibility, i18n] (only those detected)
+  - Styles agent → skills from: [css-architecture, accessibility, performance, i18n] (only those detected)
+  - Backend agent → skills from: [database-design, api-design, devops, java, typescript, i18n] (only those detected)
+  - Mobile agent → skills from: [swift, kotlin, dart, react, javascript, typescript, accessibility, i18n] (only those detected)
+  - Desktop agent → skills from: [electron, typescript, javascript, swift, rust, i18n] (only those detected)
+  - Content agent → skills: [content-strategy, ux-writing, marketing-copy, technical-writing]
   - Security agent → skills: [security]
   - Testing agent → skills: [testing-strategy]
-  - (Map each based on the role mapping from Phase 2)
+  - DevOps agent → skills: [devops, security]
+  - Architecture agent → skills: [api-design, database-design, security, performance]
+  - (Map each based on the role mapping from Phase 2 and detected stack from Phase 1)
 - Ensure frontmatter has all required fields: name, description, model, tools
 - Do NOT change the system prompt, name, model, or tools
 - Do NOT rename the agent file
 
-### 4.3 Enhance CLAUDE.md
+### 4.4 Enhance CLAUDE.md
 
 **If exists**: Append below existing content after `<!-- ai-org enhanced sections below -->`:
+- Installed Skills table listing only the skills that were installed (from section 4.2)
 - Agent Reference table listing ALL agents (existing + new) with their role
 - Note which agents are project-original and which are ai-org additions
 - Model Tiers, Skill Isolation sections
 
-**If not exists**: Create from scratch using detected tech stack and project context from README.
+**If not exists**: Create from scratch using detected tech stack and project context from README. Include:
+- Installed Skills table
+- Project structure section explaining:
+  - `.claude/` — Claude Code configuration only (agents, commands, guides, plans)
+  - `initiatives/` — Feature work with research, specs, and review reports (at project root)
+  - `strategy/` — Product and research team documents (at project root, Tiers 2, 3, 4 only)
 
-### 4.4 Create or Update Orchestrator
+### 4.5 Create or Update Orchestrator
 
 This is the KEY step that makes existing and new agents work together.
 
@@ -218,19 +317,29 @@ The orchestrator's delegation decision tree must reference the ACTUAL agent name
 
 Use existing agent names where they exist. Use ai-org agent names only for newly created agents.
 
-### 4.5 Create Missing Agents
+### 4.6 Create Missing Agents
 
-For uncovered roles only (roles where NO existing agent was mapped) AND within the chosen tier:
-- Only create agents that belong to the user's confirmed workspace scope tier (see `/onboard` section 4.3 for tier-to-agent mapping)
-- For Tier 1: do NOT create strategist, positioning, researcher, writer-content, writer-marketing, writer-ux, reviewer-content, compliance, or product/design agents
-- For Tier 2: do NOT create strategist, positioning, researcher, writer-content, writer-marketing, reviewer-content, or compliance
-- For Tier 4: do NOT create any eng-\* agents, reviewer-code, or reviewer-architecture
+For uncovered roles only (roles where NO existing agent was mapped) AND within the chosen tier. **Only assign skills from the installed skills list (section 4.2).**
+
+**Tier-to-Agent Mapping** (which agents belong to which tier):
+
+| Tier | Agents Included |
+|------|-----------------|
+| **Tier 1 (Coding only)** | orchestrator, eng-architect, eng-testing, eng-security, reviewer-code, reviewer-architecture, writer-lead (technical-writing only), + stack-conditional: eng-frontend, eng-styles (if UI), eng-backend, eng-api (if backend), eng-devops, eng-performance (if team 2+) |
+| **Tier 2 (Coding + Product)** | All Tier 1 + product-lead, design-lead. writer-lead gains full skills. |
+| **Tier 3 (Full stack)** | All Tier 2 + positioning, researcher, reviewer-content, compliance |
+| **Tier 4 (Product & Strategy)** | orchestrator, writer-lead, product-lead, design-lead, positioning, researcher, reviewer-content, compliance. NO eng-* agents. |
+
+**Creation rules**:
+- For Tier 1: do NOT create positioning, researcher, reviewer-content, compliance, or product/design agents
+- For Tier 2: do NOT create positioning, researcher, reviewer-content, or compliance
+- For Tier 4: do NOT create any eng-* agents, reviewer-code, or reviewer-architecture
 - Use ai-org frontmatter (name, model, tools, skills)
 - Write project-specific system prompts using information from the scan
 - Each new agent includes: "Always read CLAUDE.md for project conventions before starting work."
 - Reference the actual project name, tech stack, and conventions detected
 
-### 4.6 Create Missing Structure
+### 4.7 Create Missing Structure
 
 **Guides** (if `.claude/guides/` is missing or incomplete):
 - `development.md` — For Tiers 1-3: populated from detected package.json scripts, build tools, linting config. For Tier 4: document workflow overview, folder structure conventions, available slash commands.
@@ -247,17 +356,47 @@ If `strategy/` is missing or incomplete at the project root:
 If strategy files are found at `.claude/strategy/` (old location), offer to move them to `strategy/` at the project root with a backup.
 
 **Commands** (if `.claude/commands/` is missing or empty):
-Generate project-level commands that route to the project's agents (using actual agent names from the role mapping). Use the same tier-gated command rules as `/onboard` section 4.7:
-- Core commands (plan, build, feature, review, docs, changelog, status) — all tiers
-- Coding commands (test, component, api, db-migrate, refactor, perf, adr, deploy) — Tiers 1, 2, 3 only
-- Team-size commands (estimate, sprint) — all tiers, if team is small team or larger
-- Product commands (prd) — Tiers 2, 3, 4 only
-- Strategy commands (position, research) — Tiers 3 and 4 only
-- Content/marketing/compliance commands (article, copywrite, audit) — Tiers 3 and 4 only
+Generate project-level commands that route to the project's agents (using actual agent names from the role mapping).
+
+**Tier-to-Command Mapping**:
+
+| Command | Tiers | Agent | Notes |
+|---------|-------|-------|-------|
+| plan.md | All | orchestrator | Create implementation plan |
+| build.md | All | orchestrator | Build a feature end-to-end |
+| feature.md | All | orchestrator | Full product workflow |
+| review.md | All | orchestrator | 3-round review |
+| docs.md | All | writer-lead | Generate documentation |
+| changelog.md | All | orchestrator | Generate changelog |
+| status.md | All | orchestrator | Project status report |
+| test.md | 1, 2, 3 | eng-testing | Write tests |
+| component.md | 1, 2, 3 | eng-frontend | Scaffold UI component (if UI exists) |
+| db-migrate.md | 1, 2, 3 | eng-backend | Database migration (if DB exists) |
+| refactor.md | 1, 2, 3 | orchestrator | Refactor with review |
+| perf.md | 1, 2, 3 | eng-performance | Performance analysis (if agent exists) |
+| deploy.md | 1, 2, 3 | eng-devops | Deployment workflow (if agent exists) |
+| audit.md | 1, 2, 3 | orchestrator | Security audit (Tier 3: + accessibility + compliance) |
+| prd.md | 2, 3, 4 | product-lead | Product requirements document |
+| position.md | 3, 4 | positioning | Product positioning |
+| research.md | 3, 4 | researcher | Deep research |
+| article.md | 3, 4 | writer-lead | Blog post or article |
+| copywrite.md | 3, 4 | orchestrator | Marketing or UX copy |
+
 Each command includes project-specific context (detected tech stack, project name from README). Read the corresponding ai-org plugin command files and adapt their workflows to reference the project's specifics.
 
 **Directories** (if missing):
 - `.claude/plans/`
+- `initiatives/`
+
+**Version file**:
+Create `.claude/version.json`:
+```json
+{
+  "aiOrgVersion": "1.0.0",
+  "installedAt": "{ISO timestamp}",
+  "migratedFrom": "existing-project"
+}
+```
 
 ## Phase 5: Migration Report
 
@@ -277,7 +416,7 @@ After execution, present a clear report:
 |-------------|-----------|--------|
 | eng-frontend | {name} | existing (enhanced with skills) |
 | eng-backend | eng-backend | new (created) |
-| writer-content | {name} | existing (enhanced with skills) |
+| writer-lead | {name} | existing (enhanced with skills) |
 | ... | ... | ... |
 
 ### Preserved (existing files, untouched)
@@ -326,3 +465,5 @@ After execution, present a clear report:
 - The orchestrator MUST know about ALL agents (existing + new) by their actual names
 - Ask for user confirmation before executing the migration plan
 - If the project already has a complete ai-org setup, report "already migrated" and suggest manual customization
+
+> Related: `/upgrade` to update an existing ai-org setup, `/onboard` to set up a new project from scratch.

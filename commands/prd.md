@@ -3,7 +3,7 @@ name: prd
 description: Generate a product requirements document
 argument-hint: "[feature or product name]"
 context: fork
-agent: product-manager
+agent: product-lead
 ---
 
 Write a Product Requirements Document for: $ARGUMENTS
@@ -39,4 +39,4 @@ How will we measure success?
 ### Open Questions
 What needs clarification before implementation?
 
-> Related: `/plan` to create an implementation plan from this PRD, `/estimate` to size the work, `/feature` for the full workflow including research and build.
+> Related: `/plan` to create an implementation plan from this PRD, `/feature` for the full workflow including research and build.

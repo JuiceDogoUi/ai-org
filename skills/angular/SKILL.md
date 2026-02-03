@@ -37,5 +37,20 @@ user-invocable: false
 - Use `toSignal()` and `toObservable()` for interop
 - Avoid nested subscriptions -- use `switchMap`, `mergeMap`, `concatMap`
 
-For component patterns, see [patterns.md](patterns.md).
-For testing strategies, see [testing.md](testing.md).
+## Performance & SSR
+
+- Use `@defer` blocks for lazy loading heavy components
+- Use `@placeholder`, `@loading`, `@error` for deferred content states
+- Enable SSR/SSG with `@angular/ssr` for faster initial load
+- Use hydration for seamless SSR-to-client transition
+
+## Avoid
+
+- **`::ng-deep`** — Deprecated, breaks encapsulation. Use component styles or CSS variables instead
+- **Manual subscriptions without cleanup** — Use `takeUntilDestroyed()`, `asyncPipe`, or `toSignal()` to auto-unsubscribe
+- **`any` type** — Use proper interfaces or `unknown` with type guards
+- **Business logic in components** — Extract to services for testability and reuse
+- **Direct DOM manipulation** — Use Angular's template binding, `Renderer2`, or signals
+- **`ngOnChanges` for input reactions** — Use setters, `computed()`, or `effect()` for cleaner reactive patterns
+- **Barrel imports in large apps** — Causes bundle bloat; import directly from source files
+- **`setTimeout`/`setInterval` without cleanup** — Use RxJS `timer()`/`interval()` with proper subscription management

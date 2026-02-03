@@ -3,7 +3,7 @@ name: docs
 description: Generate or update documentation
 argument-hint: "[target: file, module, API, or 'project']"
 context: fork
-agent: writer-technical
+agent: writer-lead
 ---
 
 Generate documentation for: $ARGUMENTS
@@ -31,4 +31,4 @@ Generate documentation for: $ARGUMENTS
 - If target is an API: create or update docs in the project's API documentation location
 - Preserve existing documentation structure — update in place, don't create duplicates
 
-> Related: `/api` for API endpoint docs, `/component` for component documentation, `/prd` for product requirements.
+> Related: `/component` for component documentation, `/prd` for product requirements.

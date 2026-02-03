@@ -39,5 +39,15 @@ user-invocable: false
 - Protocols: noun or adjective (`Identifiable`, `DataStore`)
 - Boolean properties: read as assertions (`isEnabled`, `hasContent`)
 
-For SwiftUI patterns, see [swiftui.md](swiftui.md).
-For advanced patterns, see [patterns.md](patterns.md).
+## Avoid
+
+- **Force unwrap (`!`)** — Use `guard let`, `if let`, or `??` with defaults; force unwrap crashes
+- **`class` when `struct` suffices** — Prefer value types; classes add reference semantics complexity
+- **Heavy work in `onAppear`** — Use `.task {}` modifier for async work with automatic cancellation
+- **Completion handlers in new code** — Use `async/await` for cleaner async patterns
+- **Massive view bodies** — Extract subviews when exceeding ~30 lines
+- **`@State` for shared state** — Use `@Observable` or `@EnvironmentObject` for app-wide state
+- **`AnyView` for type erasure** — Performance cost; use `@ViewBuilder` or generics instead
+- **Ignoring `@MainActor`** — UI updates must be on main thread; use proper actor isolation
+- **String-based `UserDefaults` keys** — Define constants or use property wrappers
+- **`try?` that silently swallows errors** — Log or handle the error appropriately

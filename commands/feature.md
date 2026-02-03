@@ -33,7 +33,7 @@ initiatives/{feature-name}-{mmm}-{yyyy}/
 
 ### 1.3 Write Initiative Document
 
-Delegate to **product-manager** (if available, otherwise orchestrator) to write `initiative.md` inside the initiative folder created in step 1.2. Contents:
+Delegate to **product-lead** (if available, otherwise orchestrator) to write `initiative.md` inside the initiative folder created in step 1.2. Contents:
 - Problem statement
 - Hypothesis
 - Target users
@@ -77,7 +77,7 @@ Delegate to **researcher** (if available, otherwise orchestrator) to synthesize 
 
 ### 2.4 Update Initiative
 
-Delegate to **product-manager** (if available, otherwise orchestrator) to update `initiative.md` with:
+Delegate to **product-lead** (if available, otherwise orchestrator) to update `initiative.md` with:
 - Research summary
 - Decisions log (what was decided based on research)
 
@@ -87,7 +87,7 @@ Delegate to **product-manager** (if available, otherwise orchestrator) to update
 
 ### 3.1 Create Spec
 
-Delegate to **product-manager** (if available, otherwise orchestrator) to create `spec.md` in the initiative folder containing:
+Delegate to **product-lead** (if available, otherwise orchestrator) to create `spec.md` in the initiative folder containing:
 - Epics
 - User stories with acceptance criteria
 - Technical approach
@@ -127,3 +127,5 @@ All deliverables are written to the initiative folder (`initiatives/{feature-nam
 - `spec.md` — epics, user stories with acceptance criteria, technical approach
 - `review-report.md` — consolidated review findings by severity
 - Working implementation across all affected source files
+
+> Related: `/plan` to plan without building, `/build` to build without the full workflow, `/review` for standalone review.

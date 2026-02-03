@@ -39,5 +39,15 @@ user-invocable: false
 - Packages: `lowercase.dot.separated`
 - Test classes: `ClassNameTest`
 
-For patterns, see [patterns.md](patterns.md).
-For Spring Boot specifics, see [spring-boot.md](spring-boot.md).
+## Avoid
+
+- **Catching `Exception` generically** — Catch specific exceptions; generic catch hides bugs
+- **Returning `null`** — Use `Optional<T>` for absent values; null causes NPEs
+- **Field injection (`@Autowired` on fields)** — Use constructor injection for testability and immutability
+- **Mutable static state** — Causes threading issues and test pollution
+- **Exposing internal collections** — Return defensive copies or unmodifiable views
+- **`new` for Spring beans** — Let Spring manage dependencies; use `@Component` or `@Bean`
+- **Business logic in controllers** — Controllers handle HTTP; delegate to services
+- **Checked exceptions in lambdas** — Wrap in unchecked or use utility methods
+- **`Optional` as parameter or field** — Use only for return types
+- **Suppressing `SonarQube`/`SpotBugs` warnings without justification** — Fix the issue instead

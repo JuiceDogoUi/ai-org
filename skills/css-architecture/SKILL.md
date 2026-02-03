@@ -30,5 +30,15 @@ user-invocable: false
 - Use `will-change` sparingly and only when needed
 - Prefer `transform` and `opacity` for animations (GPU-composited)
 
-For methodologies detail, see [methodologies.md](methodologies.md).
-For design tokens, see [design-tokens.md](design-tokens.md).
+## Avoid
+
+- **`!important`** — Specificity escape hatch; fix the cascade instead
+- **IDs for styling** — Too specific; use classes for styling, IDs for JS hooks
+- **Deep nesting (>3 levels)** — Increases specificity and fragility; flatten selectors
+- **Magic numbers** — Use design tokens for spacing, colors, typography
+- **`@import` in CSS** — Causes sequential loading; use bundler imports
+- **Styling by element type alone** — `div { }` or `span { }` is too broad; use classes
+- **`!important` to override frameworks** — Use proper specificity or CSS layers
+- **Hardcoded colors/sizes** — Use CSS custom properties or design tokens
+- **`position: absolute` without context** — Always establish positioning context with relative parent
+- **`z-index` arms race** — Define a z-index scale in tokens (e.g., 1, 10, 100, 1000)

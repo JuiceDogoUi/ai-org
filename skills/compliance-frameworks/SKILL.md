@@ -43,3 +43,16 @@ See [Audit Methodology](audit-methodology.md) for the full workflow and report t
 4. **Cite everything.** Every requirement referenced in an audit must cite the specific regulation, article, and section.
 5. **Distinguish requirements from recommendations.** Clearly label what is legally mandated vs. best practice vs. risk reduction recommendation.
 6. **When in doubt, flag for legal review.** Compliance analysis is not legal advice. Flag ambiguous areas for qualified legal counsel.
+
+## Avoid
+
+- **Assuming regulations** — Always verify which regulations apply to specific jurisdictions and data types
+- **Blog posts as sources** — Use official regulatory body websites, not third-party summaries
+- **Conflating requirement with recommendation** — Clearly distinguish legal mandates from best practices
+- **Providing legal advice** — Flag ambiguous areas for qualified legal counsel
+- **One-time audits** — Regulations change; schedule periodic reviews
+- **Checkbox compliance** — Implement the spirit, not just the letter of requirements
+- **Ignoring enforcement actions** — Regulatory fines and decisions clarify interpretation
+- **Siloed compliance** — Privacy, accessibility, and security overlap; coordinate efforts
+- **Documentation gaps** — Maintain audit trails and evidence of compliance measures
+- **Vendor assumption** — Third-party tools don't guarantee compliance; verify their claims

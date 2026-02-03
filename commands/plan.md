@@ -8,7 +8,7 @@ agent: orchestrator
 
 Create a detailed implementation plan for: $ARGUMENTS
 
-> After planning, use `/build` to implement, `/estimate` to size the work, or `/feature` for the full workflow (understand → research → build → review).
+> After planning, use `/build` to implement or `/feature` for the full workflow (understand → research → build → review).
 
 ## Process
 

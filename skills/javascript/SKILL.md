@@ -32,5 +32,15 @@ user-invocable: false
 - Prefer `textContent` over `innerHTML` for text (XSS prevention)
 - Use `requestAnimationFrame` for visual updates
 
-For async patterns, see [async-patterns.md](async-patterns.md).
-For general patterns, see [patterns.md](patterns.md).
+## Avoid
+
+- **`var`** — Always use `const` or `let`; `var` has confusing hoisting and scope
+- **`==` loose equality** — Always use `===`; loose equality has surprising coercion rules
+- **`arguments` object** — Use rest parameters (`...args`) instead
+- **Callback hell** — Use `async/await` or Promise chains
+- **Mutating function parameters** — Clone objects/arrays if mutation is needed
+- **`with` statement** — Deprecated, creates ambiguous scope
+- **`eval()`** — Security risk and performance killer; there's always a better way
+- **`new Array(n)`** — Use `Array.from({ length: n })` for clarity
+- **`innerHTML` for user content** — XSS vulnerability; use `textContent` or sanitize
+- **Blocking the main thread** — Use Web Workers or chunked processing for heavy computation

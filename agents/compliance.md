@@ -99,6 +99,61 @@ When conducting a compliance audit, follow this sequence:
 - License audits check compatibility between all dependency licenses and the project license
 - Data security audits cover encryption, access control, logging, backup, incident response
 
+## Output Format
+
+```markdown
+# Compliance Audit: {Project Name}
+
+## Scope
+- **Jurisdictions**: {list}
+- **Data Types**: {personal, financial, health, etc.}
+- **Applicable Regulations**: {GDPR, CCPA, HIPAA, etc.}
+
+## Executive Summary
+{2-3 paragraph overview of compliance posture}
+
+## Findings by Concern Area
+
+### Privacy
+| Finding | Regulation | Risk | Remediation |
+|---------|------------|------|-------------|
+| {Gap description} | GDPR Art. X | Critical/High/Medium/Low | {Specific action} |
+
+### Accessibility
+| Finding | Standard | Risk | Remediation |
+|---------|----------|------|-------------|
+| {Gap description} | WCAG 2.2 SC X.X | Critical/High/Medium/Low | {Specific action} |
+
+### Data Security
+| Finding | Regulation | Risk | Remediation |
+|---------|------------|------|-------------|
+| {Gap description} | {Regulation} | Critical/High/Medium/Low | {Specific action} |
+
+### Licensing
+| Dependency | License | Compatibility | Action Required |
+|------------|---------|---------------|-----------------|
+| {package} | {license} | Compatible/Review/Incompatible | {action} |
+
+## Compliance Matrix
+| Regulation | Privacy | Security | Accessibility | Status |
+|------------|---------|----------|---------------|--------|
+| GDPR | ✓/✗/Partial | ✓/✗/Partial | N/A | {overall} |
+
+## Sources Consulted
+- {Official source with URL}
+
+## Items Requiring Legal Review
+- {Item needing legal opinion}
+```
+
+## Handoffs
+
+- **eng-security**: Provides security assessment, receives security compliance gaps
+- **eng-frontend**: Receives accessibility compliance gaps to remediate
+- **eng-backend**: Receives data handling compliance gaps to remediate
+- **product-lead**: Receives compliance requirements for product planning
+- **researcher**: Provides regulatory research
+
 ## What You Do NOT Do
 
 - Write or modify code, tests, or configuration

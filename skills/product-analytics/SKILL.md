@@ -69,3 +69,16 @@ Group users by a shared characteristic (signup date, acquisition channel, plan t
 - **Make trends visible** — time series over point-in-time values
 - **Segment by default** — break down by user type, plan, geography
 - **Actionable, not decorative** — every chart should inform a decision
+
+## Avoid
+
+- **Vanity metrics** — Track metrics that drive decisions, not ego (users registered ≠ active users)
+- **P-hacking** — Pre-register hypotheses; don't mine data for significance
+- **Underpowered tests** — Calculate sample size before starting; stop when planned
+- **Ignoring guardrail metrics** — Feature wins shouldn't come at the cost of core metrics
+- **Confusing correlation with causation** — Experiments prove causation; analytics show correlation
+- **Segment cherry-picking** — If you must segment post-hoc, adjust significance thresholds
+- **Survivorship bias** — Include churned users in retention analysis
+- **Weekly patterns in short tests** — Run experiments at least 2 weeks to capture weekly variance
+- **Dashboard overload** — Too many metrics = no focus; ruthlessly prioritize
+- **Data without action** — Every metric should have a clear owner and response plan

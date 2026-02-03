@@ -30,4 +30,4 @@ Create a database migration for: $ARGUMENTS
 - Down migration (rollback changes)
 - Documentation of breaking changes if any
 
-> Related: `/api` if the migration supports a new endpoint, `/docs` to update schema documentation.
+> Related: `/build` to implement features using the new schema, `/docs` to update schema documentation.

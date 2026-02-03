@@ -42,19 +42,59 @@ detect() {
     fi
   fi
 
-  # Swift / SwiftUI
+  # Swift / SwiftUI (iOS/macOS)
   if [[ -f "$ROOT/Package.swift" ]] || find "$ROOT" -maxdepth 3 -name "*.xcodeproj" -print -quit 2>/dev/null | grep -q .; then
     techs+=("swift")
-    agents+=("eng-mobile")
+    agents+=("eng-frontend")
     if find "$ROOT" -maxdepth 4 -name "*.swift" -exec grep -l "SwiftUI" {} + 2>/dev/null | head -1 | grep -q .; then
       techs+=("swiftui")
     fi
   fi
 
-  # Electron
+  # Kotlin / Android
+  if [[ -f "$ROOT/build.gradle.kts" ]] && grep -q "android" "$ROOT/build.gradle.kts" 2>/dev/null || \
+     [[ -f "$ROOT/app/build.gradle" ]] || [[ -f "$ROOT/app/build.gradle.kts" ]]; then
+    techs+=("kotlin")
+    agents+=("eng-frontend")
+    if grep -rql "androidx.compose" "$ROOT" 2>/dev/null; then
+      techs+=("jetpack-compose")
+    fi
+  fi
+
+  # Flutter / Dart
+  if [[ -f "$ROOT/pubspec.yaml" ]]; then
+    techs+=("dart" "flutter")
+    agents+=("eng-frontend")
+  fi
+
+  # React Native
+  if grep -q '"react-native"' "$ROOT/package.json" 2>/dev/null; then
+    techs+=("react-native")
+    agents+=("eng-frontend" "eng-styles")
+  fi
+
+  # Vue
+  if grep -q '"vue"' "$ROOT/package.json" 2>/dev/null || [[ -f "$ROOT/nuxt.config.ts" ]] || [[ -f "$ROOT/nuxt.config.js" ]]; then
+    techs+=("vue")
+    agents+=("eng-frontend" "eng-styles")
+  fi
+
+  # Svelte
+  if grep -q '"svelte"' "$ROOT/package.json" 2>/dev/null || [[ -f "$ROOT/svelte.config.js" ]]; then
+    techs+=("svelte")
+    agents+=("eng-frontend" "eng-styles")
+  fi
+
+  # Electron (desktop)
   if grep -q '"electron"' "$ROOT/package.json" 2>/dev/null; then
     techs+=("electron")
-    agents+=("eng-desktop")
+    agents+=("eng-frontend")
+  fi
+
+  # Tauri (desktop)
+  if [[ -f "$ROOT/src-tauri/Cargo.toml" ]] || [[ -f "$ROOT/tauri.conf.json" ]]; then
+    techs+=("tauri" "rust")
+    agents+=("eng-frontend")
   fi
 
   # Docker

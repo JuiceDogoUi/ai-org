@@ -1,6 +1,6 @@
 # ai-org
 
-A reusable AI organization plugin for Claude Code. Provides **26 specialist agents**, **26 commands**, and **26 skill domains** — a complete foundation for AI-assisted software development, product management, content creation, and operations.
+A reusable AI organization plugin for Claude Code. Provides **19 specialist agents**, **22 commands**, and **34 skill domains** — a complete foundation for AI-assisted software development, product management, content creation, and operations.
 
 Install once, use across every project. Personalize per project with `/onboard` or `/migrate`.
 
@@ -89,10 +89,9 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 |---------|-------------|-----------|
 | `/plan` | Create an implementation plan | orchestrator |
 | `/research` | Deep research with synthesis | researcher |
-| `/prd` | Product requirements document | product-manager |
+| `/prd` | Product requirements document | product-lead |
 | `/position` | Define product positioning (April Dunford framework) | positioning |
-| `/adr` | Architecture Decision Record | orchestrator |
-| `/estimate` | Effort estimation | project-manager |
+| `/refactor` | Refactor code with pre/post review | orchestrator |
 
 ### Building
 
@@ -100,9 +99,9 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 |---------|-------------|-----------|
 | `/build` | Build a feature end-to-end (with auto-review) | orchestrator |
 | `/component` | Scaffold a UI component | eng-frontend |
-| `/api` | Design or build an API endpoint | eng-api |
 | `/db-migrate` | Create a database migration | eng-backend |
 | `/test` | Write tests | eng-testing |
+| `/deploy` | Deployment workflow | eng-devops |
 
 ### Review & Quality
 
@@ -110,24 +109,21 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 |---------|-------------|-----------|
 | `/review` | 3-round review — functional, quality, compliance | orchestrator |
 | `/audit` | Security and accessibility audit | orchestrator |
-| `/refactor` | Refactor with pre/post review | orchestrator |
 | `/perf` | Performance analysis | eng-performance |
 
 ### Writing
 
 | Command | Description | Routed To |
 |---------|-------------|-----------|
-| `/article` | Write a blog post or article | writer-content |
-| `/docs` | Generate documentation | writer-technical |
-| `/copywrite` | Marketing or UX copy | orchestrator |
+| `/article` | Write a blog post or article | writer-lead |
+| `/docs` | Generate documentation | writer-lead |
+| `/copywrite` | Marketing or UX copy | writer-lead |
 | `/changelog` | Generate changelog from commits | orchestrator (haiku) |
 
 ### Operations
 
 | Command | Description | Routed To |
 |---------|-------------|-----------|
-| `/deploy` | Deployment workflow (requires confirmation at each step, model invocation disabled for safety) | eng-devops |
-| `/sprint` | Sprint planning | project-manager |
 | `/status` | Project status report | orchestrator (haiku) |
 
 ### Setup
@@ -140,55 +136,48 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 
 ## Agents
 
-### Engineering (10)
+### Engineering (9)
 
 | Agent | Model | Skills | Role |
 |-------|-------|--------|------|
-| eng-frontend | sonnet | typescript, angular, javascript, i18n | Frontend components, pages, SPA architecture |
-| eng-backend | sonnet | api-design, database-design, security, i18n | Services, business logic, data access, schema, migrations, queries |
+| eng-architect | opus | api-design, database-design, security, performance | Architecture, system design, technical planning, ADRs |
+| eng-frontend | sonnet | typescript, react, angular, vue, swift, kotlin, dart, accessibility, i18n | UI for web, mobile, desktop — any platform |
+| eng-backend | sonnet | api-design, database-design, security, typescript, i18n | Services, business logic, data access, schema, queries |
 | eng-api | sonnet | api-design | REST/GraphQL endpoint design and contracts |
-| eng-mobile | sonnet | swift, i18n | iOS/mobile features, platform patterns |
-| eng-desktop | sonnet | typescript, javascript, i18n | Desktop app features (Electron) |
-| eng-styles | sonnet | css-architecture | CSS architecture, responsive design, theming |
-| eng-devops | sonnet | devops | CI/CD, Docker, infrastructure, deployment |
-| eng-testing | sonnet | testing-strategy | Test strategy, unit/integration/e2e tests |
-| eng-security | sonnet | security | Security analysis, vulnerability assessment (read-only) |
-| eng-performance | sonnet | performance | Performance profiling, optimization (read-only) |
+| eng-styles | sonnet | css-architecture, accessibility, performance | CSS architecture, responsive design, theming |
+| eng-devops | sonnet | devops, security | CI/CD, containers, infrastructure, deployment |
+| eng-testing | sonnet | testing-strategy, accessibility | Test strategy, unit/integration/e2e tests |
+| eng-security | sonnet | security, compliance-frameworks | Security analysis, vulnerability assessment (read-only) |
+| eng-performance | sonnet | performance | Performance profiling, complexity analysis (read-only) |
 
-### Product & Design (3)
+### Product & Design (2)
 
 | Agent | Model | Skills | Role |
 |-------|-------|--------|------|
-| product-manager | opus | product-management, positioning | PRDs, requirements, user stories, roadmaps |
-| product-analyst | sonnet | product-analytics | Data analysis, metrics, A/B tests, funnels |
+| product-lead | opus | product-management, product-analytics, positioning, competitive-analysis | PRDs, requirements, roadmaps, metrics, strategy |
 | design-lead | opus | css-architecture, accessibility, ux-writing | UI/UX direction, design system governance, component specs |
 
-### Writing & Content (4)
+### Writing (1)
 
 | Agent | Model | Skills | Role |
 |-------|-------|--------|------|
-| writer-technical | sonnet | technical-writing | API docs, READMEs, architecture docs |
-| writer-content | opus | content-strategy | Blog posts, articles, thought leadership |
-| writer-ux | sonnet | ux-writing, i18n | Microcopy, error messages, UI text |
-| writer-marketing | sonnet | marketing-copy, content-strategy, positioning, competitive-analysis | Landing pages, emails, ad copy |
+| writer-lead | opus | technical-writing, content-strategy, marketing-copy, ux-writing, positioning, competitive-analysis, i18n | All writing: docs, articles, marketing, UX copy |
 
-### Strategy & Operations (5)
+### Strategy & Operations (3)
 
 | Agent | Model | Skills | Role |
 |-------|-------|--------|------|
-| strategist | opus | competitive-analysis, positioning | Business strategy, market research, tech evaluation |
 | positioning | opus | positioning, competitive-analysis, content-strategy | Product positioning using April Dunford's framework |
-| researcher | opus | research-methodology | Deep research, literature review, synthesis |
+| researcher | opus | research-methodology, competitive-analysis, product-analytics, positioning, content-strategy, compliance-frameworks, security, performance, accessibility | All research: market, user, technology, competitive, regulatory |
 | compliance | opus | compliance-frameworks, accessibility, review-process | Regulatory compliance audits with web research (read-only) |
-| project-manager | sonnet | project-planning | Sprint planning, task breakdown, estimation |
 
 ### Review (3)
 
 | Agent | Model | Skills | Role |
 |-------|-------|--------|------|
-| reviewer-code | sonnet | testing-strategy, security, review-process | Code quality, security, performance review (read-only) |
-| reviewer-content | sonnet | content-strategy, ux-writing, review-process | Content accuracy, voice, SEO review (read-only) |
-| reviewer-architecture | opus | api-design, database-design, review-process | Architecture review, ADR evaluation (read-only) |
+| reviewer-code | sonnet | review-process, testing-strategy, security, performance, accessibility | Code quality, security, performance, accessibility (read-only) |
+| reviewer-content | sonnet | review-process, content-strategy, technical-writing, marketing-copy, ux-writing, accessibility, i18n | All content types: docs, articles, marketing, UX (read-only) |
+| reviewer-architecture | opus | review-process, api-design, database-design, security, performance, devops | System design, ADRs, scalability, infrastructure (read-only) |
 
 ### Orchestration (1)
 
@@ -205,29 +194,37 @@ Skills are domain knowledge packages — conventions, patterns, and reference ma
 | accessibility | WCAG guidelines, ARIA widget patterns, screen reader support |
 | angular | Angular 17+ patterns, signals, standalone components, testing |
 | api-design | REST conventions, error handling, pagination, versioning |
+| codemirror | CodeMirror 6 editor framework, extensions, state management |
 | competitive-analysis | Porter's Five Forces, SWOT, JTBD, value chain frameworks |
 | compliance-frameworks | Audit methodology, regulatory landscape, concern-based compliance frameworks |
 | content-strategy | Article structure, SEO guidelines, content planning |
 | css-architecture | BEM/ITCSS methodologies, design tokens, responsive patterns |
+| dart | Dart language patterns, Flutter conventions |
 | database-design | Schema conventions, migration patterns, query optimization |
 | devops | CI/CD pipeline patterns, Docker best practices, deployment strategies |
+| electron | Electron framework, main/renderer process, IPC patterns |
 | i18n | ICU MessageFormat, translation workflows, Angular i18n, RTL support |
 | java | Java 17+ patterns, records, sealed interfaces, Spring Boot conventions |
 | javascript | Modern JS patterns, async/await, DOM APIs, module patterns |
+| kotlin | Kotlin language patterns, Jetpack Compose, Android conventions |
 | marketing-copy | Landing page frameworks, email templates, conversion copy |
 | performance | Core Web Vitals, profiling patterns, optimization techniques |
 | positioning | April Dunford's "Obviously Awesome" positioning methodology |
 | product-analytics | Funnel analysis, A/B testing methodology, metrics frameworks |
 | product-management | PRD templates, user story format, prioritization frameworks |
-| project-planning | Sprint templates, estimation methods, dependency mapping |
+| react | React patterns, hooks, Server Components, state management |
 | research-methodology | Research frameworks, literature review methods, source evaluation, synthesis |
 | review-process | 3-round review framework, round details, output format |
+| rust | Rust language patterns, ownership, lifetimes, Tauri integration |
 | security | OWASP Top 10, auth patterns (JWT, OAuth), vulnerability checklist |
+| svelte | Svelte/SvelteKit patterns, runes, stores, server routes |
 | swift | Swift conventions, SwiftUI patterns, @Observable, NavigationStack |
 | technical-writing | API doc structure, README templates, documentation conventions |
 | testing-strategy | Test pyramid, unit/integration/e2e patterns, coverage strategy |
 | typescript | Type system patterns, branded types, tsconfig guide |
 | ux-writing | Microcopy guidelines, error message patterns, voice and tone |
+| vue | Vue 3 patterns, Composition API, Pinia, Nuxt conventions |
+| xterm | xterm.js terminal emulator, addons, styling |
 
 ## Architecture
 
@@ -247,8 +244,8 @@ Most commands route directly to a single specialist agent — no orchestrator ov
 
 | Tier | Agents | Use Case |
 |------|--------|----------|
-| Opus (8) | orchestrator, product-manager, writer-content, strategist, positioning, researcher, reviewer-architecture, compliance | Complex reasoning, architecture, strategy, regulatory analysis |
-| Sonnet (21) | All engineering, design, other writing, operations, review | Standard implementation, focused tasks |
+| Opus (9) | orchestrator, eng-architect, product-lead, design-lead, writer-lead, positioning, researcher, reviewer-architecture, compliance | Complex reasoning, architecture, strategy, regulatory analysis |
+| Sonnet (10) | eng-frontend, eng-backend, eng-api, eng-styles, eng-devops, eng-testing, eng-security, eng-performance, reviewer-code, reviewer-content | Standard implementation, focused tasks |
 | Haiku (2 commands) | changelog, status (model override on orchestrator) | Fast lookup, simple aggregation |
 
 ### Skill Isolation
@@ -261,10 +258,10 @@ Skills are reference material, not identity. An agent's system prompt defines HO
 
 ### Direct vs Delegated Agents
 
-Commands are workflows — they trigger teams, flows, and multi-agent processes, not single agents. Of the 26 agents, 13 have direct command routing and 13 are delegation-only, reached when the orchestrator or a workflow decomposes work via the Task tool:
+Commands are workflows — they trigger teams, flows, and multi-agent processes, not single agents. Of the 19 agents, 12 have direct command routing and 7 are delegation-only, reached when the orchestrator or a workflow decomposes work via the Task tool:
 
-- **Direct** (13): orchestrator, eng-frontend, eng-backend, eng-api, eng-devops, eng-testing, eng-performance, positioning, product-manager, project-manager, researcher, writer-content, writer-technical
-- **Delegated** (13): eng-mobile, eng-desktop, eng-styles, eng-security, product-analyst, design-lead, writer-ux, writer-marketing, strategist, compliance, reviewer-code, reviewer-content, reviewer-architecture
+- **Direct** (12): orchestrator, eng-architect, eng-frontend, eng-backend, eng-api, eng-devops, eng-testing, eng-performance, positioning, product-lead, researcher, writer-lead
+- **Delegated** (7): eng-styles, eng-security, design-lead, compliance, reviewer-code, reviewer-content, reviewer-architecture
 
 Delegated agents are fully functional — they simply participate in multi-agent workflows (like `/review`, `/build`, `/feature`) rather than owning a standalone command.
 
@@ -275,7 +272,6 @@ These agents have no Write or Edit tools — they analyze and recommend but cann
 - **Security-sensitive**: eng-security, eng-performance, compliance
 - **Review**: reviewer-code, reviewer-content, reviewer-architecture
 - **Design**: design-lead
-- **Analysis**: product-analyst
 
 ## Project Customization
 

@@ -40,5 +40,103 @@ user-invocable: false
 - Use offset-based for static data: `?page=1&size=20`
 - Return pagination metadata in response body
 
-For REST conventions detail, see [rest-conventions.md](rest-conventions.md).
-For error handling patterns, see [error-handling.md](error-handling.md).
+## Request/Response Examples
+
+### Successful Response
+```json
+{
+  "data": {
+    "id": "usr_123",
+    "email": "user@example.com",
+    "createdAt": "2024-01-15T10:30:00Z"
+  }
+}
+```
+
+### Collection Response
+```json
+{
+  "data": [
+    { "id": "usr_123", "email": "user@example.com" }
+  ],
+  "pagination": {
+    "cursor": "eyJpZCI6MTIzfQ",
+    "hasMore": true
+  }
+}
+```
+
+### Error Response
+```json
+{
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Invalid request data",
+    "details": [
+      { "field": "email", "message": "Invalid email format" }
+    ]
+  }
+}
+```
+
+## Error Handling
+
+- Use consistent error response structure across all endpoints
+- Include machine-readable error codes for client handling
+- Provide human-readable messages for debugging
+- Include field-level details for validation errors
+- Never expose stack traces or internal errors to clients
+
+## Versioning
+
+- **URL versioning**: `/v1/users` (explicit, easy to route)
+- **Header versioning**: `Accept: application/vnd.api+json;version=1` (cleaner URLs)
+- Document deprecation timeline and migration path
+- Support at least one previous version during transition
+
+## GraphQL
+
+### Schema Design
+- Use clear, descriptive type names
+- Prefer nullable fields (non-null only when guaranteed)
+- Use connections for paginated lists
+- Define input types for mutations
+
+### Query Patterns
+```graphql
+type Query {
+  user(id: ID!): User
+  users(first: Int, after: String): UserConnection!
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): CreateUserPayload!
+}
+```
+
+### Security
+- Disable introspection in production
+- Limit query depth (max 10-15 levels)
+- Limit query complexity (cost analysis)
+- Rate limit by client and query complexity
+
+## API Documentation
+
+- OpenAPI/Swagger spec for REST
+- GraphQL SDL with descriptions
+- Include request/response examples
+- Document authentication requirements
+- List all possible error codes
+
+## Avoid
+
+- **Verbs in URLs** — Use HTTP methods instead: `POST /users` not `POST /createUser`
+- **Exposing internal IDs** — Use opaque IDs (`usr_abc123`) not auto-increment (`123`)
+- **Breaking changes without versioning** — Always version when changing contracts
+- **Inconsistent naming** — Pick camelCase or snake_case and use everywhere
+- **Over-fetching by default** — Support field selection or use GraphQL
+- **Nested resources beyond 3 levels** — Flatten with query params instead
+- **200 OK for errors** — Use appropriate 4xx/5xx status codes
+- **Generic error messages** — "Something went wrong" doesn't help clients
+- **Missing rate limiting** — Every public API needs protection
+- **Undocumented endpoints** — If it's not documented, it doesn't exist

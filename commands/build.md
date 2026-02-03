@@ -17,7 +17,7 @@ Build the following feature: $ARGUMENTS
 2. Create a plan decomposing the work into agent-appropriate subtasks
 3. Delegate each subtask to the appropriate specialist agent
 4. Coordinate results and ensure integration between parts
-5. Have the testing agent verify the implementation
+5. Have eng-testing verify the implementation
 6. Summarize what was built and any follow-up items
 
 ## Standards

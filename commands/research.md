@@ -31,4 +31,4 @@ Specific, actionable next steps based on findings.
 ### Sources
 List all sources referenced.
 
-> Related: `/prd` to turn findings into requirements, `/adr` to document a decision from the research, `/plan` to create an implementation plan, `/feature` for the full product workflow.
+> Related: `/prd` to turn findings into requirements, `/plan` to create an implementation plan, `/feature` for the full product workflow.
