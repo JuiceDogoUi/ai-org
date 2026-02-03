@@ -242,11 +242,40 @@ Based on the detected tech stack, determine which skills are relevant. **Only in
 
 Record the list of skills to install — agents will only reference skills from this list.
 
-### 4.2 Read the ai-org base agents
+### 4.2 Copy Skills to Project
+
+Copy the skill directories determined in section 4.1 from the ai-org plugin's `skills/` directory to the project's `.claude/skills/` directory.
+
+For each skill to install:
+1. Read the entire skill directory from ai-org (e.g., `ai-org/skills/typescript/`)
+2. Copy to `.claude/skills/{skill-name}/` in the project
+3. Include all files: `SKILL.md` and any supporting docs (patterns.md, etc.)
+
+This allows users to:
+- Customize skills for their project's specific conventions
+- Update skills independently of the plugin
+- Add project-specific patterns and examples
+
+**Directory structure created:**
+```
+.claude/
+├── agents/          # Project-specific agents
+├── guides/          # Project guides
+└── skills/          # Copied and customizable skills
+    ├── typescript/
+    │   ├── SKILL.md
+    │   ├── patterns.md
+    │   └── tsconfig-guide.md
+    ├── react/
+    │   └── SKILL.md
+    └── ...
+```
+
+### 4.3 Read the ai-org base agents
 
 Before generating project agents, read the corresponding ai-org base agent files from the plugin's `agents/` directory to use as templates. Copy their frontmatter (name, model, tools) and **filter the skills list to only include skills that are being installed** (from section 4.1). Then rewrite the system prompt to be project-specific.
 
-### 4.3 Project CLAUDE.md
+### 4.4 Project CLAUDE.md
 
 Create `CLAUDE.md` at the project root. This is the operational playbook that every agent reads first.
 
@@ -285,7 +314,7 @@ Content:
   - (Tiers 1, 2, 3 only) Code style: ESLint + Prettier (TypeScript/JS), Checkstyle (Java), SwiftLint (Swift)
   - (Tier 4 only) Document conventions: file naming, review workflow, publishing checklist
 
-### 4.4 Project Agents
+### 4.5 Project Agents
 
 Create agents in `.claude/agents/`. Use the workspace scope tier and team size to determine which agents to create. **Only assign skills from the installed skills list (section 4.1).**
 
@@ -361,7 +390,7 @@ For EACH agent:
 4. Keep the same section structure: intro paragraph, ## Approach, ## Standards, ## What You Do NOT Do
 5. Preserve read-only restrictions for security/performance/compliance/reviewer agents
 
-### 4.5 Guides
+### 4.6 Guides
 
 Create in `.claude/guides/`:
 
@@ -380,7 +409,7 @@ Create in `.claude/guides/`:
 **If workspace scope is Tier 3 (Full stack) or Tier 4 (Product & Strategy only):**
 - `content-creation.md` — Content workflow with sections for: brand voice and tone guidelines, target personas (reference `strategy/foundation/personas.md`), SEO requirements, review process, publishing checklist.
 
-### 4.6 Strategy Skeleton
+### 4.7 Strategy Skeleton
 
 **Skip this section entirely for Tier 1 (Coding only)** — coding-only repos don't need positioning or personas.
 
@@ -392,7 +421,7 @@ For Tiers 2, 3, and 4, create in `strategy/` (at the project root, NOT inside `.
 
 **`research/competitors/.gitkeep`** and **`research/market/.gitkeep`**
 
-### 4.7 Project Scaffold
+### 4.8 Project Scaffold
 
 **Skip this section entirely for Tier 4 (Product & Strategy only)** — no code scaffold for product-only repos.
 
@@ -420,7 +449,7 @@ If the project is truly empty, create directories and minimal config files:
 
 Generate config files with sensible defaults. Include `.gitignore` with appropriate patterns for the stack (node_modules, .env, dist, .next, etc.). Include `.env.example` for database projects listing required variables. Do NOT generate application code — only structure and configuration.
 
-### 4.8 Project Commands
+### 4.9 Project Commands
 
 Generate project-level commands in `.claude/commands/`. These commands include project-specific context (tech stack, conventions) and route to the project's agents. They shadow the plugin's generic commands with tailored versions.
 
@@ -498,13 +527,13 @@ Read `CLAUDE.md` for project conventions before starting.
 
 For the command-specific instructions, read the corresponding command file from the ai-org plugin's `commands/` directory and adapt its workflow to reference the project's tech stack and conventions.
 
-### 4.9 Empty Directories
+### 4.10 Empty Directories
 
 Create with `.gitkeep`:
 - `.claude/plans/`
 - `initiatives/`
 
-### 4.10 Version File
+### 4.11 Version File
 
 Create `.claude/version.json`:
 ```json

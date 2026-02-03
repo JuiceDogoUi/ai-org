@@ -22,6 +22,7 @@ Read the project's current ai-org configuration:
 - Read all files in `.claude/agents/` — note each agent's name, model, tools, skills, and system prompt
 - Read all files in `.claude/commands/` — note each command's name, agent routing, and description
 - Read all files in `.claude/guides/` — note topics covered
+- List all directories in `.claude/skills/` — note which skills are installed locally
 - Read `CLAUDE.md` — note project name, tech stack, business context, and workspace scope tier
 
 ### 1.2 Project Structure
@@ -96,17 +97,20 @@ Compare and identify:
 - **New agents**: In plugin but not in project (filtered by tier)
 - **New commands**: In plugin but not in project (filtered by tier)
 - **New guides**: In plugin but not in project
-- **New skills**: Referenced by plugin agents but not installed in project's agent frontmatter
-- **Updated skills**: Skills where the plugin's `SKILL.md` has substantive content changes (compare file contents, not just timestamps)
+- **New skills**: Applicable to the project's stack but not present in `.claude/skills/`
+- **Updated skills**: Skills in `.claude/skills/` where the plugin version has substantive changes
 - **Updated agent tools**: Agents where the plugin's `tools:` list differs from the project's version
 - **Missing directories**: `initiatives/` or `strategy/` missing for the tier
 
-**Skill comparison method**: To detect updated skills, read each installed skill's `SKILL.md` from the plugin and compare against what the project's agents reference. A skill is "updated" if:
-1. The plugin's SKILL.md has new sections not previously present
-2. The plugin's SKILL.md has significantly expanded content (>20% larger)
-3. The plugin's skill directory contains new supporting files (templates, examples)
+**Skill comparison method**: Compare each skill directory in `.claude/skills/` against the plugin's version:
+1. Read the project's `.claude/skills/{skill}/SKILL.md`
+2. Read the plugin's `skills/{skill}/SKILL.md`
+3. A skill is "updated" if:
+   - The plugin's SKILL.md has new sections not in the project version
+   - The plugin's SKILL.md is significantly larger (>20% more content)
+   - The plugin's skill directory contains new supporting files
 
-Note: Skills are referenced, not copied — the project always uses plugin skill content at runtime. "Updated skills" just means the user should be aware of new capabilities.
+**Important**: Skills are copied to `.claude/skills/` so users can customize them. Updated skills require user confirmation before overwriting (they may have made local changes).
 
 ## Phase 3: Present Diff
 
@@ -181,18 +185,24 @@ For each new guide the user approved:
 - Read the ai-org base guide file
 - Create a project-specific version in `.claude/guides/` populated with project context
 
-### 4.6 Update Skills and Tools
-For each skill update the user approved:
-- Skills are referenced by agents, not copied to the project
-- Update the agent frontmatter to reference any new skills
-- Note: Skill content comes from the plugin at runtime
+### 4.6 Add/Update Skills
+For each new skill the user approved:
+- Read the entire skill directory from the plugin (e.g., `ai-org/skills/typescript/`)
+- Copy to `.claude/skills/{skill-name}/` in the project
+- Include all files: `SKILL.md` and any supporting docs
 
+For each updated skill the user approved:
+- **Warning**: This will overwrite any local customizations
+- Backup the existing `.claude/skills/{skill-name}/` directory first
+- Copy the updated skill from the plugin
+
+### 4.7 Update Agent Tools
 For each agent tools update the user approved:
 - Read the plugin's agent file to get the updated `tools:` list
 - Update the project agent's frontmatter to match
 - Do NOT change the agent's system prompt — only update frontmatter
 
-### 4.7 Update Orchestrator
+### 4.8 Update Orchestrator
 - Read the project's orchestrator agent
 - Backup the original first
 - Find the `## Delegation` or `## Agent Routing` section in the system prompt
@@ -209,7 +219,7 @@ Example: If adding `eng-performance`, add:
 12. Is it performance optimization or profiling? → eng-performance
 ```
 
-### 4.8 Update CLAUDE.md
+### 4.9 Update CLAUDE.md
 Locate and update these specific sections:
 
 **Agent Reference table** (usually near the top):
@@ -224,7 +234,7 @@ Locate and update these specific sections:
 **Project Structure section** (if new directories were created):
 - Add entries for new directories like `initiatives/` or `strategy/`
 
-### 4.9 Update Version File
+### 4.10 Update Version File
 Create or update `.claude/version.json`:
 ```json
 {
@@ -249,11 +259,12 @@ Present a summary:
 - {N} new agents: {list}
 - {N} new commands: {list}
 - {N} new guides: {list}
+- {N} new skills: {list} (copied to .claude/skills/)
 
 ### Updated
 - Orchestrator routing table: added {list of new routes}
 - CLAUDE.md: updated agent reference table, skills list
-- Agent skills: {list agents with new skill references}
+- Skills: {list skills that were updated} (originals backed up)
 - Agent tools: {list agents with updated tools}
 
 ### Created Directories

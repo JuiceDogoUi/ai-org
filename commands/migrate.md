@@ -267,7 +267,23 @@ Universal skills (always install for coding tiers): i18n, testing-strategy, secu
 
 Product/Strategy skills (Tiers 2, 3, 4): product-management, product-analytics, positioning, research-methodology, competitive-analysis, content-strategy, ux-writing, marketing-copy, technical-writing, compliance-frameworks, review-process
 
-### 4.3 Enhance Existing Agents
+### 4.3 Copy Skills to Project
+
+Copy the skill directories determined in section 4.2 from the ai-org plugin's `skills/` directory to the project's `.claude/skills/` directory.
+
+For each skill to install:
+1. Read the entire skill directory from ai-org (e.g., `ai-org/skills/typescript/`)
+2. Copy to `.claude/skills/{skill-name}/` in the project
+3. Include all files: `SKILL.md` and any supporting docs (patterns.md, etc.)
+
+**If `.claude/skills/` already exists**: Only copy skills that don't already exist in the project. Do NOT overwrite existing project skills — the user may have customized them. Report which skills were skipped due to existing copies.
+
+This allows users to:
+- Customize skills for their project's specific conventions
+- Update skills independently of the plugin
+- Add project-specific patterns and examples
+
+### 4.4 Enhance Existing Agents
 
 For each existing agent that maps to an ai-org role:
 - Add `skills:` field to frontmatter if missing, mapping to the appropriate ai-org skill domains **from the installed skills list only**:
@@ -286,7 +302,7 @@ For each existing agent that maps to an ai-org role:
 - Do NOT change the system prompt, name, model, or tools
 - Do NOT rename the agent file
 
-### 4.4 Enhance CLAUDE.md
+### 4.5 Enhance CLAUDE.md
 
 **If exists**: Append below existing content after `<!-- ai-org enhanced sections below -->`:
 - Installed Skills table listing only the skills that were installed (from section 4.2)
@@ -301,7 +317,7 @@ For each existing agent that maps to an ai-org role:
   - `initiatives/` — Feature work with research, specs, and review reports (at project root)
   - `strategy/` — Product and research team documents (at project root, Tiers 2, 3, 4 only)
 
-### 4.5 Create or Update Orchestrator
+### 4.6 Create or Update Orchestrator
 
 This is the KEY step that makes existing and new agents work together.
 
@@ -317,7 +333,7 @@ The orchestrator's delegation decision tree must reference the ACTUAL agent name
 
 Use existing agent names where they exist. Use ai-org agent names only for newly created agents.
 
-### 4.6 Create Missing Agents
+### 4.7 Create Missing Agents
 
 For uncovered roles only (roles where NO existing agent was mapped) AND within the chosen tier. **Only assign skills from the installed skills list (section 4.2).**
 
@@ -339,7 +355,7 @@ For uncovered roles only (roles where NO existing agent was mapped) AND within t
 - Each new agent includes: "Always read CLAUDE.md for project conventions before starting work."
 - Reference the actual project name, tech stack, and conventions detected
 
-### 4.7 Create Missing Structure
+### 4.8 Create Missing Structure
 
 **Guides** (if `.claude/guides/` is missing or incomplete):
 - `development.md` — For Tiers 1-3: populated from detected package.json scripts, build tools, linting config. For Tier 4: document workflow overview, folder structure conventions, available slash commands.
