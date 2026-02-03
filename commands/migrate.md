@@ -2,10 +2,12 @@
 name: migrate
 description: Migrate an existing project to ai-org agents and structure
 context: fork
-agent: orchestrator
+model: opus
 ---
 
-Migrate this existing project to use ai-org conventions, agents, and structure.
+# Migrate: $ARGUMENTS
+
+You are Claude Code. Migrate this existing project to use ai-org conventions, agents, and structure.
 
 You MUST follow this workflow exactly. Do NOT modify any files before presenting the migration plan and getting user confirmation.
 
@@ -100,7 +102,7 @@ Based on the scan results, determine the suggested installation tier:
 - Code files exist but no agents at all → Suggest Tier 1, let user choose higher
 - Has eng-* + positioning but no product-lead → Suggest Tier 1 (positioning is an orphan); recommend completing Tier 2 first or removing positioning
 - Has eng-* + product-lead + researcher but no positioning → Incomplete Tier 3; suggest completing Tier 3 by adding positioning
-- Has only orchestrator → Ask user which tier they want
+- Has only minimal agents → Ask user which tier they want
 - Has strategy/ directory but no strategy agents → Suggest Tier 2 minimum to make use of strategy docs
 - CLAUDE.md mentions a tier explicitly → Use that as the starting suggestion
 
@@ -215,18 +217,6 @@ Based on scan results, role mapping, and user answers, create a categorized migr
 - Each new agent's prompt includes: "Always read CLAUDE.md for project conventions before starting work."
 - List each file and its purpose
 
-**UPDATE ORCHESTRATOR** — Critical step:
-- If the project has an existing orchestrator agent, ENHANCE it by adding a role mapping section to its system prompt that maps both existing AND ai-org agent names:
-  ```
-  ## Agent Routing (this project)
-  - Frontend work → {existing-agent-name} (project agent)
-  - Backend work → eng-backend (ai-org agent)
-  - Content writing → {existing-agent-name} (project agent)
-  - ...
-  ```
-- If no existing orchestrator, CREATE one with the full role mapping
-- This ensures the orchestrator routes to the RIGHT agent regardless of naming convention
-
 Present the full plan and ask: "Proceed with this migration plan?"
 
 ## Phase 4: Execute Migration
@@ -325,23 +315,7 @@ For each existing agent that maps to an ai-org role:
   - `initiatives/` — Feature work with research, specs, and review reports (at project root)
   - `strategy/` — Product and research team documents (at project root, Tiers 2, 3, 4 only)
 
-### 4.6 Create or Update Orchestrator
-
-This is the KEY step that makes existing and new agents work together.
-
-The orchestrator's delegation decision tree must reference the ACTUAL agent names in this project:
-
-```
-## Delegation (project-specific routing)
-1. Frontend/UI work → {actual agent name for frontend in this project}
-2. Backend/API work → {actual agent name or ai-org agent if new}
-3. Content writing → {actual agent name for content in this project}
-...
-```
-
-Use existing agent names where they exist. Use ai-org agent names only for newly created agents.
-
-### 4.7 Create Missing Agents
+### 4.6 Create Missing Agents
 
 For uncovered roles only (roles where NO existing agent was mapped) AND within the chosen tier. **Only assign skills from the installed skills list (section 4.2).**
 
@@ -349,10 +323,10 @@ For uncovered roles only (roles where NO existing agent was mapped) AND within t
 
 | Tier | Agents Included |
 |------|-----------------|
-| **Tier 1 (Coding only)** | orchestrator, eng-architect, eng-testing, eng-security, reviewer-code, reviewer-architecture, writer-lead (technical-writing only), + stack-conditional: eng-frontend, eng-styles (if UI), eng-backend, eng-api (if backend), eng-devops, eng-performance (if team 2+) |
+| **Tier 1 (Coding only)** | eng-architect, eng-testing, eng-security, reviewer-code, reviewer-architecture, writer-lead (technical-writing only), + stack-conditional: eng-frontend, eng-styles (if UI), eng-backend, eng-api (if backend), eng-devops, eng-performance (if team 2+) |
 | **Tier 2 (Coding + Product)** | All Tier 1 + product-lead, design-lead. writer-lead gains full skills. |
 | **Tier 3 (Full stack)** | All Tier 2 + positioning, researcher, reviewer-content, compliance |
-| **Tier 4 (Product & Strategy)** | orchestrator, writer-lead, product-lead, design-lead, positioning, researcher, reviewer-content, compliance. NO eng-* agents. |
+| **Tier 4 (Product & Strategy)** | writer-lead, product-lead, design-lead, positioning, researcher, reviewer-content, compliance. NO eng-* agents. |
 
 **Creation rules**:
 - For Tier 1: do NOT create positioning, researcher, reviewer-content, compliance, or product/design agents
@@ -363,7 +337,7 @@ For uncovered roles only (roles where NO existing agent was mapped) AND within t
 - Each new agent includes: "Always read CLAUDE.md for project conventions before starting work."
 - Reference the actual project name, tech stack, and conventions detected
 
-### 4.8 Create Missing Structure
+### 4.7 Create Missing Structure
 
 **Guides** (if `.claude/guides/` is missing or incomplete):
 - `development.md` — For Tiers 1-3: populated from detected package.json scripts, build tools, linting config. For Tier 4: document workflow overview, folder structure conventions, available slash commands.
@@ -384,27 +358,27 @@ Generate project-level commands that route to the project's agents (using actual
 
 **Tier-to-Command Mapping**:
 
-| Command | Tiers | Agent | Notes |
+| Command | Tiers | Model | Notes |
 |---------|-------|-------|-------|
-| plan.md | All | orchestrator | Create implementation plan |
-| build.md | All | orchestrator | Build a feature end-to-end |
-| feature.md | All | orchestrator | Full product workflow |
-| review.md | All | orchestrator | 3-round review |
-| docs.md | All | writer-lead | Generate documentation |
-| changelog.md | All | orchestrator | Generate changelog |
-| status.md | All | orchestrator | Project status report |
-| test.md | 1, 2, 3 | eng-testing | Write tests |
-| component.md | 1, 2, 3 | eng-frontend | Scaffold UI component (if UI exists) |
-| db-migrate.md | 1, 2, 3 | eng-backend | Database migration (if DB exists) |
-| refactor.md | 1, 2, 3 | orchestrator | Refactor with review |
-| perf.md | 1, 2, 3 | eng-performance | Performance analysis (if agent exists) |
-| deploy.md | 1, 2, 3 | eng-devops | Deployment workflow (if agent exists) |
-| audit.md | 1, 2, 3 | orchestrator | Security audit (Tier 3: + accessibility + compliance) |
-| prd.md | 2, 3, 4 | product-lead | Product requirements document |
-| position.md | 3, 4 | positioning | Product positioning |
-| research.md | 3, 4 | researcher | Deep research |
-| article.md | 3, 4 | writer-lead | Blog post or article |
-| copywrite.md | 3, 4 | orchestrator | Marketing or UX copy |
+| plan.md | All | sonnet | Create implementation plan |
+| build.md | All | opus | Build a feature with agent spawning |
+| feature.md | All | opus | Full product workflow with stages |
+| review.md | All | sonnet | 3-round review with agent spawning |
+| docs.md | All | sonnet | Generate documentation (spawns writer-lead) |
+| changelog.md | All | haiku | Generate changelog |
+| status.md | All | haiku | Project status report |
+| test.md | 1, 2, 3 | sonnet | Write tests (spawns eng-testing) |
+| component.md | 1, 2, 3 | sonnet | Scaffold UI component (spawns eng-frontend) |
+| db-migrate.md | 1, 2, 3 | sonnet | Database migration (spawns eng-backend) |
+| refactor.md | 1, 2, 3 | sonnet | Refactor with pre/post review |
+| perf.md | 1, 2, 3 | sonnet | Performance analysis (spawns eng-performance) |
+| deploy.md | 1, 2, 3 | sonnet | Deployment workflow (spawns eng-devops) |
+| audit.md | 1, 2, 3 | sonnet | Security audit with agent spawning |
+| prd.md | 2, 3, 4 | sonnet | Product requirements (spawns product-lead) |
+| position.md | 3, 4 | sonnet | Product positioning (spawns positioning) |
+| research.md | 3, 4 | sonnet | Deep research (spawns researcher) |
+| article.md | 3, 4 | sonnet | Blog post or article (spawns writer-lead) |
+| copywrite.md | 3, 4 | sonnet | Marketing or UX copy (spawns writer-lead) |
 
 Each command includes project-specific context (detected tech stack, project name from README). Read the corresponding ai-org plugin command files and adapt their workflows to reference the project's specifics.
 
@@ -452,9 +426,6 @@ After execution, present a clear report:
 ### CLAUDE.md
 - {enhanced with ai-org sections / created from scratch} → backup at {path}
 
-### Orchestrator
-- {updated routing to map all agents / created new}
-
 ### Commands Generated
 - {count} project commands created in .claude/commands/
 - {list each command and which agent it routes to}
@@ -474,7 +445,6 @@ After execution, present a clear report:
 - Strategy location: {strategy/ at root / moved from .claude/strategy/ to strategy/ / created new}
 
 ### Next Steps
-- Review the orchestrator's routing table — ensure it maps to the right agents
 - Review enhanced CLAUDE.md — merge ai-org sections as needed
 - Review skills added to existing agents — verify they are appropriate
 - Customize skills in `.claude/skills/` to match your project's conventions
@@ -485,14 +455,13 @@ After execution, present a clear report:
 
 - NEVER delete existing files
 - NEVER overwrite existing files without creating a backup first
-- NEVER modify existing system prompt content in agent files (only add/fix frontmatter) — **exception**: the orchestrator's system prompt may have an agent routing section added (see UPDATE ORCHESTRATOR in Phase 3)
+- NEVER modify existing system prompt content in agent files (only add/fix frontmatter)
 - NEVER create a new agent for a role already covered by an existing agent
 - NEVER rename existing agent files
 - Always preserve existing content when enhancing files
 - Detect tech stack automatically — do not ask the user to specify what is detectable
 - Use detected project patterns in generated agents
 - Map existing agents to ai-org roles by reading their system prompts, not by name matching
-- The orchestrator MUST know about ALL agents (existing + new) by their actual names
 - Ask for user confirmation before executing the migration plan
 - If the project already has a complete ai-org setup, report "already migrated" and suggest manual customization
 

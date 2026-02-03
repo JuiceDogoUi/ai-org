@@ -3,22 +3,24 @@ name: plan
 description: Create an implementation plan for a feature or task
 argument-hint: "[feature or task description]"
 context: fork
-agent: orchestrator
+model: sonnet
 ---
 
-Create a detailed implementation plan for: $ARGUMENTS
+# Plan: $ARGUMENTS
 
-**CRITICAL: Do NOT use Claude Code's native plan mode (EnterPlanMode tool). Create the plan directly in this conversation.**
+You are Claude Code. Create a detailed implementation plan directly — do NOT use EnterPlanMode tool.
 
-> After planning, use `/build` to implement or `/feature` for the full workflow (understand → research → build → review).
+---
 
 ## Process
 
-1. Research the existing codebase to understand current architecture
+1. Read the codebase to understand current architecture
 2. Identify affected files and systems
 3. Break down into ordered implementation steps
 4. Flag risks and dependencies
 5. Identify open questions
+
+---
 
 ## Output
 
@@ -36,3 +38,7 @@ What could go wrong, what depends on what.
 
 ### Open Questions
 Anything that needs clarification before starting.
+
+---
+
+> After planning, use `/build` to implement or `/feature` for the full workflow.

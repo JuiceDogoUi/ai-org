@@ -2,10 +2,12 @@
 name: upgrade
 description: Upgrade ai-org setup to latest version
 context: fork
-agent: orchestrator
+model: opus
 ---
 
-Upgrade this project's ai-org setup to incorporate any new agents, commands, skills, and guides from the latest plugin version.
+# Upgrade: $ARGUMENTS
+
+You are Claude Code. Upgrade this project's ai-org setup to incorporate any new agents, commands, skills, and guides from the latest plugin version.
 
 You MUST follow this workflow exactly. Do NOT modify any files until Phase 4, after the user confirms.
 
@@ -46,7 +48,7 @@ Based on which agents exist:
 **Edge cases**:
 - Has eng-* + positioning but no product-lead → Tier 1 with custom additions (suggest completing Tier 2 first)
 - Has eng-* + product-lead + researcher but no positioning → Incomplete Tier 3 (offer to complete)
-- Has only orchestrator and writer-lead → Minimal setup (ask user which tier to upgrade to)
+- Has only writer-lead → Minimal setup (ask user which tier to upgrade to)
 
 ## Phase 2: Compare Against Plugin
 
@@ -58,10 +60,10 @@ Based on which agents exist:
 ### 2.2 Determine Applicable Resources
 
 **Filter by tier** — only suggest resources appropriate for the project's tier:
-- Tier 1 (Coding only): orchestrator, eng-architect, eng-* agents, reviewer-code, reviewer-architecture, writer-lead
+- Tier 1 (Coding only): eng-architect, eng-* agents, reviewer-code, reviewer-architecture, writer-lead
 - Tier 2 (Coding + Product): Tier 1 + product-lead, design-lead
 - Tier 3 (Full stack): Tier 2 + positioning, researcher, reviewer-content, compliance
-- Tier 4 (Product & Strategy): orchestrator, writer-lead, product-lead, design-lead, positioning, researcher, reviewer-content, compliance (NO eng-* agents)
+- Tier 4 (Product & Strategy): writer-lead, product-lead, design-lead, positioning, researcher, reviewer-content, compliance (NO eng-* agents)
 
 **Filter skills by stack** — only suggest skills matching the detected tech stack:
 
@@ -216,24 +218,7 @@ For each agent tools update the user approved:
 - Update the project agent's frontmatter to match
 - Do NOT change the agent's system prompt — only update frontmatter
 
-### 4.8 Update Orchestrator
-- Read the project's orchestrator agent
-- Backup the original first
-- Find the `## Delegation` or `## Agent Routing` section in the system prompt
-- Add routing entries for any new agents using this format:
-
-```markdown
-## Delegation (updated)
-...existing entries...
-{N}. Is it {new agent's domain}? → {new-agent-name}
-```
-
-Example: If adding `eng-performance`, add:
-```
-12. Is it performance optimization or profiling? → eng-performance
-```
-
-### 4.9 Update CLAUDE.md
+### 4.8 Update CLAUDE.md
 Locate and update these specific sections:
 
 **Agent Reference table** (usually near the top):
@@ -248,7 +233,7 @@ Locate and update these specific sections:
 **Project Structure section** (if new directories were created):
 - Add entries for new directories like `initiatives/` or `strategy/`
 
-### 4.10 Update Version File
+### 4.9 Update Version File
 Create or update `.claude/version.json`:
 ```json
 {
@@ -276,7 +261,6 @@ Present a summary:
 - {N} new skills: {list} (copied to .claude/skills/)
 
 ### Updated
-- Orchestrator routing table: added {list of new routes}
 - CLAUDE.md: updated agent reference table, skills list
 - Skills: {list skills that were updated} (originals backed up)
 - Agent tools: {list agents with updated tools}

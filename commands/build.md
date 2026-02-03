@@ -3,49 +3,100 @@ name: build
 description: Build a feature end-to-end with coordinated agents
 argument-hint: "[feature description]"
 context: fork
-agent: orchestrator
+model: opus
 ---
 
-Build the following feature: $ARGUMENTS
+# Build: $ARGUMENTS
 
-**CRITICAL INSTRUCTIONS:**
-- Do NOT use Claude Code's native plan mode (EnterPlanMode tool)
-- Do NOT implement code yourself — ALWAYS delegate to specialist agents using the Task tool
-- You are the ORCHESTRATOR — you coordinate, you do NOT implement
+You are Claude Code acting as the build coordinator. You do NOT implement code yourself — you spawn specialist agents via the Task tool.
 
-> Use `/plan` first to create a detailed implementation plan.
-> For the full product workflow (understand → research → build → review), use `/feature` instead.
+**Your role:** Analyze what needs to be built, decompose into tasks, spawn the right agents, and coordinate results.
 
-## Process
+---
 
-1. Analyze what needs to be built and which domains are involved
-2. Create a brief plan decomposing the work into agent-appropriate subtasks
-3. **Use the Task tool** to delegate each subtask to the appropriate specialist agent:
-   ```
-   Task(subagent_type="general-purpose", prompt="You are the {agent-name} agent. Read .claude/agents/{agent-name}.md for your instructions. Then implement: {specific task}")
-   ```
-4. Run independent subtasks in parallel where possible
-5. Coordinate results and ensure integration between parts
-6. Delegate to eng-testing to verify the implementation
-7. Summarize what was built and any follow-up items
+## Step 1: Analyze
 
-## Standards
+Read the codebase to understand:
+- What needs to be built
+- Which domains are involved (frontend, backend, API, styles, etc.)
+- What files will be affected
 
-- **ALWAYS use Task tool to delegate** — never implement directly
-- Launch independent subtasks in parallel where possible
-- Ensure each agent receives clear, specific instructions
-- Verify integration points between agent outputs
-- Report what was built, by whom, and any remaining items
+## Step 2: Decompose
 
-## Auto-Review
+Break down the work into agent-appropriate tasks:
+- Frontend components/screens → eng-frontend
+- Backend services/handlers → eng-backend
+- API contracts → eng-api
+- Styling/CSS → eng-styles
+- Database migrations → eng-backend
 
-After the build completes, automatically run the 3-round review process defined in `skills/review-process/SKILL.md`.
+## Step 3: Execute
+
+Spawn agents for each task. **Run independent tasks in parallel.**
+
+**Frontend:**
+```
+Task(
+  subagent_type="general-purpose",
+  prompt="You are the eng-frontend agent. Read .claude/agents/eng-frontend.md for your full instructions, then read relevant .claude/skills/. Implement: {specific frontend task}"
+)
+```
+
+**Backend:**
+```
+Task(
+  subagent_type="general-purpose",
+  prompt="You are the eng-backend agent. Read .claude/agents/eng-backend.md for your full instructions, then read relevant .claude/skills/. Implement: {specific backend task}"
+)
+```
+
+**Styles:**
+```
+Task(
+  subagent_type="general-purpose",
+  prompt="You are the eng-styles agent. Read .claude/agents/eng-styles.md for your full instructions, then read relevant .claude/skills/. Implement: {specific styling task}"
+)
+```
+
+**API:**
+```
+Task(
+  subagent_type="general-purpose",
+  prompt="You are the eng-api agent. Read .claude/agents/eng-api.md for your full instructions. Define: {API contracts}"
+)
+```
+
+**Testing:**
+```
+Task(
+  subagent_type="general-purpose",
+  prompt="You are the eng-testing agent. Read .claude/agents/eng-testing.md for your full instructions. Write tests for: {what was built}"
+)
+```
+
+## Step 4: Integrate
+
+After agents complete:
+- Verify integration points work together
+- Run the tests
+- Fix any integration issues by spawning the appropriate agent
+
+## Step 5: Auto-Review
+
+Spawn the review workflow:
+
+```
+Task(
+  subagent_type="general-purpose",
+  prompt="You are the reviewer-code agent. Read .claude/agents/reviewer-code.md and .claude/skills/review-process/SKILL.md. Perform a 3-round review of the changes: Round 1 (Functional), Round 2 (Quality), Round 3 (Compliance)."
+)
+```
+
+---
 
 ## Output
 
-- Working implementation across all affected domains
-- All tests passing
-- Auto-review report with findings organized by severity
-- Summary of what was built, which agents contributed, and any remaining items
-
-> Related: `/deploy` to ship the build, `/perf` for performance analysis.
+- Working implementation across affected files
+- Tests passing
+- Review report with findings by severity
+- Summary of what was built and by which agents

@@ -1,6 +1,6 @@
 # ai-org
 
-A reusable AI organization plugin for Claude Code. Provides **19 specialist agents**, **22 commands**, and **34 skill domains** — a complete foundation for AI-assisted software development, product management, content creation, and operations.
+A reusable AI organization plugin for Claude Code. Provides **18 specialist agents**, **22 commands**, and **34 skill domains** — a complete foundation for AI-assisted software development, product management, content creation, and operations.
 
 Install once, use across every project. Personalize per project with `/onboard` or `/migrate`.
 
@@ -69,70 +69,71 @@ The `/migrate` command scans your project automatically — no questions needed 
 2. **Reads existing Claude configuration** (CLAUDE.md, agents, guides, strategy)
 3. **Maps existing agents to ai-org roles** by reading their system prompts (not name matching)
 4. **Presents a categorized migration plan**: preserve existing agents that already cover roles, enhance them with skill references, create agents only for uncovered roles
-5. **Updates the orchestrator** with a project-specific routing table using your actual agent names
-6. **Backs up every file** before modifying anything
+5. **Backs up every file** before modifying anything
 7. **Outputs a migration report** with role mapping table
 
 Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps and connects the dots.
 
 ## Commands
 
+Claude Code acts as the workflow coordinator. Commands define explicit stages and spawn specialist agents via Task() as needed.
+
 ### Workflow
 
-| Command | Description | Routed To |
-|---------|-------------|-----------|
-| `/feature` | Full product workflow — understand, research, build, review | orchestrator |
+| Command | Description | Model |
+|---------|-------------|-------|
+| `/feature` | Full product workflow — understand, research, build, review | opus |
 
 ### Planning
 
-| Command | Description | Routed To |
-|---------|-------------|-----------|
-| `/plan` | Create an implementation plan | orchestrator |
-| `/research` | Deep research with synthesis | researcher |
-| `/prd` | Product requirements document | product-lead |
-| `/position` | Define product positioning (April Dunford framework) | positioning |
-| `/refactor` | Refactor code with pre/post review | orchestrator |
+| Command | Description | Model |
+|---------|-------------|-------|
+| `/plan` | Create an implementation plan | sonnet |
+| `/research` | Deep research with synthesis (spawns researcher) | sonnet |
+| `/prd` | Product requirements document (spawns product-lead) | sonnet |
+| `/position` | Define product positioning (spawns positioning) | sonnet |
+| `/refactor` | Refactor code with pre/post review | sonnet |
 
 ### Building
 
-| Command | Description | Routed To |
-|---------|-------------|-----------|
-| `/build` | Build a feature end-to-end (with auto-review) | orchestrator |
-| `/component` | Scaffold a UI component | eng-frontend |
-| `/db-migrate` | Create a database migration | eng-backend |
-| `/test` | Write tests | eng-testing |
-| `/deploy` | Deployment workflow | eng-devops |
+| Command | Description | Model |
+|---------|-------------|-------|
+| `/build` | Build a feature end-to-end with agent spawning | opus |
+| `/component` | Scaffold a UI component (spawns eng-frontend) | sonnet |
+| `/db-migrate` | Create a database migration (spawns eng-backend) | sonnet |
+| `/test` | Write tests (spawns eng-testing) | sonnet |
+| `/deploy` | Deployment workflow (spawns eng-devops) | sonnet |
 
 ### Review & Quality
 
-| Command | Description | Routed To |
-|---------|-------------|-----------|
-| `/review` | 3-round review — functional, quality, compliance | orchestrator |
-| `/audit` | Security and accessibility audit | orchestrator |
-| `/perf` | Performance analysis | eng-performance |
+| Command | Description | Model |
+|---------|-------------|-------|
+| `/review` | 3-round review — spawns reviewer agents | sonnet |
+| `/audit` | Security and accessibility audit with agent spawning | sonnet |
+| `/perf` | Performance analysis (spawns eng-performance) | sonnet |
 
 ### Writing
 
-| Command | Description | Routed To |
-|---------|-------------|-----------|
-| `/article` | Write a blog post or article | writer-lead |
-| `/docs` | Generate documentation | writer-lead |
-| `/copywrite` | Marketing or UX copy | writer-lead |
-| `/changelog` | Generate changelog from commits | orchestrator (haiku) |
+| Command | Description | Model |
+|---------|-------------|-------|
+| `/article` | Write a blog post or article (spawns writer-lead) | sonnet |
+| `/docs` | Generate documentation (spawns writer-lead) | sonnet |
+| `/copywrite` | Marketing or UX copy (spawns writer-lead) | sonnet |
+| `/changelog` | Generate changelog from commits | haiku |
 
 ### Operations
 
-| Command | Description | Routed To |
-|---------|-------------|-----------|
-| `/status` | Project status report | orchestrator (haiku) |
+| Command | Description | Model |
+|---------|-------------|-------|
+| `/status` | Project status report | haiku |
 
 ### Setup
 
-| Command | Description | Routed To |
-|---------|-------------|-----------|
-| `/onboard` | Set up a new project with ai-org | orchestrator |
-| `/migrate` | Migrate existing project to ai-org | orchestrator |
-| `/upgrade` | Upgrade ai-org setup to latest version | orchestrator |
+| Command | Description | Model |
+|---------|-------------|-------|
+| `/onboard` | Set up a new project with ai-org | opus |
+| `/migrate` | Migrate existing project to ai-org | opus |
+| `/upgrade` | Upgrade ai-org setup to latest version | opus |
 
 ## Agents
 
@@ -179,12 +180,6 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 | reviewer-content | sonnet | review-process, content-strategy, technical-writing, marketing-copy, ux-writing, accessibility, i18n | All content types: docs, articles, marketing, UX (read-only) |
 | reviewer-architecture | opus | review-process, api-design, database-design, security, performance, devops | System design, ADRs, scalability, infrastructure (read-only) |
 
-### Orchestration (1)
-
-| Agent | Model | Skills | Role |
-|-------|-------|--------|------|
-| orchestrator | opus | — | Routes multi-domain requests, coordinates agents via Task tool |
-
 ## Skills
 
 Skills are domain knowledge packages — conventions, patterns, and reference material. They inform agents but do not define their behavior.
@@ -228,25 +223,25 @@ Skills are domain knowledge packages — conventions, patterns, and reference ma
 
 ## Architecture
 
-### Hybrid Orchestrator Model
+### Claude Code as Coordinator
 
-Most commands route directly to a single specialist agent — no orchestrator overhead. Only complex, multi-domain, or ambiguous requests go through the orchestrator, which decomposes work and delegates via the Task tool.
+Claude Code itself acts as the workflow coordinator. Commands define explicit stages and spawn specialist agents via the Task tool at each stage. This removes the need for a separate orchestrator agent.
 
 ```
-/test    →  eng-testing           (direct — single domain)
-/component → eng-frontend         (direct — single domain)
-/review  →  orchestrator          (3-round — functional, quality, compliance)
-/build   →  orchestrator          (multi-domain — decomposes, delegates, auto-reviews)
-/feature →  orchestrator          (4-stage — understand, research, build, review)
+/test      →  Claude Code spawns eng-testing
+/component →  Claude Code spawns eng-frontend
+/review    →  Claude Code spawns reviewer agents in 3 rounds
+/build     →  Claude Code analyzes, decomposes, and spawns domain agents
+/feature   →  Claude Code orchestrates 4 stages: understand → research → build → review
 ```
 
 ### Model Tiers
 
 | Tier | Agents | Use Case |
 |------|--------|----------|
-| Opus (9) | orchestrator, eng-architect, product-lead, design-lead, writer-lead, positioning, researcher, reviewer-architecture, compliance | Complex reasoning, architecture, strategy, regulatory analysis |
+| Opus (8) | eng-architect, product-lead, design-lead, writer-lead, positioning, researcher, reviewer-architecture, compliance | Complex reasoning, architecture, strategy, regulatory analysis |
 | Sonnet (10) | eng-frontend, eng-backend, eng-api, eng-styles, eng-devops, eng-testing, eng-security, eng-performance, reviewer-code, reviewer-content | Standard implementation, focused tasks |
-| Haiku (2 commands) | changelog, status (model override on orchestrator) | Fast lookup, simple aggregation |
+| Haiku (2 commands) | changelog, status | Fast lookup, simple aggregation |
 
 ### Skill Isolation
 
@@ -258,9 +253,9 @@ Skills are reference material, not identity. An agent's system prompt defines HO
 
 ### Direct vs Delegated Agents
 
-Commands are workflows — they trigger teams, flows, and multi-agent processes, not single agents. Of the 19 agents, 12 have direct command routing and 7 are delegation-only, reached when the orchestrator or a workflow decomposes work via the Task tool:
+Commands are workflows — they trigger teams, flows, and multi-agent processes, not single agents. Of the 18 agents, 11 have direct command spawning and 7 are delegation-only, reached when Claude Code or a workflow decomposes work via the Task tool:
 
-- **Direct** (12): orchestrator, eng-architect, eng-frontend, eng-backend, eng-api, eng-devops, eng-testing, eng-performance, positioning, product-lead, researcher, writer-lead
+- **Direct** (11): eng-architect, eng-frontend, eng-backend, eng-api, eng-devops, eng-testing, eng-performance, positioning, product-lead, researcher, writer-lead
 - **Delegated** (7): eng-styles, eng-security, design-lead, compliance, reviewer-code, reviewer-content, reviewer-architecture
 
 Delegated agents are fully functional — they simply participate in multi-agent workflows (like `/review`, `/build`, `/feature`) rather than owning a standalone command.

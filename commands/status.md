@@ -3,12 +3,13 @@ name: status
 description: Generate project status report
 argument-hint: "[optional: focus area]"
 context: fork
-agent: orchestrator
 model: haiku
 allowed-tools: Bash(git *), Read, Grep, Glob
 ---
 
-Generate a project status report. Focus area (if provided): $ARGUMENTS
+# Status: $ARGUMENTS
+
+You are Claude Code. Generate a project status report directly — this is a simple analysis task.
 
 ## Context
 

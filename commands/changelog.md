@@ -3,12 +3,13 @@ name: changelog
 description: Generate a changelog from recent commits
 argument-hint: "[version or date range]"
 context: fork
-agent: orchestrator
 model: haiku
 allowed-tools: Bash(git *), Read
 ---
 
-Generate a changelog for: $ARGUMENTS
+# Changelog: $ARGUMENTS
+
+You are Claude Code. Generate a changelog directly — this is a simple formatting task.
 
 ## Context
 

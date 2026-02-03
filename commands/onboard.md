@@ -3,10 +3,12 @@ name: onboard
 description: Set up a new project with personalized ai-org agents, guides, and structure
 argument-hint: "[project name]"
 context: fork
-agent: orchestrator
+model: opus
 ---
 
-Set up a new, empty project with a fully personalized ai-org structure. Project name (if provided): $ARGUMENTS
+# Onboard: $ARGUMENTS
+
+You are Claude Code. Set up a new, empty project with a fully personalized ai-org structure.
 
 You MUST follow this workflow exactly. Do NOT skip phases or generate files before gathering all information.
 
@@ -314,7 +316,7 @@ Content:
   - `strategy/` — Product and research team documents: personas, positioning, competitive analysis, market research (at project root, Tiers 2, 3, 4 only)
   - Source code directories as appropriate for the stack
 - **Agent reference table** listing ALL generated agents with name, model, and one-line purpose
-- **Interaction model**: commands route to agents, orchestrator handles multi-domain requests
+- **Interaction model**: Claude Code coordinates workflows, spawning specialist agents via Task() at each stage
 - **Model tiers**: opus/sonnet/haiku
 - **Skill isolation**: skills are knowledge, not identity
 - **Business context** (paste the user's answer from Phase 3 question 8)
@@ -331,7 +333,7 @@ Create agents in `.claude/agents/`. Use the workspace scope tier and team size t
 #### Tier 1 (Coding only)
 
 **Core agents (always):**
-- orchestrator.md, eng-architect.md, eng-testing.md, eng-security.md, reviewer-code.md, reviewer-architecture.md, writer-lead.md
+- eng-architect.md, eng-testing.md, eng-security.md, reviewer-code.md, reviewer-architecture.md, writer-lead.md
 
 **writer-lead scope for Tier 1**: In Tier 1, writer-lead handles only technical documentation (README, API docs, code comments, architecture docs). Assign only the `technical-writing` skill. Do NOT assign content-strategy, ux-writing, or marketing-copy skills — those are Tier 2+ only.
 
@@ -359,7 +361,7 @@ Everything from Tier 2, PLUS:
 #### Tier 4 (Product & Strategy only)
 
 **Core:**
-- orchestrator.md, writer-lead.md
+- writer-lead.md
 
 **Product & Design:**
 - product-lead.md, design-lead.md
@@ -374,18 +376,6 @@ Everything from Tier 2, PLUS:
 - compliance.md
 
 **NO eng-\* agents, NO reviewer-code, NO reviewer-architecture** — Tier 4 has no coding agents. Skip all stack-conditional agents.
-
-When generating the orchestrator for Tier 4, adapt the delegation decision tree to focus on product and strategy routing. Replace the code-centric rules (items 2-12 in the base orchestrator) with:
-
-1. Is it a full product workflow? → follow the /feature command workflow
-2. Is it product requirements, user stories, or metrics? → product-lead
-3. Is it UX/UI design or design system? → design-lead
-4. Is it any writing task (docs, articles, marketing, UX copy)? → writer-lead
-5. Is it business strategy or market analysis? → product-lead
-6. Is it product positioning? → positioning
-7. Is it research? → researcher
-8. Is it compliance or regulatory? → compliance
-9. Is it content review? → reviewer-content
 
 For EACH agent:
 1. Read the corresponding ai-org base agent file from the plugin's `agents/` directory
@@ -467,52 +457,52 @@ Each command file has YAML frontmatter (name, description, argument-hint if appl
 
 **Core commands (always generate, all tiers):**
 
-| Command | Agent | Description |
+| Command | Model | Description |
 |---------|-------|-------------|
-| `plan.md` | orchestrator | Create an implementation plan for {project name} |
-| `build.md` | orchestrator | Build a feature end-to-end (adapts behavior based on available agents) |
-| `feature.md` | orchestrator | Full product workflow — understand, research, build, review (adapts behavior based on available agents) |
-| `review.md` | orchestrator | 3-round review — functional, quality, compliance |
-| `docs.md` | writer-lead | Generate documentation |
-| `changelog.md` | orchestrator | Generate a changelog from recent commits |
-| `status.md` | orchestrator | Generate project status report |
+| `plan.md` | sonnet | Create an implementation plan for {project name} |
+| `build.md` | opus | Build a feature end-to-end with agent spawning |
+| `feature.md` | opus | Full product workflow — understand, research, build, review |
+| `review.md` | sonnet | 3-round review — functional, quality, compliance |
+| `docs.md` | sonnet | Generate documentation (spawns writer-lead) |
+| `changelog.md` | haiku | Generate a changelog from recent commits |
+| `status.md` | haiku | Generate project status report |
 
 **Tiers 1, 2, 3 only (coding commands — skip for Tier 4):**
 
-| Command | Agent | Description | Condition |
+| Command | Model | Description | Condition |
 |---------|-------|-------------|-----------|
-| `test.md` | eng-testing | Write tests using the project's test framework | Always for Tiers 1-3 |
-| `component.md` | eng-frontend | Scaffold a UI component using {framework} | If project has frontend |
-| `db-migrate.md` | eng-backend | Create a database migration for {database} | If project has database |
-| `refactor.md` | orchestrator | Refactor code with pre and post review | Always for Tiers 1-3 |
-| `perf.md` | eng-performance | Performance analysis and optimization | If eng-performance agent exists |
-| `deploy.md` | eng-devops | Deployment workflow | If eng-devops agent exists |
+| `test.md` | sonnet | Write tests (spawns eng-testing) | Always for Tiers 1-3 |
+| `component.md` | sonnet | Scaffold a UI component (spawns eng-frontend) | If project has frontend |
+| `db-migrate.md` | sonnet | Create a database migration (spawns eng-backend) | If project has database |
+| `refactor.md` | sonnet | Refactor code with pre and post review | Always for Tiers 1-3 |
+| `perf.md` | sonnet | Performance analysis (spawns eng-performance) | If eng-performance agent exists |
+| `deploy.md` | sonnet | Deployment workflow (spawns eng-devops) | If eng-devops agent exists |
 
 **Tiers 2, 3, 4 only (product commands — skip for Tier 1):**
 
-| Command | Agent | Description |
+| Command | Model | Description |
 |---------|-------|-------------|
-| `prd.md` | product-lead | Create a product requirements document |
+| `prd.md` | sonnet | Create a PRD (spawns product-lead) |
 
 **Tiers 3 and 4 only (strategy commands — positioning and researcher agents required):**
 
-| Command | Agent | Description |
+| Command | Model | Description |
 |---------|-------|-------------|
-| `position.md` | positioning | Define or refine product positioning |
-| `research.md` | researcher | Deep research on a topic |
+| `position.md` | sonnet | Define or refine product positioning (spawns positioning) |
+| `research.md` | sonnet | Deep research on a topic (spawns researcher) |
 
 **Tiers 1, 2, 3 only (security command):**
 
-| Command | Agent | Description |
+| Command | Model | Description |
 |---------|-------|-------------|
-| `audit.md` | orchestrator | Security audit (Tier 1-2: security only; Tier 3: security + accessibility + compliance) |
+| `audit.md` | sonnet | Security audit with agent spawning |
 
 **Tiers 3 and 4 only (content, marketing commands):**
 
-| Command | Agent | Description |
+| Command | Model | Description |
 |---------|-------|-------------|
-| `article.md` | writer-lead | Write a blog post or article |
-| `copywrite.md` | orchestrator | Marketing or UX copy |
+| `article.md` | sonnet | Write a blog post or article (spawns writer-lead) |
+| `copywrite.md` | sonnet | Marketing or UX copy (spawns writer-lead/design-lead) |
 
 Each command prompt should follow this template:
 
@@ -522,20 +512,22 @@ name: {command-name}
 description: {description tailored to project}
 argument-hint: "{appropriate hint}"
 context: fork
-agent: {agent-name}
+model: {model-tier}
 ---
 
-{Action} for **{project name}** ({project description}).
+# {Command Name}: $ARGUMENTS
+
+You are Claude Code coordinating {action} for **{project name}** ({project description}).
 
 Tech stack: {framework}, {language}, {css approach}, {database}.
 (Omit the Tech stack line for Tier 4 — replace with: "This is a documentation/strategy project. See CLAUDE.md for workflows and available agents.")
 
 Read `CLAUDE.md` for project conventions before starting.
 
-{Command-specific instructions from the corresponding ai-org plugin command — copy the workflow/phases relevant to this command, but replace generic references with project-specific details.}
+{Command-specific instructions from the corresponding ai-org plugin command — copy the workflow/phases relevant to this command, including Task() spawn examples for agents.}
 ```
 
-For the command-specific instructions, read the corresponding command file from the ai-org plugin's `commands/` directory and adapt its workflow to reference the project's tech stack and conventions.
+For the command-specific instructions, read the corresponding command file from the ai-org plugin's `commands/` directory and adapt its workflow to reference the project's tech stack, conventions, and agent spawn patterns.
 
 ### 4.10 Empty Directories
 

@@ -3,147 +3,196 @@ name: feature
 description: Full product workflow — understand, research, build, and review a feature
 argument-hint: "[feature description]"
 context: fork
-agent: orchestrator
+model: opus
 ---
 
-Run the full feature workflow for: $ARGUMENTS
+# Feature Workflow: $ARGUMENTS
 
-**CRITICAL INSTRUCTIONS:**
-- Do NOT use Claude Code's native plan mode (EnterPlanMode tool) — use THIS workflow instead
-- Do NOT implement code yourself — ALWAYS delegate to specialist agents using the Task tool
-- Each delegation MUST specify the agent: `subagent_type: "general-purpose"` with explicit agent instructions
-- You are the ORCHESTRATOR — you coordinate, you do NOT implement
+You are Claude Code acting as the workflow coordinator. You do NOT implement code yourself — you spawn specialist agents via the Task tool at each stage.
 
-You MUST follow these four stages in order. Each stage has gates that require user confirmation before proceeding.
+**Your role:** Coordinate the workflow, ask clarifying questions, present results, and spawn agents.
+
+---
 
 ## Stage 1: Understand
 
 ### 1.1 Clarify the Feature
 
-Ask the user clarifying questions:
+Ask the user directly:
 - What problem does this solve?
 - Who is the target user?
-- What does success look like? (success criteria)
+- What does success look like?
 - Any constraints? (tech, timeline, scope)
 - What is in scope vs. out of scope?
 
-Wait for answers before proceeding.
+**Wait for answers before proceeding.**
 
 ### 1.2 Create Initiative Folder
 
-Create the initiative directory. Use kebab-case for the feature name and lowercase month abbreviation:
-
+Create the initiative directory:
 ```
 initiatives/{feature-name}-{mmm}-{yyyy}/
 ```
 
 ### 1.3 Write Initiative Document
 
-Delegate to **product-lead** (if available, otherwise orchestrator) to write `initiative.md` inside the initiative folder created in step 1.2. Contents:
-- Problem statement
-- Hypothesis
-- Target users
-- Success criteria
-- Scope (in/out)
-- Agents and skills plan (which agents will be involved)
+Spawn the product-lead agent (if the project has one, otherwise do this yourself):
 
-If `strategy/foundation/personas.md` exists, reference it for user context.
+```
+Task(
+  subagent_type="general-purpose",
+  prompt="You are the product-lead agent. Read .claude/agents/product-lead.md for your full instructions. Write initiatives/{folder}/initiative.md with: problem statement, hypothesis, target users, success criteria, scope (in/out). Reference strategy/foundation/personas.md if it exists."
+)
+```
 
-### 1.4 Present and Gate
+### 1.4 Gate
 
 Present the initiative document to the user.
 
-**Gate**: Ask "Ready to move to Research?" — wait for confirmation before proceeding.
+**Ask:** "Ready to move to Research?" — wait for confirmation.
+
+---
 
 ## Stage 2: Research
 
-### 2.1 Parallel Research
+### 2.1 Spawn Researcher
 
-Delegate to **researcher** (if available) to run 3 parallel WebSearch tasks. If the researcher agent is not available, the orchestrator performs the research directly.
+```
+Task(
+  subagent_type="general-purpose",
+  prompt="You are the researcher agent. Read .claude/agents/researcher.md for your full instructions. Research this feature by searching for: 1) User pain points (Reddit, forums), 2) UX best practices (NNGroup, Smashing Magazine), 3) Competitor solutions. Write findings to initiatives/{folder}/research/"
+)
+```
 
-1. **Pain points** — Search Reddit, X/Twitter, Hacker News, and forums for user pain points related to this feature area. Write findings to `research/pain-points.md`
-2. **UX best practices** — Search NNGroup, Smashing Magazine, and similar sources for UX patterns. Write findings to `research/ux-best-practices.md`
-3. **Competitor solutions** — Search for how competitors solve this problem. Write findings to `research/competitor-solutions.md`
+### 2.2 Gate
 
-All paths are relative to the initiative folder.
+Present the research synthesis.
 
-**Fallback**: If web search is unavailable, research from existing project files, strategy documents, and codebase patterns instead.
+**Ask:** "What should we build? Any scope changes?" — wait for input.
 
-### 2.2 Synthesize
+### 2.3 Update Initiative
 
-Delegate to **researcher** (if available, otherwise orchestrator) to synthesize the three research documents into a summary covering:
-- Top pain points
-- Recommended UX patterns
-- Competitor approaches
-- Overall recommendation
+Spawn product-lead to update initiative.md with research summary and decisions.
 
-### 2.3 Scope Gate
+**Ask:** "Ready to move to Build?" — wait for confirmation.
 
-**Gate**: Present the synthesis and ask "What should we build? Any scope changes?" — wait for user input.
-
-### 2.4 Update Initiative
-
-Delegate to **product-lead** (if available, otherwise orchestrator) to update `initiative.md` with:
-- Research summary
-- Decisions log (what was decided based on research)
-
-**Gate**: Ask "Ready to move to Build?" — wait for confirmation.
+---
 
 ## Stage 3: Build
 
 ### 3.1 Create Spec
 
-Delegate to **product-lead** (if available, otherwise orchestrator) to create `spec.md` in the initiative folder containing:
-- Epics
-- User stories with acceptance criteria
-- Technical approach
-- Implementation order with agent assignments
+Spawn product-lead:
 
-### 3.2 Spec Approval Gate
+```
+Task(
+  subagent_type="general-purpose",
+  prompt="You are the product-lead agent. Read .claude/agents/product-lead.md. Create initiatives/{folder}/spec.md with: epics, user stories with acceptance criteria, technical approach, implementation order."
+)
+```
 
-**Gate**: Present the spec and ask "Approve spec to begin building?" — wait for confirmation.
+### 3.2 Gate
+
+Present the spec.
+
+**Ask:** "Approve spec to begin building?" — wait for confirmation.
 
 ### 3.3 Execute Build
 
-**You MUST use the Task tool to delegate. Do NOT write code yourself.**
+Analyze what needs to be built and spawn the appropriate agents **in parallel where independent**:
 
-Execute the build:
-1. Analyze which domains are involved (frontend, backend, API, styles, etc.)
-2. Decompose work into agent-appropriate subtasks
-3. For EACH subtask, use the **Task tool** to delegate:
-   ```
-   Task tool call:
-   - subagent_type: "general-purpose"
-   - prompt: "You are the {agent-name} agent. Read .claude/agents/{agent-name}.md for your instructions. Then implement: {specific task}"
-   ```
-4. Run delegations in parallel where tasks are independent
-5. Coordinate results and ensure integration between parts
-6. Delegate to **eng-testing** to verify the implementation
-
-**Example delegation:**
+**Frontend work:**
 ```
-Task(subagent_type="general-purpose", prompt="You are the eng-frontend agent. Read .claude/agents/eng-frontend.md for your full instructions. Implement the file explorer component as specified in the spec.")
+Task(
+  subagent_type="general-purpose",
+  prompt="You are the eng-frontend agent. Read .claude/agents/eng-frontend.md. Implement: {specific frontend task from spec}"
+)
+```
 
-### 3.4 Report and Continue
+**Backend work:**
+```
+Task(
+  subagent_type="general-purpose",
+  prompt="You are the eng-backend agent. Read .claude/agents/eng-backend.md. Implement: {specific backend task from spec}"
+)
+```
 
-Report what was built. Auto-trigger Stage 4 (no gate).
+**Styles work:**
+```
+Task(
+  subagent_type="general-purpose",
+  prompt="You are the eng-styles agent. Read .claude/agents/eng-styles.md. Implement: {specific styling task from spec}"
+)
+```
 
-## Stage 4: Review (3 Automatic Rounds)
+**API contracts:**
+```
+Task(
+  subagent_type="general-purpose",
+  prompt="You are the eng-api agent. Read .claude/agents/eng-api.md. Define: {API contracts needed}"
+)
+```
 
-Run three review rounds automatically without user gates between them. Follow the 3-round review process defined in `skills/review-process/SKILL.md`.
+Spawn only the agents needed for this feature. Run independent tasks in parallel.
 
-Write `review-report.md` in the initiative folder with consolidated findings from all three rounds.
+### 3.4 Verify
+
+Spawn eng-testing to verify:
+
+```
+Task(
+  subagent_type="general-purpose",
+  prompt="You are the eng-testing agent. Read .claude/agents/eng-testing.md. Write tests for the implementation and verify it works."
+)
+```
+
+---
+
+## Stage 4: Review (3 Rounds)
+
+Run three review rounds automatically.
+
+### Round 1: Functional Review
+
+```
+Task(
+  subagent_type="general-purpose",
+  prompt="You are the reviewer-code agent. Read .claude/agents/reviewer-code.md and .claude/skills/review-process/SKILL.md. Perform Round 1 (Functional) review: Does the code do what it's supposed to? Check against acceptance criteria."
+)
+```
+
+### Round 2: Quality Review
+
+```
+Task(
+  subagent_type="general-purpose",
+  prompt="You are the reviewer-code agent. Read .claude/agents/reviewer-code.md. Perform Round 2 (Quality) review: Code quality, patterns, maintainability, performance, security."
+)
+```
+
+### Round 3: Compliance Review
+
+```
+Task(
+  subagent_type="general-purpose",
+  prompt="You are the reviewer-architecture agent. Read .claude/agents/reviewer-architecture.md. Perform Round 3 (Compliance) review: Architecture fit, consistency with project patterns, accessibility, i18n."
+)
+```
+
+### Final Report
+
+Compile all review findings into `initiatives/{folder}/review-report.md` organized by severity.
 
 Present the review report to the user.
 
+---
+
 ## Output
 
-All deliverables are written to the initiative folder (`initiatives/{feature-name}-{mmm}-{yyyy}/`):
+All deliverables in `initiatives/{feature-name}-{mmm}-{yyyy}/`:
 
-- `initiative.md` — problem statement, scope, research summary, decisions log
+- `initiative.md` — problem, scope, research summary, decisions
 - `research/` — pain points, UX best practices, competitor solutions
-- `spec.md` — epics, user stories with acceptance criteria, technical approach
-- `review-report.md` — consolidated review findings by severity
-- Working implementation across all affected source files
-
-> Related: `/plan` to plan without building, `/build` to build without the full workflow, `/review` for standalone review.
+- `spec.md` — epics, user stories, technical approach
+- `review-report.md` — consolidated findings by severity
+- Working implementation across source files
