@@ -186,15 +186,29 @@ For each new guide the user approved:
 - Create a project-specific version in `.claude/guides/` populated with project context
 
 ### 4.6 Add/Update Skills
+
+**CRITICAL: You MUST copy skill files to the project. Skills are NOT automatically available from the plugin.**
+
+First, find the plugin path by running:
+```bash
+# The plugin is typically at one of these locations:
+ls -la ~/.claude/plugins/ai-org/skills/ 2>/dev/null || \
+ls -la /Volumes/LaCie/Work/Apps/ai-org/skills/ 2>/dev/null || \
+echo "Plugin path not found - ask user for ai-org location"
+```
+
 For each new skill the user approved:
-- Read the entire skill directory from the plugin (e.g., `ai-org/skills/typescript/`)
-- Copy to `.claude/skills/{skill-name}/` in the project
-- Include all files: `SKILL.md` and any supporting docs
+1. Create the directory: `mkdir -p .claude/skills/{skill-name}/`
+2. Copy ALL files from the plugin's skill directory:
+   ```bash
+   cp -r {plugin-path}/skills/{skill-name}/* .claude/skills/{skill-name}/
+   ```
+3. Verify the copy succeeded by listing the files
 
 For each updated skill the user approved:
 - **Warning**: This will overwrite any local customizations
-- Backup the existing `.claude/skills/{skill-name}/` directory first
-- Copy the updated skill from the plugin
+- Backup first: `cp -r .claude/skills/{skill-name} .claude/backup/{timestamp}/`
+- Then copy the updated skill from the plugin
 
 ### 4.7 Update Agent Tools
 For each agent tools update the user approved:

@@ -269,14 +269,22 @@ Product/Strategy skills (Tiers 2, 3, 4): product-management, product-analytics, 
 
 ### 4.3 Copy Skills to Project
 
-Copy the skill directories determined in section 4.2 from the ai-org plugin's `skills/` directory to the project's `.claude/skills/` directory.
+**CRITICAL: You MUST copy skill files to the project. Skills are NOT automatically available from the plugin.**
+
+First, find the plugin path by running:
+```bash
+ls -la ~/.claude/plugins/ai-org/skills/ 2>/dev/null || \
+ls -la /Volumes/LaCie/Work/Apps/ai-org/skills/ 2>/dev/null || \
+echo "Plugin path not found - ask user for ai-org location"
+```
 
 For each skill to install:
-1. Read the entire skill directory from ai-org (e.g., `ai-org/skills/typescript/`)
-2. Copy to `.claude/skills/{skill-name}/` in the project
-3. Include all files: `SKILL.md` and any supporting docs (patterns.md, etc.)
-
-**If `.claude/skills/` already exists**: Only copy skills that don't already exist in the project. Do NOT overwrite existing project skills — the user may have customized them. Report which skills were skipped due to existing copies.
+1. Check if it already exists: `ls .claude/skills/{skill-name}/ 2>/dev/null`
+2. If it exists, SKIP it (user may have customized) and note it was skipped
+3. If it doesn't exist:
+   - Create the directory: `mkdir -p .claude/skills/{skill-name}/`
+   - Copy ALL files: `cp -r {plugin-path}/skills/{skill-name}/* .claude/skills/{skill-name}/`
+   - Verify: `ls -la .claude/skills/{skill-name}/`
 
 This allows users to:
 - Customize skills for their project's specific conventions
