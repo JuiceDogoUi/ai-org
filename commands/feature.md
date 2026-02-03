@@ -6,193 +6,83 @@ context: fork
 model: opus
 ---
 
-# Feature Workflow: $ARGUMENTS
+# Feature: $ARGUMENTS
 
-You are Claude Code acting as the workflow coordinator. You do NOT implement code yourself — you spawn specialist agents via the Task tool at each stage.
+You are Claude Code coordinating a 4-stage workflow.
 
-**Your role:** Coordinate the workflow, ask clarifying questions, present results, and spawn agents.
+## How to Spawn Agents
+
+Use the Task tool. Each agent reads its instructions from `.claude/agents/{agent-name}.md` and skills.
+
+Pass context between stages:
+- Feature name and description
+- Initiative folder path
+- Relevant outputs from previous stages
+
+**If an agent doesn't exist:** Handle that task directly using the same approach.
 
 ---
 
 ## Stage 1: Understand
 
-### 1.1 Clarify the Feature
+**You (Claude Code):**
+1. Ask the user: What problem? Who is the user? What does success look like? In/out of scope?
+2. Wait for answers
+3. Create folder: `initiatives/{feature-name}-{date}/`
 
-Ask the user directly:
-- What problem does this solve?
-- Who is the target user?
-- What does success look like?
-- Any constraints? (tech, timeline, scope)
-- What is in scope vs. out of scope?
+**Spawn: product-lead** → Write `initiative.md` with user's answers
 
-**Wait for answers before proceeding.**
-
-### 1.2 Create Initiative Folder
-
-Create the initiative directory:
-```
-initiatives/{feature-name}-{mmm}-{yyyy}/
-```
-
-### 1.3 Write Initiative Document
-
-Spawn the product-lead agent (if the project has one, otherwise do this yourself):
-
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the product-lead agent. Read .claude/agents/product-lead.md for your full instructions. Write initiatives/{folder}/initiative.md with: problem statement, hypothesis, target users, success criteria, scope (in/out). Reference strategy/foundation/personas.md if it exists."
-)
-```
-
-### 1.4 Gate
-
-Present the initiative document to the user.
-
-**Ask:** "Ready to move to Research?" — wait for confirmation.
+**Gate:** Present to user. "Approve to proceed to Research?"
 
 ---
 
 ## Stage 2: Research
 
-### 2.1 Spawn Researcher
+**Spawn: researcher** → Research the feature, write to `research/`
 
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the researcher agent. Read .claude/agents/researcher.md for your full instructions. Research this feature by searching for: 1) User pain points (Reddit, forums), 2) UX best practices (NNGroup, Smashing Magazine), 3) Competitor solutions. Write findings to initiatives/{folder}/research/"
-)
-```
+**You (Claude Code):** Present findings. Ask about scope changes.
 
-### 2.2 Gate
+**Spawn: product-lead** → Update `initiative.md` with research summary
 
-Present the research synthesis.
-
-**Ask:** "What should we build? Any scope changes?" — wait for input.
-
-### 2.3 Update Initiative
-
-Spawn product-lead to update initiative.md with research summary and decisions.
-
-**Ask:** "Ready to move to Build?" — wait for confirmation.
+**Gate:** "Approve to proceed to Build?"
 
 ---
 
 ## Stage 3: Build
 
-### 3.1 Create Spec
+**Spawn: product-lead** → Create `spec.md` with user stories and technical approach
 
-Spawn product-lead:
+**Gate:** Present spec. "Approve to start building?"
 
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the product-lead agent. Read .claude/agents/product-lead.md. Create initiatives/{folder}/spec.md with: epics, user stories with acceptance criteria, technical approach, implementation order."
-)
-```
+**You (Claude Code):** Analyze spec, spawn only the agents needed (if they exist):
+- UI work → **eng-frontend**
+- Backend/DB → **eng-backend**
+- Styling → **eng-styles**
+- API contracts → **eng-api**
 
-### 3.2 Gate
+Spawn independent tasks in parallel.
 
-Present the spec.
-
-**Ask:** "Approve spec to begin building?" — wait for confirmation.
-
-### 3.3 Execute Build
-
-Analyze what needs to be built and spawn the appropriate agents **in parallel where independent**:
-
-**Frontend work:**
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the eng-frontend agent. Read .claude/agents/eng-frontend.md. Implement: {specific frontend task from spec}"
-)
-```
-
-**Backend work:**
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the eng-backend agent. Read .claude/agents/eng-backend.md. Implement: {specific backend task from spec}"
-)
-```
-
-**Styles work:**
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the eng-styles agent. Read .claude/agents/eng-styles.md. Implement: {specific styling task from spec}"
-)
-```
-
-**API contracts:**
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the eng-api agent. Read .claude/agents/eng-api.md. Define: {API contracts needed}"
-)
-```
-
-Spawn only the agents needed for this feature. Run independent tasks in parallel.
-
-### 3.4 Verify
-
-Spawn eng-testing to verify:
-
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the eng-testing agent. Read .claude/agents/eng-testing.md. Write tests for the implementation and verify it works."
-)
-```
+**Spawn: eng-testing** → Write tests, verify implementation
 
 ---
 
-## Stage 4: Review (3 Rounds)
+## Stage 4: Review
 
-Run three review rounds automatically.
+Run sequentially — each round informs the next:
 
-### Round 1: Functional Review
+1. **Spawn: reviewer-code** → Round 1: Functional (meets requirements?)
+2. **Spawn: reviewer-code** → Round 2: Quality (code quality, security, performance) — include Round 1 context
+3. **Spawn: reviewer-architecture** → Round 3: Compliance (architecture, a11y, i18n) — include Round 1-2 context
 
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the reviewer-code agent. Read .claude/agents/reviewer-code.md and .claude/skills/review-process/SKILL.md. Perform Round 1 (Functional) review: Does the code do what it's supposed to? Check against acceptance criteria."
-)
-```
-
-### Round 2: Quality Review
-
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the reviewer-code agent. Read .claude/agents/reviewer-code.md. Perform Round 2 (Quality) review: Code quality, patterns, maintainability, performance, security."
-)
-```
-
-### Round 3: Compliance Review
-
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the reviewer-architecture agent. Read .claude/agents/reviewer-architecture.md. Perform Round 3 (Compliance) review: Architecture fit, consistency with project patterns, accessibility, i18n."
-)
-```
-
-### Final Report
-
-Compile all review findings into `initiatives/{folder}/review-report.md` organized by severity.
-
-Present the review report to the user.
+**You (Claude Code):** Compile all findings into `review-report.md`, present to user.
 
 ---
 
-## Output
+## Deliverables
 
-All deliverables in `initiatives/{feature-name}-{mmm}-{yyyy}/`:
-
-- `initiative.md` — problem, scope, research summary, decisions
-- `research/` — pain points, UX best practices, competitor solutions
-- `spec.md` — epics, user stories, technical approach
-- `review-report.md` — consolidated findings by severity
-- Working implementation across source files
+`initiatives/{feature-name}-{date}/`:
+- `initiative.md`
+- `research/`
+- `spec.md`
+- `review-report.md`
+- Working implementation

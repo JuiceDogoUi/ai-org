@@ -8,75 +8,52 @@ model: sonnet
 
 # Review: $ARGUMENTS
 
-You are Claude Code coordinating a 3-round review process. You spawn reviewer agents for each round.
+You are Claude Code coordinating a 3-round review.
 
-Accepted targets:
-- A file or directory path
-- A git ref (`HEAD`, branch name, commit SHA)
-- A git range (`main..HEAD`, `HEAD~3..HEAD`)
-- If no target specified, review uncommitted changes via `git diff`
+## How to Spawn Agents
+
+Use the Task tool. Each agent reads its instructions from `.claude/agents/{agent-name}.md` and skills.
+
+**If an agent doesn't exist:** Handle that task directly using the same approach.
 
 ---
 
-## Round 1: Functional Review
+## Target
 
-Does the code do what it's supposed to do?
+Accepted targets:
+- File or directory path
+- Git ref (`HEAD`, branch name, commit SHA)
+- Git range (`main..HEAD`, `HEAD~3..HEAD`)
+- If none specified, review uncommitted changes via `git diff`
 
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the reviewer-code agent. Read .claude/agents/reviewer-code.md and .claude/skills/review-process/SKILL.md. Perform Round 1 (Functional) review of: {target}. Check: Does it work? Does it meet requirements? Are edge cases handled? Report issues with severity (critical/major/minor) and file:line references."
-)
-```
+---
 
-## Round 2: Quality Review
+## Round 1: Functional
 
-Is the code well-written and maintainable?
+**Spawn: reviewer-code** → Does it work? Does it meet requirements? Edge cases handled?
 
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the reviewer-code agent. Read .claude/agents/reviewer-code.md. Perform Round 2 (Quality) review of: {target}. Check: Code patterns, readability, maintainability, performance, security, error handling. Report issues with severity and file:line references."
-)
-```
+---
 
-## Round 3: Compliance Review
+## Round 2: Quality
 
-Does the code fit the project architecture and standards?
+**Spawn: reviewer-code** → Code patterns, readability, maintainability, performance, security — include Round 1 context
 
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the reviewer-architecture agent. Read .claude/agents/reviewer-architecture.md. Perform Round 3 (Compliance) review of: {target}. Check: Architecture fit, consistency with project patterns, accessibility (WCAG), i18n readiness. Report issues with severity and file:line references."
-)
-```
+---
+
+## Round 3: Compliance
+
+**Spawn: reviewer-architecture** → Architecture fit, project patterns, accessibility, i18n — include Round 1-2 context
 
 ---
 
 ## Final Report
 
-Compile all findings into a consolidated report:
+**You (Claude Code):** Compile all findings into a report:
 
-```markdown
-## Review Report
+- Summary (total issues by severity)
+- Critical issues (with file:line and fixes)
+- Major issues (with file:line and fixes)
+- Minor issues
+- Overall assessment (merge readiness)
 
-### Summary
-- Total issues: {count}
-- Critical: {count}
-- Major: {count}
-- Minor: {count}
-
-### Critical Issues
-{list with file:line references and specific fixes}
-
-### Major Issues
-{list with file:line references and specific fixes}
-
-### Minor Issues
-{list with file:line references}
-
-### Overall Assessment
-{merge readiness verdict and prioritized recommendations}
-```
-
-Present the report to the user.
+Present to user.

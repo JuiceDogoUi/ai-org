@@ -1,6 +1,7 @@
 ---
 name: migrate
 description: Migrate an existing project to ai-org agents and structure
+argument-hint: "[optional: tier scope]"
 context: fork
 model: opus
 ---

@@ -8,95 +8,76 @@ model: opus
 
 # Build: $ARGUMENTS
 
-You are Claude Code acting as the build coordinator. You do NOT implement code yourself — you spawn specialist agents via the Task tool.
+You are Claude Code coordinating a build workflow.
 
-**Your role:** Analyze what needs to be built, decompose into tasks, spawn the right agents, and coordinate results.
+## How to Spawn Agents
+
+Use the Task tool. Each agent reads its instructions from `.claude/agents/{agent-name}.md` and skills.
+
+**If an agent doesn't exist:** Handle that task directly using the same approach.
 
 ---
 
 ## Step 1: Analyze
 
-Read the codebase to understand:
+**You (Claude Code):** Read the codebase to understand:
 - What needs to be built
-- Which domains are involved (frontend, backend, API, styles, etc.)
+- Which domains are involved (frontend, backend, API, styles)
 - What files will be affected
-
-## Step 2: Decompose
-
-Break down the work into agent-appropriate tasks:
-- Frontend components/screens → eng-frontend
-- Backend services/handlers → eng-backend
-- API contracts → eng-api
-- Styling/CSS → eng-styles
-- Database migrations → eng-backend
-
-## Step 3: Execute
-
-Spawn agents for each task. **Run independent tasks in parallel.**
-
-**Frontend:**
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the eng-frontend agent. Read .claude/agents/eng-frontend.md for your full instructions, then read relevant .claude/skills/. Implement: {specific frontend task}"
-)
-```
-
-**Backend:**
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the eng-backend agent. Read .claude/agents/eng-backend.md for your full instructions, then read relevant .claude/skills/. Implement: {specific backend task}"
-)
-```
-
-**Styles:**
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the eng-styles agent. Read .claude/agents/eng-styles.md for your full instructions, then read relevant .claude/skills/. Implement: {specific styling task}"
-)
-```
-
-**API:**
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the eng-api agent. Read .claude/agents/eng-api.md for your full instructions. Define: {API contracts}"
-)
-```
-
-**Testing:**
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the eng-testing agent. Read .claude/agents/eng-testing.md for your full instructions. Write tests for: {what was built}"
-)
-```
-
-## Step 4: Integrate
-
-After agents complete:
-- Verify integration points work together
-- Run the tests
-- Fix any integration issues by spawning the appropriate agent
-
-## Step 5: Auto-Review
-
-Spawn the review workflow:
-
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the reviewer-code agent. Read .claude/agents/reviewer-code.md and .claude/skills/review-process/SKILL.md. Perform a 3-round review of the changes: Round 1 (Functional), Round 2 (Quality), Round 3 (Compliance)."
-)
-```
 
 ---
 
-## Output
+## Step 2: Decompose
 
-- Working implementation across affected files
+Break down work by domain:
+- UI components/screens → **eng-frontend**
+- Backend services/handlers → **eng-backend**
+- API contracts → **eng-api**
+- Styling/CSS → **eng-styles**
+- Database changes → **eng-backend**
+
+---
+
+## Step 3: Execute
+
+Spawn only the agents needed (if they exist). Run independent tasks in parallel.
+
+- **Spawn: eng-frontend** → frontend implementation
+- **Spawn: eng-backend** → backend implementation
+- **Spawn: eng-api** → API contracts
+- **Spawn: eng-styles** → styling work
+
+---
+
+## Step 4: Test
+
+**Spawn: eng-testing** → Write tests, verify implementation
+
+---
+
+## Step 5: Integrate
+
+**You (Claude Code):**
+- Verify integration points work together
+- Run tests
+- If issues found, spawn appropriate agent to fix
+
+---
+
+## Step 6: Review
+
+Run sequentially — each round informs the next:
+
+1. **Spawn: reviewer-code** → Round 1: Functional
+2. **Spawn: reviewer-code** → Round 2: Quality — include Round 1 context
+3. **Spawn: reviewer-architecture** → Round 3: Compliance — include Round 1-2 context
+
+**You (Claude Code):** Compile findings, present to user.
+
+---
+
+## Deliverables
+
+- Working implementation
 - Tests passing
 - Review report with findings by severity
-- Summary of what was built and by which agents

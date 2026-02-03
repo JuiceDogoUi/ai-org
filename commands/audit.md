@@ -8,50 +8,46 @@ model: sonnet
 
 # Audit: $ARGUMENTS
 
-You are Claude Code coordinating an audit. Spawn specialist agents based on the audit type.
+You are Claude Code coordinating an audit.
 
----
+## How to Spawn Agents
 
-## Security Audit
+Use the Task tool. Each agent reads its instructions from `.claude/agents/{agent-name}.md` and skills.
 
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the eng-security agent. Read .claude/agents/eng-security.md and .claude/skills/security/SKILL.md. Perform a security audit of: {target}. Check OWASP Top 10, auth patterns, injection vulnerabilities, data exposure. Report findings with severity, location (file:line), impact, and specific remediation."
-)
-```
-
-## Accessibility Audit
-
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the compliance agent. Read .claude/agents/compliance.md and .claude/skills/accessibility/SKILL.md. Perform an accessibility audit of: {target}. Check WCAG 2.1 AA compliance, ARIA usage, keyboard navigation, screen reader support. Report findings with severity, location, impact, and specific remediation."
-)
-```
+**If an agent doesn't exist:** Handle that task directly using the same approach.
 
 ---
 
 ## Routing
 
-- Security audit → spawn eng-security
-- Accessibility audit → spawn compliance
-- Both → spawn both agents in parallel, then synthesize findings
+Based on audit type requested:
 
-If an agent is not available in the project, skip that audit type and note the gap.
+- **Security** → Spawn: eng-security
+- **Accessibility** → Spawn: compliance
+- **Both** → Spawn both in parallel, then synthesize
 
 ---
 
-## Output
+## Security Audit
 
-### Findings
-Organized by severity: Critical, High, Medium, Low.
+**Spawn: eng-security** → OWASP Top 10, auth patterns, injection vulnerabilities, data exposure
+
+---
+
+## Accessibility Audit
+
+**Spawn: compliance** → WCAG 2.1 AA, ARIA usage, keyboard navigation, screen reader support
+
+---
+
+## Final Report
+
+**You (Claude Code):** Compile findings organized by severity (Critical, High, Medium, Low).
 
 For each finding:
-- **Location**: file and line
-- **Issue**: what the vulnerability/violation is
-- **Impact**: what could go wrong
-- **Remediation**: specific fix with code example
+- Location (file:line)
+- Issue description
+- Impact
+- Remediation
 
-### Summary
-Total findings by severity, overall risk assessment, and recommended priority for fixes.
+Present summary with total findings and risk assessment.

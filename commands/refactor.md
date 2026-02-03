@@ -8,82 +8,57 @@ model: sonnet
 
 # Refactor: $ARGUMENTS
 
-You are Claude Code coordinating a refactoring with pre/post review. You spawn agents at each stage.
+You are Claude Code coordinating a refactoring workflow.
+
+## How to Spawn Agents
+
+Use the Task tool. Each agent reads its instructions from `.claude/agents/{agent-name}.md` and skills.
+
+**If an agent doesn't exist:** Handle that task directly using the same approach.
 
 ---
 
 ## Step 1: Pre-Review
 
-Spawn reviewer to analyze current state:
+**Spawn: reviewer-code** → Analyze current state, identify code smells, maintainability issues
 
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the reviewer-code agent. Read .claude/agents/reviewer-code.md. Analyze the current state of: {target}. Identify code smells, maintainability issues, and what should be improved. This is a pre-refactor review."
-)
-```
+---
 
 ## Step 2: Refactor
 
-Based on the code being refactored, spawn the appropriate agent:
+**You (Claude Code):** Determine code type, spawn appropriate agent:
 
-**Frontend code:**
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the eng-frontend agent. Read .claude/agents/eng-frontend.md. Refactor: {target} to achieve: {goal}. Preserve existing behavior. Do not add features."
-)
-```
+- Frontend code → **Spawn: eng-frontend**
+- Backend code → **Spawn: eng-backend**
+- Styles → **Spawn: eng-styles**
 
-**Backend code:**
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the eng-backend agent. Read .claude/agents/eng-backend.md. Refactor: {target} to achieve: {goal}. Preserve existing behavior. Do not add features."
-)
-```
+Pass: target, goal, "preserve existing behavior, no new features"
 
-**Styles:**
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the eng-styles agent. Read .claude/agents/eng-styles.md. Refactor: {target} to achieve: {goal}. Preserve existing behavior."
-)
-```
+---
 
 ## Step 3: Post-Review
 
-Spawn reviewer to validate the refactoring:
+**Spawn: reviewer-code** → Verify goal achieved, behavior preserved, no new issues — include pre-review context
 
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the reviewer-code agent. Read .claude/agents/reviewer-code.md. Review the refactoring changes. Confirm the goal was achieved, behavior was preserved, and no new issues were introduced."
-)
-```
+---
 
 ## Step 4: Verify
 
-Spawn testing to confirm no regressions:
-
-```
-Task(
-  subagent_type="general-purpose",
-  prompt="You are the eng-testing agent. Read .claude/agents/eng-testing.md. Run existing tests to confirm the refactoring caused no regressions. Report results."
-)
-```
+**Spawn: eng-testing** → Run existing tests, confirm no regressions
 
 ---
 
 ## Standards
 
-- Preserve all existing behavior unless explicitly told otherwise
-- Keep the refactoring focused on the stated goal
-- Do not add features or change behavior during refactoring
+- Preserve existing behavior
+- Stay focused on stated goal
+- No feature additions
 
-## Output
+---
 
-- Refactored code with all tests passing
-- Pre-review findings (what was wrong before)
-- Post-review confirmation (what improved)
-- Test results confirming no regressions
+## Deliverables
+
+- Refactored code
+- Pre-review findings
+- Post-review confirmation
+- Test results (no regressions)

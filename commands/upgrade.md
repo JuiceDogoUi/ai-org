@@ -1,6 +1,7 @@
 ---
 name: upgrade
 description: Upgrade ai-org setup to latest version
+argument-hint: "[optional: specific items]"
 context: fork
 model: opus
 ---
