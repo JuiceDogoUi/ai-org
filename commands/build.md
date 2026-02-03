@@ -8,21 +8,30 @@ agent: orchestrator
 
 Build the following feature: $ARGUMENTS
 
+**CRITICAL INSTRUCTIONS:**
+- Do NOT use Claude Code's native plan mode (EnterPlanMode tool)
+- Do NOT implement code yourself — ALWAYS delegate to specialist agents using the Task tool
+- You are the ORCHESTRATOR — you coordinate, you do NOT implement
+
 > Use `/plan` first to create a detailed implementation plan.
 > For the full product workflow (understand → research → build → review), use `/feature` instead.
 
 ## Process
 
 1. Analyze what needs to be built and which domains are involved
-2. Create a plan decomposing the work into agent-appropriate subtasks
-3. Delegate each subtask to the appropriate specialist agent
-4. Coordinate results and ensure integration between parts
-5. Have eng-testing verify the implementation
-6. Summarize what was built and any follow-up items
+2. Create a brief plan decomposing the work into agent-appropriate subtasks
+3. **Use the Task tool** to delegate each subtask to the appropriate specialist agent:
+   ```
+   Task(subagent_type="general-purpose", prompt="You are the {agent-name} agent. Read .claude/agents/{agent-name}.md for your instructions. Then implement: {specific task}")
+   ```
+4. Run independent subtasks in parallel where possible
+5. Coordinate results and ensure integration between parts
+6. Delegate to eng-testing to verify the implementation
+7. Summarize what was built and any follow-up items
 
 ## Standards
 
-- Delegate to specialist agents -- do not implement directly
+- **ALWAYS use Task tool to delegate** — never implement directly
 - Launch independent subtasks in parallel where possible
 - Ensure each agent receives clear, specific instructions
 - Verify integration points between agent outputs

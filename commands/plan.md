@@ -8,6 +8,8 @@ agent: orchestrator
 
 Create a detailed implementation plan for: $ARGUMENTS
 
+**CRITICAL: Do NOT use Claude Code's native plan mode (EnterPlanMode tool). Create the plan directly in this conversation.**
+
 > After planning, use `/build` to implement or `/feature` for the full workflow (understand → research → build → review).
 
 ## Process

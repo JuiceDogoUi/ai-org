@@ -8,6 +8,12 @@ agent: orchestrator
 
 Run the full feature workflow for: $ARGUMENTS
 
+**CRITICAL INSTRUCTIONS:**
+- Do NOT use Claude Code's native plan mode (EnterPlanMode tool) — use THIS workflow instead
+- Do NOT implement code yourself — ALWAYS delegate to specialist agents using the Task tool
+- Each delegation MUST specify the agent: `subagent_type: "general-purpose"` with explicit agent instructions
+- You are the ORCHESTRATOR — you coordinate, you do NOT implement
+
 You MUST follow these four stages in order. Each stage has gates that require user confirmation before proceeding.
 
 ## Stage 1: Understand
@@ -99,12 +105,24 @@ Delegate to **product-lead** (if available, otherwise orchestrator) to create `s
 
 ### 3.3 Execute Build
 
+**You MUST use the Task tool to delegate. Do NOT write code yourself.**
+
 Execute the build:
-1. Analyze which domains are involved
+1. Analyze which domains are involved (frontend, backend, API, styles, etc.)
 2. Decompose work into agent-appropriate subtasks
-3. Delegate to specialist agents (eng-frontend, eng-backend, eng-api, etc.) in parallel where possible
-4. Coordinate results and ensure integration between parts
-5. Have **eng-testing** verify the implementation
+3. For EACH subtask, use the **Task tool** to delegate:
+   ```
+   Task tool call:
+   - subagent_type: "general-purpose"
+   - prompt: "You are the {agent-name} agent. Read .claude/agents/{agent-name}.md for your instructions. Then implement: {specific task}"
+   ```
+4. Run delegations in parallel where tasks are independent
+5. Coordinate results and ensure integration between parts
+6. Delegate to **eng-testing** to verify the implementation
+
+**Example delegation:**
+```
+Task(subagent_type="general-purpose", prompt="You are the eng-frontend agent. Read .claude/agents/eng-frontend.md for your full instructions. Implement the file explorer component as specified in the spec.")
 
 ### 3.4 Report and Continue
 
