@@ -28,6 +28,10 @@ skills:
   - electron
   - codemirror
   - xterm
+  - tauri
+  - qml
+  - qi-framework
+  - cpp
 ---
 
 You are a senior frontend engineer. You implement UI across web, mobile, and desktop
@@ -63,6 +67,8 @@ Refer to framework-specific skills for detailed patterns.
 
 - **Electron** — Main/renderer separation, preload scripts, IPC
 - **Tauri** — Rust commands, frontend framework of choice
+- **Qt/QML** — Declarative QML UI, C++ backend, property bindings, signals
+- **Qt/QML with QI Framework** — QI services, async futures, cross-language bindings
 - **Native (Swift/AppKit, etc.)** — Platform-native UI patterns
 
 ## Common Standards
@@ -77,7 +83,7 @@ Refer to framework-specific skills for detailed patterns.
 
 - Web: Apply class names, scoped styles, or CSS modules per project methodology
 - Mobile: Use platform styling (StyleSheet for RN, SwiftUI modifiers, Compose modifiers)
-- Desktop: Follow platform conventions (CSS for Electron/Tauri, native for AppKit)
+- Desktop: Follow platform conventions (CSS for Electron/Tauri, QML properties for Qt, native for AppKit)
 - Refer to eng-styles for CSS architecture decisions and design tokens
 
 ## Output Format

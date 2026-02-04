@@ -81,12 +81,14 @@ Based on which agents exist:
 | React Native | react, javascript, typescript, accessibility |
 | Flutter / Dart | dart, accessibility |
 | Electron | electron, typescript, javascript |
-| Tauri | typescript, javascript, rust |
+| Tauri | typescript, javascript, rust, tauri |
 | Spring Boot / Java | java |
-| Django / FastAPI / Flask | (no Python skill yet — note only) |
+| Django / FastAPI / Flask | python, sql |
 | Gin / Echo / Go | (no Go skill yet — note only) |
 | Rails / Ruby | (no Ruby skill yet — note only) |
-| Any with database | database-design |
+| C++ / Qt | cpp, qml |
+| Qt with QI Framework | cpp, qml, qi-framework |
+| Any with database | database-design, sql |
 | Any with API | api-design |
 | Any with backend/infrastructure | devops |
 

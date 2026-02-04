@@ -41,6 +41,17 @@ Scan the project without asking the user anything. Gather all available context:
 - Check for `Gemfile`, `Gemfile.lock`
 - Check for `config/routes.rb` (Rails indicator)
 
+#### C++ / Qt
+- Check for `CMakeLists.txt` with Qt references
+- Check for `*.pro` or `*.pri` files (qmake)
+- Check for `*.qml` files in project
+- Check for `conan.txt` or `conanfile.py`
+- Check for `vcpkg.json`
+
+#### QI Framework
+- Check for `qi` imports or includes in source files
+- Check for `qi::Session`, `qi::Signal`, `qi::Property` usage
+
 #### ORM / Database Tools
 - Check for `prisma/schema.prisma` (Prisma)
 - Check for `drizzle.config.*` (Drizzle)
@@ -245,12 +256,14 @@ Based on the detected tech stack from Phase 1, determine which skills are releva
 | React Native | react, javascript, typescript, accessibility |
 | Flutter / Dart | dart, accessibility |
 | Electron | electron, typescript, javascript |
-| Tauri | typescript, javascript, rust |
+| Tauri | typescript, javascript, rust, tauri |
 | Spring Boot / Java | java |
-| Django / FastAPI / Flask | (no Python skill yet — note in CLAUDE.md) |
+| Django / FastAPI / Flask | python, sql |
 | Gin / Echo / Go | (no Go skill yet — note in CLAUDE.md) |
 | Rails / Ruby | (no Ruby skill yet — note in CLAUDE.md) |
-| Any with database | database-design |
+| C++ / Qt | cpp, qml |
+| Qt with QI Framework | cpp, qml, qi-framework |
+| Any with database | database-design, sql |
 | Any with API | api-design |
 | Any with backend/infrastructure | devops |
 
@@ -286,11 +299,11 @@ This allows users to:
 
 For each existing agent that maps to an ai-org role:
 - Add `skills:` field to frontmatter if missing, mapping to the appropriate ai-org skill domains **from the installed skills list only**:
-  - Frontend agent → skills from: [react, angular, vue, svelte, typescript, javascript, css-architecture, accessibility, i18n] (only those detected)
+  - Frontend agent → skills from: [react, angular, vue, svelte, typescript, javascript, css-architecture, accessibility, i18n, tauri, qml, qi-framework, cpp] (only those detected)
   - Styles agent → skills from: [css-architecture, accessibility, performance, i18n] (only those detected)
-  - Backend agent → skills from: [database-design, api-design, devops, java, typescript, i18n] (only those detected)
+  - Backend agent → skills from: [database-design, api-design, devops, java, typescript, python, sql, i18n] (only those detected)
   - Mobile agent → skills from: [swift, kotlin, dart, react, javascript, typescript, accessibility, i18n] (only those detected)
-  - Desktop agent → skills from: [electron, typescript, javascript, swift, rust, i18n] (only those detected)
+  - Desktop agent → skills from: [electron, tauri, qml, qi-framework, cpp, typescript, javascript, swift, rust, i18n] (only those detected)
   - Content agent → skills: [content-strategy, ux-writing, marketing-copy, technical-writing]
   - Security agent → skills: [security]
   - Testing agent → skills: [testing-strategy]

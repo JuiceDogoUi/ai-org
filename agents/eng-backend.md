@@ -20,6 +20,8 @@ skills:
   - typescript
   - javascript
   - java
+  - python
+  - sql
 ---
 
 You are a senior backend engineer. You implement services, business logic, data

@@ -142,7 +142,9 @@ D3. **Target platform**:
    - macOS (Swift/AppKit or SwiftUI)
    - Windows (C#/WPF or WinUI)
    - Linux (GTK/Qt)
-   - Cross-platform (Qt, Avalonia)
+   - Cross-platform (Qt/QML)
+   - Cross-platform (Qt/QML with QI Framework)
+   - Cross-platform (Avalonia)
 
 ### Monorepo Projects
 
@@ -217,12 +219,14 @@ Based on the detected tech stack, determine which skills are relevant. **Only in
 | React Native | react, javascript, typescript, accessibility |
 | Flutter / Dart | dart, accessibility |
 | Electron | electron, typescript, javascript |
-| Tauri | typescript, javascript, rust |
+| Tauri | typescript, javascript, rust, tauri |
 | Spring Boot / Java | java |
-| Django / FastAPI / Flask | (no Python skill yet — note in CLAUDE.md) |
+| Django / FastAPI / Flask | python, sql |
 | Gin / Echo / Go | (no Go skill yet — note in CLAUDE.md) |
 | Rails / Ruby | (no Ruby skill yet — note in CLAUDE.md) |
-| Any with database | database-design |
+| C++ / Qt | cpp, qml |
+| Qt with QI Framework | cpp, qml, qi-framework |
+| Any with database | database-design, sql |
 | Any with API | api-design |
 | Any with backend/infrastructure | devops |
 
@@ -308,6 +312,7 @@ Content:
   - Flutter: `flutter run`, `flutter build`, `flutter test`
   - Electron: `npm run dev`, `npm run build`, `npm run package`
   - Tauri: `npm run tauri dev`, `npm run tauri build`
+  - Qt/QML: `cmake --build build`, `./build/app`, `ctest`
   - Populate for any stack chosen.
   - For Tier 4: replace with a **Workflows section** listing available slash commands (`/prd`, `/position`, `/research`, `/article`, etc.) instead of dev commands
 - **Project structure** section describing the directory layout:
@@ -442,9 +447,14 @@ If the project is truly empty, create directories and minimal config files:
 | Electron | `src/main/`, `src/renderer/`, `src/preload/`, `package.json`, `tsconfig.json`, `.gitignore` |
 | Tauri | `src/`, `src-tauri/`, `src-tauri/src/`, `package.json`, `tsconfig.json`, `src-tauri/Cargo.toml`, `src-tauri/tauri.conf.json`, `.gitignore` |
 | Node API | `src/`, `src/routes/`, `src/services/`, `src/middleware/`, `package.json`, `tsconfig.json`, `.env.example`, `.gitignore` |
+| Django | `{project}/`, `{project}/settings.py`, `{project}/urls.py`, `{app}/`, `{app}/models.py`, `{app}/views.py`, `manage.py`, `requirements.txt`, `.env.example`, `.gitignore` |
+| FastAPI | `app/`, `app/main.py`, `app/routers/`, `app/models/`, `app/schemas/`, `requirements.txt`, `.env.example`, `.gitignore` |
+| Flask | `app/`, `app/__init__.py`, `app/routes/`, `app/models/`, `config.py`, `requirements.txt`, `.env.example`, `.gitignore` |
 | Vue (Vite) | `src/`, `src/components/`, `src/composables/`, `public/`, `vite.config.ts`, `package.json`, `tsconfig.json`, `.gitignore` |
 | Vue (Nuxt) | `app/`, `components/`, `composables/`, `pages/`, `server/`, `public/`, `nuxt.config.ts`, `package.json`, `tsconfig.json`, `.gitignore` |
 | Svelte (SvelteKit) | `src/`, `src/routes/`, `src/lib/`, `static/`, `svelte.config.js`, `vite.config.ts`, `package.json`, `tsconfig.json`, `.gitignore` |
+| Qt/QML | `src/`, `src/qml/`, `src/cpp/`, `resources/`, `CMakeLists.txt`, `.gitignore` |
+| Qt with QI Framework | `src/`, `src/qml/`, `src/services/`, `resources/`, `CMakeLists.txt`, `.gitignore` |
 | Monorepo | `apps/`, `packages/`, `package.json` (workspace root), `turbo.json`, `.gitignore` |
 
 Generate config files with sensible defaults. Include `.gitignore` with appropriate patterns for the stack (node_modules, .env, dist, .next, etc.). Include `.env.example` for database projects listing required variables. Do NOT generate application code — only structure and configuration.
