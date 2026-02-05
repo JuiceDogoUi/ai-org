@@ -90,6 +90,7 @@ Scan the project without asking the user anything. Gather all available context:
 - Read ALL files in `.claude/agents/` — note each agent's name, model, tools, skills, and system prompt
 - Read ALL files in `.claude/commands/` — note each command's routing
 - Read ALL files in `.claude/guides/` — note what topics they cover
+- List all directories in `.claude/agent-memory/` — note which agents have memory (PRESERVE these)
 - Check `strategy/` at the project root — note what exists (foundation, research, etc.)
 - Check `.claude/strategy/` — detect if strategy is in the old location
 - Check `initiatives/` at the project root — note if it exists and what initiatives are present
@@ -167,6 +168,7 @@ Present a clear summary to the user:
 - Agents: {count} found ({list names})
 - Commands: {count} found ({list names})
 - Guides: {count} found ({list names})
+- Agent Memory: {count} agents with memory in .claude/agent-memory/ — will be PRESERVED
 - Strategy: {found at strategy/ / found at .claude/strategy/ (old location) / not found}
 
 ### Role Mapping
@@ -321,11 +323,18 @@ For each existing agent that maps to an ai-org role:
 - Agent Reference table listing ALL agents (existing + new) with their role
 - Note which agents are project-original and which are ai-org additions
 - Model Tiers, Skill Isolation sections
+- Agent Memory section explaining:
+  - Agents have persistent memory stored in `.claude/agent-memory/<agent-name>/`
+  - Memory is project-scoped — each agent learns this codebase's patterns
+  - Memory is committed to git so team members share accumulated knowledge
+  - Agents check memory before starting work and update it when discovering patterns
 
 **If not exists**: Create from scratch using detected tech stack and project context from README. Include:
 - Installed Skills table
+- Agent Memory section (as described above)
 - Project structure section explaining:
-  - `.claude/` — Claude Code configuration only (agents, commands, guides, plans)
+  - `.claude/` — Claude Code configuration only (agents, commands, guides, plans, agent-memory)
+  - `.claude/agent-memory/` — Persistent agent memory (committed to git for team sharing)
   - `initiatives/` — Feature work with research, specs, and review reports (at project root)
   - `strategy/` — Product and research team documents (at project root, Tiers 2, 3, 4 only)
 
@@ -433,6 +442,7 @@ After execution, present a clear report:
 
 ### Preserved (existing files, untouched)
 - {each file with reason}
+- Agent memory: {list agents with memory in .claude/agent-memory/} — preserved unchanged
 
 ### Enhanced (existing files, skills added)
 - {each agent} → added skills: [{skills}], backup at {path}
@@ -458,6 +468,10 @@ After execution, present a clear report:
 ### Folder Restructuring
 - Strategy location: {strategy/ at root / moved from .claude/strategy/ to strategy/ / created new}
 
+### Agent Memory
+- Preserved: {list agents with existing memory in .claude/agent-memory/}
+- New agents will create memory as they work
+
 ### Next Steps
 - Review enhanced CLAUDE.md — merge ai-org sections as needed
 - Review skills added to existing agents — verify they are appropriate
@@ -472,6 +486,7 @@ After execution, present a clear report:
 - NEVER modify existing system prompt content in agent files (only add/fix frontmatter)
 - NEVER create a new agent for a role already covered by an existing agent
 - NEVER rename existing agent files
+- NEVER modify, delete, or overwrite files in `.claude/agent-memory/` — this is accumulated project knowledge
 - Always preserve existing content when enhancing files
 - Detect tech stack automatically — do not ask the user to specify what is detectable
 - Use detected project patterns in generated agents

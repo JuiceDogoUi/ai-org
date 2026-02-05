@@ -324,6 +324,11 @@ Content:
 - **Interaction model**: Claude Code coordinates workflows, spawning specialist agents via Task() at each stage
 - **Model tiers**: opus/sonnet/haiku
 - **Skill isolation**: skills are knowledge, not identity
+- **Agent memory section** explaining:
+  - Agents have persistent memory stored in `.claude/agent-memory/<agent-name>/`
+  - Memory is project-scoped — each agent learns this codebase's patterns
+  - Memory is committed to git so team members share accumulated knowledge
+  - Agents check memory before starting work and update it when discovering patterns
 - **Business context** (paste the user's answer from Phase 3 question 8)
 - **Project conventions** section with sensible defaults:
   - Commit format: Conventional Commits
@@ -458,6 +463,8 @@ If the project is truly empty, create directories and minimal config files:
 | Monorepo | `apps/`, `packages/`, `package.json` (workspace root), `turbo.json`, `.gitignore` |
 
 Generate config files with sensible defaults. Include `.gitignore` with appropriate patterns for the stack (node_modules, .env, dist, .next, etc.). Include `.env.example` for database projects listing required variables. Do NOT generate application code — only structure and configuration.
+
+**Important**: Do NOT add `.claude/agent-memory/` to `.gitignore` — agent memory should be committed so team members share accumulated knowledge about the codebase.
 
 ### 4.9 Project Commands
 

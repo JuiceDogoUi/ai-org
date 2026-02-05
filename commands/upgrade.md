@@ -26,6 +26,7 @@ Read the project's current ai-org configuration:
 - Read all files in `.claude/commands/` — note each command's name, agent routing, and description
 - Read all files in `.claude/guides/` — note topics covered
 - List all directories in `.claude/skills/` — note which skills are installed locally
+- List all directories in `.claude/agent-memory/` — note which agents have memory (PRESERVE these)
 - Read `CLAUDE.md` — note project name, tech stack, business context, and workspace scope tier
 
 ### 1.2 Project Structure
@@ -147,6 +148,7 @@ Present a categorized upgrade report:
 - Custom agents: {list agents not in ai-org}
 - Custom commands: {list commands not in ai-org}
 - Custom guides: {list guides not in ai-org}
+- Agent memory: {list agents with memory in .claude/agent-memory/} — NEVER modified or deleted
 
 ### Suggested actions
 - Add {N} new agents for Tier {N}
@@ -230,6 +232,11 @@ Locate and update these specific sections:
 **Installed Skills section**:
 - Add new skills to the bullet list: `- {skill-name}`
 
+**Agent Memory section** (add if missing):
+- Add a section explaining that agents have persistent memory in `.claude/agent-memory/`
+- Memory is project-scoped and committed to git for team sharing
+- Agents check memory before work and update it when discovering patterns
+
 **Counts** (if present):
 - Update "X agents" and "Y commands" counts in any summary sections
 
@@ -283,5 +290,11 @@ If you need to revert this upgrade:
 2. Delete any newly created files listed above
 3. Delete or revert `.claude/version.json` to previous state
 ```
+
+## Rules
+
+- NEVER modify, delete, or overwrite files in `.claude/agent-memory/` — this is accumulated project knowledge
+- Always create backups before modifying existing files
+- Preserve all custom additions (agents, commands, guides not from ai-org)
 
 > Related: `/migrate` to migrate an existing project, `/onboard` to set up a new project from scratch.
