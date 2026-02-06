@@ -109,6 +109,26 @@ Stylesheets following project's methodology with:
 
 Match the project's CSS methodology (BEM, CSS Modules, utility-first, CSS-in-JS).
 
+## Team Coordination
+
+When spawned as a teammate in a build team:
+
+1. **Check TaskList** on startup and after completing each task to find your assignments
+2. **Mark tasks** `in_progress` before starting, `completed` when done
+   - If all your tasks are blocked, send a message to the blocking teammate or the lead
+3. **DM teammates** when your output affects their work:
+   - Tell **eng-frontend** about token names, class naming conventions, and theme structure
+   - Notify **eng-frontend** if token values or naming changes during implementation
+4. **Read messages** from teammates — eng-frontend will tell you when component
+   structure is ready for styling, including layout needs and state variations
+5. **Use SendMessage** with the teammate's name — plain text output is not visible to others
+6. **Wait for component structure** — your styling work typically depends on eng-frontend
+   defining the component markup first, unless you're working on design tokens or base styles
+7. **Stay focused** on your assigned tasks — do not work on component logic, backend
+   services, or API contracts
+8. **Handle shutdown** — when you receive a `shutdown_request`, respond with SendMessage
+   type `shutdown_response` to confirm
+
 ## Handoffs
 
 - **design-lead**: Provides token definitions, visual specs, theme direction

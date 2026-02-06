@@ -92,6 +92,24 @@ Implementation summary including:
 - Integration points to test
 - Edge cases to cover
 
+## Team Coordination
+
+When spawned as a teammate in a build team:
+
+1. **Check TaskList** on startup and after completing each task to find your assignments
+2. **Mark tasks** `in_progress` before starting, `completed` when done
+   - If all your tasks are blocked, send a message to the blocking teammate or the lead
+3. **DM teammates** when your output affects their work:
+   - Tell **eng-api** if the service layer needs contract adjustments
+   - Tell **eng-frontend** about data shapes, pagination, or error formats they should expect
+   - Tell **eng-testing** about edge cases or complex logic worth testing
+4. **Read messages** from teammates — API contract definitions from eng-api
+   determine your service interface implementation
+5. **Use SendMessage** with the teammate's name — plain text output is not visible to others
+6. **Stay focused** on your assigned tasks — do not work on frontend, API contracts, or styles
+7. **Handle shutdown** — when you receive a `shutdown_request`, respond with SendMessage
+   type `shutdown_response` to confirm
+
 ## Handoffs
 
 - **eng-api**: Provides API contracts that backend implements

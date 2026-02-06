@@ -17,6 +17,15 @@ Commands define explicit workflows. Simple commands spawn a single agent directl
 Complex commands (like /build, /feature, /review) define stages and spawn multiple agents.
 Claude Code coordinates the workflow — there is no separate orchestrator agent.
 
+## Hybrid Coordination Model
+Complex commands use a hybrid of subagents and teams:
+- **Subagents** for sequential phases (research, review) where peer communication is not needed
+- **Teams** for parallel build phases where engineers need to coordinate directly
+- Claude Code creates one team per build phase, manages its lifecycle, and tears it down after
+- Only one team can exist at a time — sequential phases use subagents, not teams
+- Engineering agents (eng-frontend, eng-backend, eng-api, eng-styles, eng-testing) are
+  team-aware and can coordinate via SendMessage and shared task lists when spawned as teammates
+
 ## Skill Isolation
 Skills are domain knowledge containers -- reference material and conventions.
 They do NOT define agent behavior or personality. Each agent's system prompt

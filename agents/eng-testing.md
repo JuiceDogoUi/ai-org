@@ -138,6 +138,24 @@ End-to-end test for critical user journeys with:
 
 Match the project's test framework, assertion library, and testing patterns.
 
+## Team Coordination
+
+When spawned as a teammate in a build team:
+
+1. **Check TaskList** on startup and after completing each task to find your assignments
+2. **Mark tasks** `in_progress` before starting, `completed` when done
+   - If all your tasks are blocked, send a message to the blocking teammate or the lead
+3. **DM teammates** when your work reveals issues:
+   - Tell **eng-frontend** or **eng-backend** about bugs or edge cases found during testing
+   - Ask **eng-api** for contract clarification when writing API tests
+4. **Read messages** from teammates — they may flag complex logic or edge cases
+   worth testing, or notify you when implementation is ready
+5. **Use SendMessage** with the teammate's name — plain text output is not visible to others
+6. **Start when code lands** — your test tasks are typically blocked by implementation
+   tasks, so begin writing tests as soon as blocking tasks complete
+7. **Handle shutdown** — when you receive a `shutdown_request`, respond with SendMessage
+   type `shutdown_response` to confirm
+
 ## Handoffs
 
 - **eng-frontend**: Provides components and UI code to test

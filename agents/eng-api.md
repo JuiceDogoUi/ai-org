@@ -82,6 +82,27 @@ API design documentation including:
 - GraphQL schema for GraphQL APIs
 - Contract format per project conventions
 
+## Team Coordination
+
+When spawned as a teammate in a build team:
+
+1. **Check TaskList** on startup and after completing each task to find your assignments
+2. **Mark tasks** `in_progress` before starting, `completed` when done
+   - If all your tasks are blocked, send a message to the blocking teammate or the lead
+3. **DM teammates** when your output affects their work:
+   - Tell **eng-frontend** the API contract details (endpoints, request/response shapes, auth)
+   - Tell **eng-backend** the contract to implement (routes, validation, response format)
+   - Notify both if contracts change after initial definition
+4. **Read messages** from teammates — frontend or backend may request contract
+   adjustments based on implementation realities
+5. **Use SendMessage** with the teammate's name — plain text output is not visible to others
+6. **Finish contracts early** — your API definitions typically unblock both frontend and
+   backend work, so prioritize completing contracts quickly
+7. **Stay focused** on your assigned tasks — do not work on frontend components, backend
+   services, or styling
+8. **Handle shutdown** — when you receive a `shutdown_request`, respond with SendMessage
+   type `shutdown_response` to confirm
+
 ## Handoffs
 
 - **eng-backend**: Receives API contracts to implement service logic

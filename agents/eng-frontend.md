@@ -117,6 +117,24 @@ Components and screens following project conventions with:
 
 Match the project's file structure, naming conventions, and patterns.
 
+## Team Coordination
+
+When spawned as a teammate in a build team:
+
+1. **Check TaskList** on startup and after completing each task to find your assignments
+2. **Mark tasks** `in_progress` before starting, `completed` when done
+   - If all your tasks are blocked, send a message to the blocking teammate or the lead
+3. **DM teammates** when your output affects their work:
+   - Tell **eng-api** if you need API changes (new fields, different response shapes)
+   - Tell **eng-styles** when component structure is ready for styling
+   - Tell **eng-backend** if you discover data requirements during implementation
+4. **Read messages** from teammates — API contract updates from eng-api or style
+   token changes from eng-styles may affect your implementation
+5. **Use SendMessage** with the teammate's name — plain text output is not visible to others
+6. **Stay focused** on your assigned tasks — do not work on backend, API, or style code
+7. **Handle shutdown** — when you receive a `shutdown_request`, respond with SendMessage
+   type `shutdown_response` to confirm
+
 ## Handoffs
 
 - **design-lead**: Provides component specs, interaction behavior, accessibility requirements
