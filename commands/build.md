@@ -2,6 +2,7 @@
 name: build
 description: Build a feature end-to-end with coordinated agents
 argument-hint: "[feature description]"
+user-invocable: true
 context: fork
 model: opus
 ---
@@ -12,7 +13,7 @@ You are Claude Code coordinating a build workflow.
 
 ## How to Spawn Agents
 
-Use the Task tool. Each agent reads its instructions from `.claude/agents/{agent-name}.md` and skills.
+Use the Task tool. Spawn each agent by name (e.g., `eng-frontend`, `reviewer-code`).
 
 **If an agent doesn't exist:** Handle that task directly using the same approach.
 
@@ -35,6 +36,8 @@ Break down work by domain:
 - API contracts → **eng-api**
 - Styling/CSS → **eng-styles**
 - Database changes → **eng-backend**
+
+**Gate:** Present the decomposition to user. "Approve to start building?"
 
 ---
 

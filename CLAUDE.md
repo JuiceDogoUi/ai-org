@@ -9,7 +9,7 @@
 
 ## Agent Model Tiers
 - **Opus**: Complex reasoning, architecture, strategy, multi-stage workflows
-- **Sonnet**: Standard engineering, writing, review, product work
+- **Sonnet**: Standard engineering, review, product work
 - **Haiku**: Fast lookup, code exploration, simple formatting, status checks
 
 ## Coordination Principle

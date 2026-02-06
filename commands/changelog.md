@@ -2,6 +2,7 @@
 name: changelog
 description: Generate a changelog from recent commits
 argument-hint: "[version or date range]"
+user-invocable: true
 context: fork
 model: haiku
 allowed-tools: Bash(git *), Read

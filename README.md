@@ -1,6 +1,6 @@
 # ai-org
 
-A reusable AI organization plugin for Claude Code. Provides **18 specialist agents**, **22 commands**, and **34 skill domains** — a complete foundation for AI-assisted software development, product management, content creation, and operations.
+A reusable AI organization plugin for Claude Code. Provides **18 specialist agents**, **22 commands**, and **40 skill domains** — a complete foundation for AI-assisted software development, product management, content creation, and operations.
 
 Install once, use across every project. Personalize per project with `/onboard` or `/migrate`.
 
@@ -70,7 +70,7 @@ The `/migrate` command scans your project automatically — no questions needed 
 3. **Maps existing agents to ai-org roles** by reading their system prompts (not name matching)
 4. **Presents a categorized migration plan**: preserve existing agents that already cover roles, enhance them with skill references, create agents only for uncovered roles
 5. **Backs up every file** before modifying anything
-7. **Outputs a migration report** with role mapping table
+6. **Outputs a migration report** with role mapping table
 
 Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps and connects the dots.
 
@@ -118,7 +118,7 @@ Claude Code acts as the workflow coordinator. Commands define explicit stages an
 |---------|-------------|-------|
 | `/article` | Write a blog post or article | opus (writer-lead) |
 | `/docs` | Generate documentation | opus (writer-lead) |
-| `/copywrite` | Marketing or UX copy | opus (writer-lead) |
+| `/copy` | Marketing or UX copy | opus (writer-lead) |
 | `/changelog` | Generate changelog from commits | haiku |
 
 ### Operations
@@ -193,6 +193,7 @@ Skills are domain knowledge packages — conventions, patterns, and reference ma
 | competitive-analysis | Porter's Five Forces, SWOT, JTBD, value chain frameworks |
 | compliance-frameworks | Audit methodology, regulatory landscape, concern-based compliance frameworks |
 | content-strategy | Article structure, SEO guidelines, content planning |
+| cpp | Modern C++ conventions, patterns, and best practices |
 | css-architecture | BEM/ITCSS methodologies, design tokens, responsive patterns |
 | dart | Dart language patterns, Flutter conventions |
 | database-design | Schema conventions, migration patterns, query optimization |
@@ -207,13 +208,18 @@ Skills are domain knowledge packages — conventions, patterns, and reference ma
 | positioning | April Dunford's "Obviously Awesome" positioning methodology |
 | product-analytics | Funnel analysis, A/B testing methodology, metrics frameworks |
 | product-management | PRD templates, user story format, prioritization frameworks |
+| python | Python language conventions, patterns, and best practices |
+| qi-framework | QI Framework conventions and patterns for robotics and embedded systems |
+| qml | QML and Qt Quick conventions, component patterns, property bindings |
 | react | React patterns, hooks, Server Components, state management |
 | research-methodology | Research frameworks, literature review methods, source evaluation, synthesis |
 | review-process | 3-round review framework, round details, output format |
 | rust | Rust language patterns, ownership, lifetimes, Tauri integration |
 | security | OWASP Top 10, auth patterns (JWT, OAuth), vulnerability checklist |
+| sql | SQL query patterns, optimization, and database best practices |
 | svelte | Svelte/SvelteKit patterns, runes, stores, server routes |
 | swift | Swift conventions, SwiftUI patterns, @Observable, NavigationStack |
+| tauri | Tauri desktop framework patterns, IPC, commands, and configuration |
 | technical-writing | API doc structure, README templates, documentation conventions |
 | testing-strategy | Test pyramid, unit/integration/e2e patterns, coverage strategy |
 | typescript | Type system patterns, branded types, tsconfig guide |

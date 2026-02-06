@@ -4,10 +4,11 @@ description: >
   Compliance specialist for privacy, accessibility, data security, licensing, and
   regulatory requirements. Researches current regulations from official sources.
   Read-only analysis producing audits and gap assessments. Does NOT modify code.
-model: opus
+model: sonnet
 memory: project
 tools:
   - Read
+  - Write
   - Grep
   - Glob
   - Bash
@@ -16,6 +17,7 @@ tools:
 skills:
   - compliance-frameworks
   - accessibility
+  - security
   - review-process
 ---
 

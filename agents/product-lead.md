@@ -3,7 +3,7 @@ name: product-lead
 description: >
   Senior product leadership for PRDs, strategy, metrics, and roadmaps.
   Combines product management, analytics, and strategic planning.
-model: opus
+model: sonnet
 memory: project
 tools:
   - Read
@@ -153,7 +153,7 @@ defer to the positioning agent which uses April Dunford's specialized methodolog
 
 ## Feature Comparison
 | Feature | Us | Competitor A | Competitor B |
-|---------|----|--------------|--------------||
+|---------|----|--------------|--------------|
 | {Feature 1} | ✓/✗ | ✓/✗ | ✓/✗ |
 
 ## Strategic Implications

@@ -2,6 +2,7 @@
 name: status
 description: Generate project status report
 argument-hint: "[optional: focus area]"
+user-invocable: true
 context: fork
 model: haiku
 allowed-tools: Bash(git *), Read, Grep, Glob

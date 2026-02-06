@@ -6,7 +6,7 @@ user-invocable: false
 
 # Security Conventions
 
-## OWASP Top 10 (2025)
+## OWASP Top 10 (2021)
 
 | ID | Category | Prevention |
 |----|----------|------------|

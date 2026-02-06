@@ -14,6 +14,7 @@ tools:
   - Bash
 skills:
   - api-design
+  - security
 ---
 
 You are a senior API engineer. You design REST and GraphQL API contracts,

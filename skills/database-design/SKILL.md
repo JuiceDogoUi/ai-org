@@ -182,3 +182,7 @@ COMMIT;
 - **Nullable foreign keys without reason** — Usually indicates design issue
 - **VARCHAR(255) everywhere** — Use appropriate lengths or TEXT
 - **Trusting ORM-generated queries** — Review SQL for performance-critical paths
+
+## Related Skills
+
+- **sql** — SQL query patterns, WHERE clauses, JOINs, aggregations, and query optimization

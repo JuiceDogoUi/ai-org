@@ -2,6 +2,7 @@
 name: plan
 description: Create an implementation plan for a feature or task
 argument-hint: "[feature or task description]"
+user-invocable: true
 context: fork
 model: sonnet
 ---

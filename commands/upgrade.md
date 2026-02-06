@@ -2,6 +2,7 @@
 name: upgrade
 description: Upgrade ai-org setup to latest version
 argument-hint: "[optional: specific items]"
+user-invocable: true
 context: fork
 model: opus
 ---
@@ -67,35 +68,9 @@ Based on which agents exist:
 - Tier 3 (Full stack): Tier 2 + positioning, researcher, reviewer-content, compliance
 - Tier 4 (Product & Strategy): writer-lead, product-lead, design-lead, positioning, researcher, reviewer-content, compliance (NO eng-* agents)
 
-**Filter skills by stack** — only suggest skills matching the detected tech stack:
+**Filter skills by stack** — only suggest skills matching the detected tech stack.
 
-| Stack / Framework | Applicable Skills |
-|-------------------|-------------------|
-| TypeScript/JavaScript | typescript, javascript |
-| Angular | angular, typescript, css-architecture, accessibility |
-| React / Next.js / Remix | react, typescript, javascript, css-architecture, accessibility |
-| Vue / Nuxt | vue, typescript, javascript, css-architecture, accessibility |
-| Svelte / SvelteKit | svelte, typescript, javascript, css-architecture, accessibility |
-| Astro | typescript, javascript, css-architecture, accessibility |
-| Swift / iOS | swift |
-| Kotlin / Android | kotlin |
-| React Native | react, javascript, typescript, accessibility |
-| Flutter / Dart | dart, accessibility |
-| Electron | electron, typescript, javascript |
-| Tauri | typescript, javascript, rust, tauri |
-| Spring Boot / Java | java |
-| Django / FastAPI / Flask | python, sql |
-| Gin / Echo / Go | (no Go skill yet — note only) |
-| Rails / Ruby | (no Ruby skill yet — note only) |
-| C++ / Qt | cpp, qml |
-| Qt with QI Framework | cpp, qml, qi-framework |
-| Any with database | database-design, sql |
-| Any with API | api-design |
-| Any with backend/infrastructure | devops |
-
-Universal skills (coding tiers): i18n, testing-strategy, security, performance
-
-Product/Strategy skills (Tiers 2, 3, 4): product-management, product-analytics, positioning, research-methodology, competitive-analysis, content-strategy, ux-writing, marketing-copy, technical-writing, compliance-frameworks, review-process
+**Reference:** See `skills/skill-stack-mapping.md` for the full stack-to-skill mapping table, universal skills, and product/strategy skills.
 
 ### 2.3 Identify Gaps
 

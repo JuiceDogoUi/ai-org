@@ -2,6 +2,7 @@
 name: article
 description: Write an article or blog post
 argument-hint: "[topic and target audience]"
+user-invocable: true
 context: fork
 agent: writer-lead
 ---

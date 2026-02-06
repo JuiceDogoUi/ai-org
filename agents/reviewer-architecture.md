@@ -7,6 +7,7 @@ model: opus
 memory: project
 tools:
   - Read
+  - Write
   - Grep
   - Glob
   - Bash

@@ -2,6 +2,7 @@
 name: audit
 description: Security and/or accessibility audit
 argument-hint: "[target and audit type: security|a11y|both]"
+user-invocable: true
 context: fork
 model: sonnet
 ---
@@ -12,7 +13,7 @@ You are Claude Code coordinating an audit.
 
 ## How to Spawn Agents
 
-Use the Task tool. Each agent reads its instructions from `.claude/agents/{agent-name}.md` and skills.
+Use the Task tool. Spawn each agent by name (e.g., `eng-security`, `compliance`).
 
 **If an agent doesn't exist:** Handle that task directly using the same approach.
 

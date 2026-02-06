@@ -2,6 +2,7 @@
 name: migrate
 description: Migrate an existing project to ai-org agents and structure
 argument-hint: "[optional: tier scope]"
+user-invocable: true
 context: fork
 model: opus
 ---
@@ -245,33 +246,7 @@ Create `.claude/backup/{ISO-date-timestamp}/` containing an exact copy of every 
 
 Based on the detected tech stack from Phase 1, determine which skills are relevant. **Only install skills that match the project's actual stack.**
 
-| Stack / Framework | Skills to Install |
-|-------------------|-------------------|
-| TypeScript/JavaScript (any) | typescript, javascript |
-| Angular | angular, typescript, css-architecture, accessibility |
-| React / Next.js / Remix | react, typescript, javascript, css-architecture, accessibility |
-| Vue / Nuxt | vue, typescript, javascript, css-architecture, accessibility |
-| Svelte / SvelteKit | svelte, typescript, javascript, css-architecture, accessibility |
-| Astro | typescript, javascript, css-architecture, accessibility |
-| Swift / iOS | swift |
-| Kotlin / Android | kotlin |
-| React Native | react, javascript, typescript, accessibility |
-| Flutter / Dart | dart, accessibility |
-| Electron | electron, typescript, javascript |
-| Tauri | typescript, javascript, rust, tauri |
-| Spring Boot / Java | java |
-| Django / FastAPI / Flask | python, sql |
-| Gin / Echo / Go | (no Go skill yet — note in CLAUDE.md) |
-| Rails / Ruby | (no Ruby skill yet — note in CLAUDE.md) |
-| C++ / Qt | cpp, qml |
-| Qt with QI Framework | cpp, qml, qi-framework |
-| Any with database | database-design, sql |
-| Any with API | api-design |
-| Any with backend/infrastructure | devops |
-
-Universal skills (always install for coding tiers): i18n, testing-strategy, security, performance
-
-Product/Strategy skills (Tiers 2, 3, 4): product-management, product-analytics, positioning, research-methodology, competitive-analysis, content-strategy, ux-writing, marketing-copy, technical-writing, compliance-frameworks, review-process
+**Reference:** See `skills/skill-stack-mapping.md` for the full stack-to-skill mapping table, universal skills, and product/strategy skills.
 
 ### 4.3 Copy Skills to Project
 
@@ -401,7 +376,7 @@ Generate project-level commands that route to the project's agents (using actual
 | position.md | 3, 4 | sonnet | Product positioning (spawns positioning) |
 | research.md | 3, 4 | sonnet | Deep research (spawns researcher) |
 | article.md | 3, 4 | sonnet | Blog post or article (spawns writer-lead) |
-| copywrite.md | 3, 4 | sonnet | Marketing or UX copy (spawns writer-lead) |
+| copy.md | 3, 4 | sonnet | Marketing or UX copy (spawns writer-lead) |
 
 Each command includes project-specific context (detected tech stack, project name from README). Read the corresponding ai-org plugin command files and adapt their workflows to reference the project's specifics.
 

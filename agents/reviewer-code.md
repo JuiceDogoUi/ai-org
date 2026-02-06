@@ -7,6 +7,7 @@ model: sonnet
 memory: project
 tools:
   - Read
+  - Write
   - Grep
   - Glob
   - Bash

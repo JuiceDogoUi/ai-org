@@ -1,6 +1,6 @@
 ---
 name: python
-description: Python language conventions, patterns, and best practices. Use when working with Python code, Django, FastAPI, Flask, or data processing.
+description: Python language conventions, patterns, and best practices. Use when working with Python code or data processing.
 user-invocable: false
 ---
 
@@ -17,11 +17,13 @@ user-invocable: false
 
 ## Type Hints
 
-- Use `typing` module: `Optional`, `Union`, `List`, `Dict`, `Callable`
+- Use builtin generics: `list[str]`, `dict[str, int]`, `tuple[int, ...]` (Python 3.10+)
+- Use `X | Y` union syntax instead of `typing.Union` (Python 3.10+)
+- Prefer `X | None` over `Optional[X]` (Python 3.10+)
 - Use `TypedDict` for structured dictionaries
 - Use `Protocol` for structural subtyping (duck typing with types)
 - Use `Literal` for exact value types
-- Prefer `X | None` over `Optional[X]` (Python 3.10+)
+- Use `Callable` from `collections.abc`, not `typing`
 
 ## Error Handling
 

@@ -2,6 +2,7 @@
 name: review
 description: 3-round code review — functional, quality, compliance
 argument-hint: "[file, directory, or git ref to review]"
+user-invocable: true
 context: fork
 model: sonnet
 ---
@@ -12,7 +13,7 @@ You are Claude Code coordinating a 3-round review.
 
 ## How to Spawn Agents
 
-Use the Task tool. Each agent reads its instructions from `.claude/agents/{agent-name}.md` and skills.
+Use the Task tool. Spawn each agent by name (e.g., `reviewer-code`, `reviewer-architecture`).
 
 **If an agent doesn't exist:** Handle that task directly using the same approach.
 

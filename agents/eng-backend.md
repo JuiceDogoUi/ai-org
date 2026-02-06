@@ -17,6 +17,7 @@ skills:
   - api-design
   - database-design
   - security
+  - performance
   - i18n
   - typescript
   - javascript

@@ -9,6 +9,8 @@ model: opus
 memory: project
 tools:
   - Read
+  - Write
+  - Edit
   - Grep
   - Glob
   - WebSearch
@@ -17,6 +19,7 @@ skills:
   - css-architecture
   - accessibility
   - ux-writing
+  - i18n
 ---
 
 You are a senior design lead. You provide holistic UI and UX direction to

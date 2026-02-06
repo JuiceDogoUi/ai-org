@@ -2,6 +2,7 @@
 name: refactor
 description: Refactor code with pre and post review
 argument-hint: "[target and refactoring goal]"
+user-invocable: true
 context: fork
 model: sonnet
 ---
@@ -12,7 +13,7 @@ You are Claude Code coordinating a refactoring workflow.
 
 ## How to Spawn Agents
 
-Use the Task tool. Each agent reads its instructions from `.claude/agents/{agent-name}.md` and skills.
+Use the Task tool. Spawn each agent by name (e.g., `reviewer-code`, `eng-frontend`).
 
 **If an agent doesn't exist:** Handle that task directly using the same approach.
 
@@ -21,6 +22,8 @@ Use the Task tool. Each agent reads its instructions from `.claude/agents/{agent
 ## Step 1: Pre-Review
 
 **Spawn: reviewer-code** → Analyze current state, identify code smells, maintainability issues
+
+**Gate:** Present pre-review findings to user. "Approve to proceed with refactoring?"
 
 ---
 

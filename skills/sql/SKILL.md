@@ -81,3 +81,7 @@ user-invocable: false
 - **ORDER BY without LIMIT on large tables** — Full table sort is expensive
 - **Implicit type conversions** — Cast explicitly
 - **Ignoring query plans** — Always EXPLAIN complex queries
+
+## Related Skills
+
+- **database-design** — Schema design, migrations, index types, and data modeling

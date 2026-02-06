@@ -6,5 +6,6 @@
     "name": "Manuel Rocco"
   },
   "repository": "https://github.com/JuiceDogoUi/ai-org.git",
-  "license": "MIT"
+  "license": "MIT",
+  "keywords": ["agents", "engineering", "product", "design", "writing", "strategy", "orchestration"]
 }

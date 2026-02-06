@@ -2,6 +2,7 @@
 name: feature
 description: Full product workflow — understand, research, build, and review a feature
 argument-hint: "[feature description]"
+user-invocable: true
 context: fork
 model: opus
 ---
@@ -12,7 +13,7 @@ You are Claude Code coordinating a 4-stage workflow.
 
 ## How to Spawn Agents
 
-Use the Task tool. Each agent reads its instructions from `.claude/agents/{agent-name}.md` and skills.
+Use the Task tool. Spawn each agent by name (e.g., `product-lead`, `eng-frontend`).
 
 Pass context between stages:
 - Feature name and description

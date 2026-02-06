@@ -3,7 +3,7 @@ name: writer-lead
 description: >
   Writing leadership for all content types: technical docs, articles, marketing copy,
   and UX microcopy. Adapts approach based on format and audience. Use for any writing task.
-model: opus
+model: sonnet
 memory: project
 tools:
   - Read
