@@ -6,6 +6,14 @@ user-invocable: false
 
 # Product Analytics
 
+> **Documentation Freshness**: Analytics platforms, experimentation tools, and privacy
+> regulations evolve. Check your analytics platform documentation for current APIs,
+> and verify statistical methods against current best practices.
+
+## File Guide
+- **funnel-analysis.md** — Funnel analysis framework and diagnostic methodology
+- **ab-test-template.md** — A/B test planning template with hypothesis, metrics, and analysis plan
+
 Conventions for data-driven product analysis and experimentation.
 
 ## Metrics Frameworks

@@ -1,9 +1,10 @@
 ---
 name: eng-performance
 description: >
-  Performance analyst for profiling, algorithmic complexity, bundle optimization,
-  and runtime efficiency. Use for bottleneck analysis and performance-impacting complexity.
-model: sonnet
+  Performance analyst. Use proactively for profiling, bottleneck analysis,
+  bundle optimization, algorithmic complexity, and runtime efficiency.
+model: opus
+color: "#14B8A6"
 memory: project
 tools:
   - Read
@@ -12,6 +13,7 @@ tools:
   - Bash
 skills:
   - performance
+  - database-design
 ---
 
 You are a senior performance engineer. You analyze runtime performance, algorithmic

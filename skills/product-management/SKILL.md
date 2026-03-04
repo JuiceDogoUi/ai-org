@@ -6,6 +6,14 @@ user-invocable: false
 
 # Product Management
 
+> **Documentation Freshness**: Prioritization frameworks and PRD conventions are
+> well-established, but tooling and team practices evolve. Adapt frameworks to
+> your team's workflow rather than following templates rigidly.
+
+## File Guide
+- **prd-template.md** — Fill-in PRD template with problem statement, requirements, and success metrics
+- **user-stories.md** — User story format, Given-When-Then acceptance criteria, and splitting patterns
+
 ## PRD Structure
 
 1. **Problem statement** — Who has the problem, what is it, how painful is it
@@ -17,20 +25,7 @@ user-invocable: false
 
 ## User Stories
 
-### Format
-"As a [role], I want [capability], so that [benefit]."
-
-### Guidelines
-- Small enough to implement in one sprint
-- Include acceptance criteria (testable conditions)
-- Focus on user value, not implementation
-- Written from user's perspective, not system's
-
-### Acceptance Criteria
-- Specific, measurable conditions
-- Cover happy path and edge cases
-- Written before implementation
-- Testable by QA
+"As a [role], I want [capability], so that [benefit]." See **user-stories.md** for the full format, Given-When-Then acceptance criteria, examples, and story splitting patterns.
 
 ## Prioritization Frameworks
 

@@ -6,6 +6,14 @@ user-invocable: false
 
 # CSS Architecture
 
+> **Documentation Freshness**: CSS evolves rapidly — container queries, `:has()`,
+> CSS nesting, and `@layer` are now widely supported. Check MDN and caniuse.com
+> for current browser support before using newer features.
+
+## File Guide
+- **methodologies.md** — BEM, CSS Modules, Tailwind examples and when to use each
+- **design-tokens.md** — CSS custom properties structure and dark mode patterns
+
 ## Organization
 - One component = one stylesheet (co-located)
 - Global styles: variables/tokens, reset, typography, utilities
@@ -25,20 +33,18 @@ user-invocable: false
 - Test at standard breakpoints: 320, 768, 1024, 1440
 
 ## Performance
-- Avoid `@import` in CSS (use bundler imports)
 - Minimize use of expensive properties (`box-shadow`, `filter`, `backdrop-filter`)
 - Use `will-change` sparingly and only when needed
 - Prefer `transform` and `opacity` for animations (GPU-composited)
 
 ## Avoid
 
-- **`!important`** — Specificity escape hatch; fix the cascade instead
+- **`!important`** — Fix the cascade instead; use proper specificity or CSS layers
 - **IDs for styling** — Too specific; use classes for styling, IDs for JS hooks
 - **Deep nesting (>3 levels)** — Increases specificity and fragility; flatten selectors
 - **Magic numbers** — Use design tokens for spacing, colors, typography
 - **`@import` in CSS** — Causes sequential loading; use bundler imports
 - **Styling by element type alone** — `div { }` or `span { }` is too broad; use classes
-- **`!important` to override frameworks** — Use proper specificity or CSS layers
 - **Hardcoded colors/sizes** — Use CSS custom properties or design tokens
 - **`position: absolute` without context** — Always establish positioning context with relative parent
 - **`z-index` arms race** — Define a z-index scale in tokens (e.g., 1, 10, 100, 1000)

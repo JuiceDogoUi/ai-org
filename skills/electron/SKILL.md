@@ -6,6 +6,10 @@ user-invocable: false
 
 # Electron Conventions
 
+> **Documentation Freshness**: Always check the official Electron documentation
+> (electronjs.org/docs) before generating code. Security defaults and API availability
+> change between major versions — verify IPC patterns and BrowserWindow options.
+
 ## Architecture
 
 - **Main process** — Node.js environment, manages windows, system access

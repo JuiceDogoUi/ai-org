@@ -6,6 +6,14 @@ user-invocable: false
 
 # Swift Conventions
 
+> **Documentation Freshness**: Swift and SwiftUI evolve with each Xcode release —
+> the Observation framework (iOS 17+), Swift concurrency, and SwiftUI APIs change
+> across versions. Check developer.apple.com for current APIs.
+
+## File Guide
+- **patterns.md** — Swift patterns: networking, protocol-oriented design, dependency injection, enums
+- **swiftui.md** — SwiftUI patterns: Observable state, view composition, navigation
+
 ## Language
 
 - Use value types (structs, enums) by default; classes only for reference semantics or identity

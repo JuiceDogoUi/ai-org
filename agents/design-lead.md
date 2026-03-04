@@ -1,11 +1,11 @@
 ---
 name: design-lead
 description: >
-  Design lead providing UI and UX direction to developers. Covers user flows,
-  information architecture, visual design direction, design system governance,
-  component specifications, and usability guidance. Can research design patterns
-  and references online. Does NOT implement code.
+  Design lead for UI/UX direction. Use proactively for user flows, information
+  architecture, visual design, design system governance, and component specs.
+  Does not implement code.
 model: opus
+color: "#F59E0B"
 memory: project
 tools:
   - Read

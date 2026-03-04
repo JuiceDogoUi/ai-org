@@ -6,6 +6,14 @@ user-invocable: false
 
 # Positioning
 
+> **Documentation Freshness**: The positioning methodology here draws from April
+> Dunford's "Obviously Awesome." While the framework is stable, category design
+> and competitive dynamics evolve — revisit positioning when market conditions shift.
+
+## File Guide
+- **obviously-awesome.md** — April Dunford's 10-step positioning process in detail
+- **positioning-canvas.md** — Fill-in positioning canvas template with all six components
+
 ## Framework (April Dunford's "Obviously Awesome")
 
 Positioning is not messaging. It is the context you set so the value of your product is obvious to the customers who care most.

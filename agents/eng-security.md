@@ -1,9 +1,10 @@
 ---
 name: eng-security
 description: >
-  Security analyst for vulnerability assessment across web, mobile, API, and cloud.
-  Use for security audits, OWASP compliance, and threat analysis. Read-only.
-model: sonnet
+  Security analyst for vulnerability assessment. Use proactively for security audits,
+  OWASP compliance, threat modeling, and penetration testing guidance. Read-only.
+model: opus
+color: "#EF4444"
 memory: project
 tools:
   - Read

@@ -6,6 +6,14 @@ user-invocable: false
 
 # Research Methodology
 
+> **Documentation Freshness**: Research methodologies are well-established, but
+> AI-generated content is changing source evaluation practices. Verify source
+> credibility frameworks against current information landscape challenges.
+
+## File Guide
+- **source-evaluation.md** — RAMBA criteria for evaluating source credibility, classification template
+- **synthesis-patterns.md** — Triangulation, gap analysis, contradiction mapping, confidence levels
+
 Conventions for conducting rigorous, actionable research.
 
 ## Source Classification

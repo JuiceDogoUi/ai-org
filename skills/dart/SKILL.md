@@ -6,6 +6,10 @@ user-invocable: false
 
 # Dart Conventions
 
+> **Documentation Freshness**: Dart and Flutter evolve rapidly — Dart 3 introduced
+> patterns, records, and class modifiers. Flutter widget APIs and state management
+> libraries change across releases. Check dart.dev and flutter.dev for current APIs.
+
 ## Language
 
 - Use `final` over `var` for variables that won't be reassigned

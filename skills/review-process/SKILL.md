@@ -6,6 +6,14 @@ user-invocable: false
 
 # 3-Round Review Methodology
 
+> **Documentation Freshness**: Review practices evolve with tooling — automated
+> code analysis, AI-assisted review, and CI integration change how reviews are
+> conducted. Adapt the methodology to your team's tools and workflow.
+
+## File Guide
+- **review-output-format.md** — Severity classification rules, finding format, summary template
+- **round-details.md** — Expanded guidance for each review round with role-specific checks
+
 A structured approach to code and content review covering three dimensions: functional correctness, quality standards, and compliance requirements.
 
 ## Round 1 — Functional Review
@@ -37,27 +45,9 @@ Check regulatory and organizational requirements.
 - **Branding** — Follows brand guidelines and voice (for content)
 - **SEO** — Metadata, structure, schema markup (for public content)
 
-## Severity Levels
+## Severity Levels & Finding Format
 
-Organize findings by severity to prioritize fixes:
-
-### Critical (must fix before merge)
-Issues that will cause bugs, security vulnerabilities, data loss, or legal exposure.
-
-### Warning (should fix)
-Issues that may cause problems or degrade quality over time.
-
-### Suggestion (consider improving)
-Improvements to readability, performance, or maintainability that aren't blocking.
-
-## Finding Format
-
-For each finding include:
-
-- **File:line** — Exact location
-- **Issue** — What the problem is
-- **Why** — Why it matters
-- **Fix** — Specific recommended change
+See **review-output-format.md** for severity classification rules (Critical / Warning / Suggestion), finding format template, and summary format.
 
 ## Review Checklist
 

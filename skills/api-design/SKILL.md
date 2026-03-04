@@ -6,6 +6,14 @@ user-invocable: false
 
 # API Design Conventions
 
+> **Documentation Freshness**: REST and GraphQL standards evolve — check the
+> OpenAPI Specification (swagger.io/specification) and GraphQL spec (spec.graphql.org)
+> for current conventions. Verify HTTP semantics against RFC 9110.
+
+## File Guide
+- **error-handling.md** — Standard error response structure and error codes
+- **rest-conventions.md** — Versioning, filtering, pagination, bulk operations, rate limiting
+
 ## REST
 
 ### URL Structure
@@ -66,33 +74,13 @@ user-invocable: false
 }
 ```
 
-### Error Response
-```json
-{
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "Invalid request data",
-    "details": [
-      { "field": "email", "message": "Invalid email format" }
-    ]
-  }
-}
-```
-
 ## Error Handling
 
-- Use consistent error response structure across all endpoints
-- Include machine-readable error codes for client handling
-- Provide human-readable messages for debugging
-- Include field-level details for validation errors
-- Never expose stack traces or internal errors to clients
+See **error-handling.md** for standard error response structure, error codes, and rules.
 
 ## Versioning
 
-- **URL versioning**: `/v1/users` (explicit, easy to route)
-- **Header versioning**: `Accept: application/vnd.api+json;version=1` (cleaner URLs)
-- Document deprecation timeline and migration path
-- Support at least one previous version during transition
+See **rest-conventions.md** for versioning strategies and conventions.
 
 ## GraphQL
 
@@ -115,10 +103,8 @@ type Mutation {
 ```
 
 ### Security
-- Disable introspection in production
-- Limit query depth (max 10-15 levels)
-- Limit query complexity (cost analysis)
-- Rate limit by client and query complexity
+
+For GraphQL security (introspection, query depth/complexity, rate limiting), see the `security` skill.
 
 ## API Documentation
 

@@ -361,6 +361,7 @@ Generate project-level commands that route to the project's agents (using actual
 | plan.md | All | sonnet | Create implementation plan |
 | build.md | All | opus | Build a feature with agent spawning |
 | feature.md | All | opus | Full product workflow with stages |
+| explore.md | All | opus | Multi-angle exploration with agent spawning |
 | review.md | All | sonnet | 3-round review with agent spawning |
 | docs.md | All | sonnet | Generate documentation (spawns writer-lead) |
 | changelog.md | All | haiku | Generate changelog |
@@ -378,7 +379,13 @@ Generate project-level commands that route to the project's agents (using actual
 | article.md | 3, 4 | sonnet | Blog post or article (spawns writer-lead) |
 | copy.md | 3, 4 | sonnet | Marketing or UX copy (spawns writer-lead) |
 
-Each command includes project-specific context (detected tech stack, project name from README). Read the corresponding ai-org plugin command files and adapt their workflows to reference the project's specifics.
+Each command includes project-specific context (detected tech stack, project name from README).
+
+**Generating command content:**
+
+Commands with plugin templates (build, changelog, component, copy, explore, feature, review, status, test) — read the plugin's `commands/` file and adapt its workflow with project-specific context.
+
+All other commands are single-agent spawns — generate using the detected project context. The command should spawn the listed agent via Task(), pass it $ARGUMENTS with project context, and present the result. Exception: `refactor.md` is multi-stage — spawn reviewer-code for pre-review, then the refactoring agent, then reviewer-code for post-review.
 
 **Directories** (if missing):
 - `.claude/plans/`

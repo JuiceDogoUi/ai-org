@@ -16,16 +16,8 @@ function createUserId(id: string): UserId {
 ```
 
 ## Builder Pattern
-```typescript
-class QueryBuilder<T> {
-  private filters: Filter[] = [];
-  where(filter: Filter): this {
-    this.filters.push(filter);
-    return this;
-  }
-  build(): Query<T> { /* ... */ }
-}
-```
+
+Use method chaining with `return this` for fluent APIs. Each method mutates internal state and returns `this` for chaining. Type the builder as a generic class for type-safe query/config construction.
 
 ## Type-Safe Event Emitter
 ```typescript

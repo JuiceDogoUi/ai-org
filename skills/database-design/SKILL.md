@@ -6,6 +6,14 @@ user-invocable: false
 
 # Database Design
 
+> **Documentation Freshness**: SQL syntax and features vary across engines
+> (PostgreSQL, MySQL, SQLite). Always check your engine's documentation for
+> supported features, especially for JSON operations, CTEs, and window functions.
+
+## File Guide
+- **migrations.md** — Migration rules, safe patterns for schema changes
+- **query-optimization.md** — EXPLAIN usage, common issues, optimization patterns
+
 ## Schema Design
 
 ### Core Principles
@@ -58,69 +66,16 @@ Leftmost prefix rule: index on (A, B, C) supports queries on A, (A, B), or (A, B
 
 ## Query Optimization
 
-### Analyze Queries
-```sql
-EXPLAIN ANALYZE SELECT * FROM orders WHERE user_id = 'abc' AND status = 'pending';
-```
+Always use `EXPLAIN ANALYZE` before optimizing. See **query-optimization.md** for common issues, patterns, and examples.
 
-Look for:
-- Seq Scan on large tables (missing index)
-- High row estimates vs actual (stale statistics)
-- Nested loops on large sets (consider hash join)
-
-### N+1 Prevention
-```sql
--- Bad: N+1 queries
-SELECT * FROM users;
--- Then for each user: SELECT * FROM orders WHERE user_id = ?
-
--- Good: Single query with JOIN
-SELECT u.*, o.* FROM users u
-LEFT JOIN orders o ON o.user_id = u.id;
-
--- Or: IN clause
-SELECT * FROM orders WHERE user_id IN (?, ?, ?);
-```
-
-### Pagination
-```sql
--- Offset pagination (simple but slow on large offsets)
-SELECT * FROM orders ORDER BY created_at DESC LIMIT 20 OFFSET 100;
-
--- Cursor pagination (consistent, performant)
-SELECT * FROM orders
-WHERE created_at < '2024-01-15T10:00:00Z'
-ORDER BY created_at DESC
-LIMIT 20;
-```
+Key concerns:
+- N+1 queries — use JOINs, IN clauses, or eager loading
+- Missing indexes on filtered/joined columns
+- Unbounded result sets — always paginate
 
 ## Migrations
 
-### Principles
-- Migrations are append-only — never edit deployed migrations
-- Include both up and down migrations
-- Make migrations idempotent when possible
-- Test migrations on production-sized data
-
-### Safe Migrations
-```sql
--- Adding column (safe)
-ALTER TABLE users ADD COLUMN phone TEXT;
-
--- Adding NOT NULL column (do in steps)
--- Step 1: Add nullable
-ALTER TABLE users ADD COLUMN phone TEXT;
--- Step 2: Backfill data
-UPDATE users SET phone = '' WHERE phone IS NULL;
--- Step 3: Add constraint
-ALTER TABLE users ALTER COLUMN phone SET NOT NULL;
-```
-
-### Dangerous Operations
-- Dropping columns/tables (data loss)
-- Adding NOT NULL without default (locks table)
-- Adding unique constraint on existing data
-- Changing column type
+See **migrations.md** for migration rules, safe patterns, and dangerous operations to avoid.
 
 ## Transactions
 

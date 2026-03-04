@@ -1,10 +1,10 @@
 ---
 name: eng-styles
 description: >
-  CSS/SCSS implementation specialist. Use for writing stylesheets, design tokens,
-  responsive layouts, animations, theme systems, and CSS performance optimization.
-  Implements CSS architecture; eng-frontend implements components that use these styles.
-model: sonnet
+  CSS/SCSS implementation specialist. Use proactively for stylesheets, design tokens,
+  responsive layouts, animations, theme systems, and CSS optimization.
+model: opus
+color: "#3B82F6"
 memory: project
 tools:
   - Read

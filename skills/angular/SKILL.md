@@ -6,6 +6,15 @@ user-invocable: false
 
 # Angular Conventions
 
+> **Documentation Freshness**: Always check the official Angular documentation
+> (angular.dev) before generating code. Angular's API surface changes significantly
+> between major versions — verify current APIs, especially signals and standalone components.
+
+## File Guide
+- **This file** — Conventions, reactive patterns, and common pitfalls
+- **patterns.md** — Component and service implementation patterns
+- **testing.md** — TestBed, service, and signal testing strategies
+
 ## Architecture
 
 - Follow the Angular style guide for file naming: `feature.type.ts`

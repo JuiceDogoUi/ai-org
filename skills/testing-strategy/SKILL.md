@@ -6,6 +6,14 @@ user-invocable: false
 
 # Testing Strategy
 
+> **Documentation Freshness**: Testing frameworks and APIs evolve rapidly — Vitest,
+> Playwright, Jest, and Testing Library change across releases. Check framework
+> documentation for current API signatures and best practices.
+
+## File Guide
+- **e2e-testing.md** — E2E testing principles, Cypress and Playwright page objects, API setup
+- **unit-testing.md** — Unit testing patterns: AAA, mocking, error testing
+
 ## Test Pyramid
 
 | Level | Proportion | Speed | Scope |
@@ -110,39 +118,14 @@ test('GET /users/:id returns 404 when not found', async () => {
 - Simple utilities
 
 ### Prefer Dependency Injection
-```javascript
-// Testable: dependency injected
-class OrderService {
-  constructor(private paymentGateway: PaymentGateway) {}
 
-  async checkout(order: Order) {
-    return this.paymentGateway.charge(order.total);
-  }
-}
-
-// Test with mock
-const mockGateway = { charge: jest.fn().mockResolvedValue({ success: true }) };
-const service = new OrderService(mockGateway);
-```
+Inject dependencies via constructor parameters to enable easy mocking in tests. Test with mock implementations that verify interaction behavior.
 
 ## Test Data
 
 ### Factories
-```javascript
-// Use factories for consistent test data
-const createUser = (overrides = {}) => ({
-  id: faker.string.uuid(),
-  email: faker.internet.email(),
-  name: faker.person.fullName(),
-  ...overrides
-});
 
-test('displays user name', () => {
-  const user = createUser({ name: 'Alice' });
-  render(<UserProfile user={user} />);
-  expect(screen.getByText('Alice')).toBeInTheDocument();
-});
-```
+Use factory functions that return test objects with sensible defaults and accept overrides for test-specific values. Use libraries like `faker` for realistic random data.
 
 ### Database Seeding
 - Use transactions for isolation (rollback after each test)

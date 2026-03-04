@@ -6,6 +6,14 @@ user-invocable: false
 
 # Technical Writing
 
+> **Documentation Freshness**: Documentation tools (Docusaurus, Mintlify, ReadMe)
+> and standards evolve. Check current tool documentation for API reference
+> generation and hosting options.
+
+## File Guide
+- **api-docs.md** — REST API endpoint documentation template
+- **readme-template.md** — README structure with guidelines
+
 ## Core Principles
 
 - Write for the reader's goal, not the author's knowledge
@@ -24,54 +32,7 @@ user-invocable: false
 
 ## README Structure
 
-```markdown
-# Project Name
-
-One-paragraph description of what this project does and who it's for.
-
-## Quick Start
-
-\`\`\`bash
-npm install my-project
-\`\`\`
-
-\`\`\`javascript
-import { thing } from 'my-project';
-thing.doSomething();
-\`\`\`
-
-## Features
-
-- Feature one: Brief description
-- Feature two: Brief description
-
-## Installation
-
-Detailed installation instructions with prerequisites.
-
-## Usage
-
-### Basic Usage
-Code example with explanation.
-
-### Configuration
-Configuration options in a table or list.
-
-### Advanced Usage
-More complex examples.
-
-## API Reference
-
-Link to detailed API docs or include inline.
-
-## Contributing
-
-How to contribute, where to file issues.
-
-## License
-
-License type and link.
-```
+Project Name → Quick Start → Features → Installation → Usage → API Reference → Contributing → License. See **readme-template.md** for the full template with guidelines.
 
 ## API Documentation
 
@@ -98,44 +59,8 @@ License type and link.
 ```
 
 ### REST API Documentation
-```markdown
-## Create User
 
-Creates a new user account.
-
-### Request
-
-`POST /api/users`
-
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| email | string | Yes | User's email address |
-| name | string | Yes | User's display name |
-| role | string | No | User's role (default: "user") |
-
-### Response
-
-**Success (201 Created)**
-\`\`\`json
-{
-  "data": {
-    "id": "usr_abc123",
-    "email": "alice@example.com",
-    "name": "Alice"
-  }
-}
-\`\`\`
-
-**Error (400 Bad Request)**
-\`\`\`json
-{
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "Invalid email format"
-  }
-}
-\`\`\`
-```
+See **api-docs.md** for the endpoint documentation template: method, path, parameters, request/response bodies, error responses, and curl examples.
 
 ## Code Examples
 

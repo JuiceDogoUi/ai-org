@@ -279,7 +279,7 @@ Content:
   - Tauri: `npm run tauri dev`, `npm run tauri build`
   - Qt/QML: `cmake --build build`, `./build/app`, `ctest`
   - Populate for any stack chosen.
-  - For Tier 4: replace with a **Workflows section** listing available slash commands (`/prd`, `/position`, `/research`, `/article`, etc.) instead of dev commands
+  - For Tier 4: replace with a **Workflows section** listing available slash commands (`/feature`, `/explore`, `/copy`, etc.) instead of dev commands
 - **Project structure** section describing the directory layout:
   - `.claude/` — Claude Code configuration only (agents, commands, guides, plans)
   - `initiatives/` — Feature work with research, specs, and review reports (at project root)
@@ -441,6 +441,7 @@ Each command file has YAML frontmatter (name, description, argument-hint if appl
 
 | Command | Model | Description |
 |---------|-------|-------------|
+| `explore.md` | opus | Multi-angle exploration — market, competitors, technical feasibility |
 | `plan.md` | sonnet | Create an implementation plan for {project name} |
 | `build.md` | opus | Build a feature end-to-end with agent spawning |
 | `feature.md` | opus | Full product workflow — understand, research, build, review |
@@ -506,10 +507,14 @@ Tech stack: {framework}, {language}, {css approach}, {database}.
 
 Read `CLAUDE.md` for project conventions before starting.
 
-{Command-specific instructions from the corresponding ai-org plugin command — copy the workflow/phases relevant to this command, including Task() spawn examples for agents.}
+{Command-specific workflow — for commands with plugin templates, adapt the plugin's stages; for single-agent commands, spawn the agent via Task() with project context.}
 ```
 
-For the command-specific instructions, read the corresponding command file from the ai-org plugin's `commands/` directory and adapt its workflow to reference the project's tech stack, conventions, and agent spawn patterns.
+**Generating command content:**
+
+Commands with plugin templates (build, changelog, component, copy, explore, feature, review, status, test) — read the plugin's `commands/` file and adapt its workflow with project-specific context.
+
+All other commands are single-agent spawns — generate using the template above. The command should spawn the listed agent via Task(), pass it $ARGUMENTS with project context, and present the result. Exception: `refactor.md` is multi-stage — spawn reviewer-code for pre-review, then the refactoring agent, then reviewer-code for post-review.
 
 ### 4.10 Empty Directories
 
@@ -539,14 +544,15 @@ After generating everything, present:
 3. How to start using the project (adapt to tier):
    - (Tiers 1, 2, 3 only) "Run `{dev command}` to start the dev server"
    - "Use `/feature` to run the full product workflow (understand → research → build → review)"
-   - "Use `/plan` to plan your first feature"
+   - "Use `/explore` to research an idea before building"
    - (Tiers 1, 2, 3 only) "Use `/build` to implement it"
    - (Tiers 1, 2, 3 only) "Use `/review` to review your code before committing"
-   - (Tiers 2, 3, 4 only) "Use `/prd` to draft a product requirements document"
-   - (Tiers 3, 4 only) "Use `/position` to define your product positioning"
+   - "Use `/refine` to audit your Claude Code setup and find improvements"
 4. Suggested next steps:
    - Customize agent prompts in `.claude/agents/` as your project patterns emerge
    - Customize skills in `.claude/skills/` to match your project's conventions
    - Add project-specific conventions to `CLAUDE.md` as you establish them
    - (Tiers 2, 3, 4 only) Flesh out personas in `strategy/foundation/personas.md` (first slot is pre-populated)
    - (Tiers 2, 3, 4 only) Complete positioning in `strategy/foundation/positioning.md`
+
+> Related: `/migrate` to migrate an existing project, `/upgrade` to update an existing ai-org setup.

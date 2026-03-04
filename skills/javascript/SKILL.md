@@ -6,6 +6,15 @@ user-invocable: false
 
 # JavaScript Conventions
 
+> **Documentation Freshness**: Always check MDN Web Docs (developer.mozilla.org)
+> before generating code. Verify browser support for newer APIs like
+> `structuredClone`, `AbortSignal.timeout`, and `Array.groupBy`.
+
+## File Guide
+- **This file** — Modern syntax, array methods, DOM patterns, and common pitfalls
+- **patterns.md** — Module, cloning, and reactive patterns
+- **async-patterns.md** — async/await, cancellation, concurrency, and async iteration
+
 ## Modern Syntax
 - Use `const` by default, `let` when reassignment is needed, never `var`
 - Use arrow functions for callbacks and short functions

@@ -6,7 +6,7 @@ What to audit in each concern area. These are jurisdiction-agnostic — the spec
 
 Privacy concerns apply whenever the project collects, processes, or stores personal data.
 
-### What to check in the codebase:
+### What to check:
 
 **Data inventory**
 - What personal data is collected (name, email, IP, device ID, location, behavioral data, etc.)?
@@ -42,44 +42,13 @@ Privacy concerns apply whenever the project collects, processes, or stores perso
 
 Accessibility concerns apply to all user-facing interfaces — web, mobile, desktop.
 
-### What to check in the codebase:
-
-**Perceivable**
-- Do images have alt text? Are decorative images marked with empty alt?
-- Is color contrast sufficient for text and interactive elements?
-- Are there captions/transcripts for audio and video content?
-- Can content be resized to 200% without loss of functionality?
-- Is information conveyed by more than just color?
-
-**Operable**
-- Can all functionality be accessed via keyboard alone?
-- Is focus visible and follows a logical order?
-- Are there no keyboard traps?
-- Is there sufficient time for timed interactions (or can time limits be extended)?
-- Do animations respect `prefers-reduced-motion`?
-
-**Understandable**
-- Is the page language declared in HTML?
-- Are form labels associated with their inputs?
-- Are error messages specific and suggest corrections?
-- Is navigation consistent across pages?
-
-**Robust**
-- Is semantic HTML used instead of div/span for interactive elements?
-- Are ARIA attributes used correctly (and only when native HTML is insufficient)?
-- Does the interface work with common assistive technologies?
-
-**Testing approach**
-- Automated scanning (axe, Lighthouse) catches ~30% of accessibility issues
-- Keyboard-only navigation testing catches interaction barriers
-- Screen reader testing (VoiceOver, NVDA, JAWS) catches announcement issues
-- Manual review against applicable success criteria catches the rest
+For audit checklists organized by keyboard, images, forms, contrast, structure, and dynamic content, use `accessibility/checklist.md`. For WCAG conformance levels, commonly failed criteria, and testing methodology, see `wcag.md`.
 
 ## Data Security
 
 Data security concerns apply whenever the project handles sensitive data or operates infrastructure.
 
-### What to check in the codebase:
+### What to check:
 
 **Encryption**
 - Is data encrypted in transit (TLS for all connections)?
@@ -144,14 +113,4 @@ Cookie/tracking concerns apply to web applications that use cookies, tracking pi
 
 ## Industry-Specific
 
-Some industries have additional regulatory requirements. Common ones:
-
-| Industry | Concern | Regulations to research |
-|----------|---------|----------------------|
-| Healthcare | Protected health information (PHI) | HIPAA (US), PIPEDA health provisions (Canada), GDPR special categories (EU) |
-| Finance | Financial data, transaction security | PCI DSS, SOX, PSD2 (EU), GLBA (US) |
-| Education | Student data | FERPA (US), GDPR (EU) |
-| Children | Data from users under 13/16 | COPPA (US), GDPR Article 8 (EU), Age Appropriate Design Code (UK) |
-| Government | Public sector accessibility, data handling | Section 508 (US), EN 301 549 (EU), WCAG (all) |
-
-For industry-specific audits, research the applicable regulations from official sources based on the project's jurisdiction.
+Some industries have additional regulatory requirements (healthcare, finance, education, children's services, government). See `regulatory-landscape.md` for the full regulation map with jurisdictions and official sources.

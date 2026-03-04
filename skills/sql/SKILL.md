@@ -6,6 +6,10 @@ user-invocable: false
 
 # SQL Conventions
 
+> **Documentation Freshness**: SQL syntax varies across database engines. Always check
+> the official docs for your target database (PostgreSQL, MySQL, SQLite, etc.) before
+> using engine-specific features like window functions, CTEs, or JSON operators.
+
 ## Query Writing
 
 - Use uppercase for SQL keywords: `SELECT`, `FROM`, `WHERE`, `JOIN`

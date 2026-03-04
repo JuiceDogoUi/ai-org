@@ -6,6 +6,14 @@ user-invocable: false
 
 # Marketing Copy
 
+> **Documentation Freshness**: Conversion optimization best practices, email
+> deliverability rules, and platform-specific copy guidelines evolve. Check current
+> platform documentation and industry benchmarks for up-to-date guidance.
+
+## File Guide
+- **landing-pages.md** — Landing page copy structure: hero, problem, solution, social proof, CTA
+- **email-templates.md** — Email copy templates: welcome, feature announcement, re-engagement
+
 ## Core Principles
 
 - **Lead with benefits** — Features tell, benefits sell; answer "so what?" for every feature
@@ -30,41 +38,11 @@ user-invocable: false
 
 ## Landing Pages
 
-### Structure
-1. **Hero** — Headline + subhead + primary CTA + social proof hint
-2. **Problem** — Agitate the pain point the reader experiences
-3. **Solution** — How your product solves it (not feature list)
-4. **Benefits** — 3-4 key outcomes with supporting evidence
-5. **Social proof** — Testimonials, logos, case study snippets
-6. **Objection handling** — FAQ or comparison addressing doubts
-7. **CTA** — Repeat primary action with urgency/guarantee
-
-### Conversion Elements
-- Above-the-fold CTA visibility
-- Benefit-oriented button text ("Start free trial" not "Submit")
-- Trust badges and security indicators
-- Clear pricing or "no credit card required"
-- Exit intent offers for bouncing visitors
+Hero → Problem → Solution → Benefits → Social proof → Objection handling → CTA. See **landing-pages.md** for the full copy structure with section-by-section guidance.
 
 ## Email Campaigns
 
-### Subject Lines
-- Under 50 characters for mobile
-- Create curiosity or promise value
-- Personalization when genuine (not just {FIRST_NAME})
-- A/B test continuously
-
-### Email Structure
-- **Opening hook** — Why should they keep reading?
-- **Value or story** — Teach, entertain, or solve a problem
-- **Single CTA** — One clear action
-- **P.S. line** — Second chance for the CTA; high visibility
-
-### Sequences
-- Welcome: Set expectations, deliver promised value
-- Nurture: Build trust with useful content before selling
-- Sales: Clear offer, deadline, objection handling
-- Re-engagement: Acknowledge absence, provide value, ask to stay
+See **email-templates.md** for email copy templates (welcome, feature announcement, re-engagement) and subject line rules.
 
 ## Persuasion Principles
 

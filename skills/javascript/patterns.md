@@ -1,42 +1,13 @@
 # JavaScript Patterns
 
 ## Module Pattern
-```javascript
-export function createStore(initialState) {
-  let state = { ...initialState };
-  const listeners = new Set();
 
-  return {
-    getState: () => ({ ...state }),
-    setState(update) {
-      state = { ...state, ...update };
-      listeners.forEach(fn => fn(state));
-    },
-    subscribe(fn) {
-      listeners.add(fn);
-      return () => listeners.delete(fn);
-    }
-  };
-}
-```
+Use closures to encapsulate state with a public API. Export a factory function that returns an object with getter/setter/subscribe methods — keeps internal state private while exposing controlled access.
 
 ## Deep Clone
-```javascript
-export function deepClone(obj) {
-  return structuredClone(obj);
-}
-```
+
+Use `structuredClone(obj)` for deep cloning. Handles nested objects, arrays, Maps, Sets, Dates, and circular references. Check MDN for unsupported types (functions, DOM nodes, symbols).
 
 ## Proxy-Based Observable
-```javascript
-export function observable(target, onChange) {
-  return new Proxy(target, {
-    set(obj, prop, value) {
-      const old = obj[prop];
-      obj[prop] = value;
-      if (old !== value) onChange(prop, value, old);
-      return true;
-    }
-  });
-}
-```
+
+Use `Proxy` with a `set` trap to intercept property changes and trigger callbacks. Useful for reactive data binding in vanilla JS. Note: Proxies add overhead — use only when change detection is needed.

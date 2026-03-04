@@ -6,6 +6,10 @@ user-invocable: false
 
 # QI Framework Conventions
 
+> **Documentation Freshness**: The QI framework and NAOqi platform evolve across
+> SDK releases. API signatures and service interfaces may change. Check official
+> SoftBank Robotics / Aldebaran documentation for current APIs.
+
 ## Core Concepts
 
 - QI (pronounced "chee") is a middleware framework for robotics and embedded systems

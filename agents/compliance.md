@@ -1,10 +1,10 @@
 ---
 name: compliance
 description: >
-  Compliance specialist for privacy, accessibility, data security, licensing, and
-  regulatory requirements. Researches current regulations from official sources.
-  Read-only analysis producing audits and gap assessments. Does NOT modify code.
+  Compliance specialist. Use proactively for privacy, accessibility, data security,
+  licensing, and regulatory audits. Researches current regulations. Read-only.
 model: sonnet
+color: "#EF4444"
 memory: project
 tools:
   - Read

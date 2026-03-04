@@ -6,22 +6,25 @@ user-invocable: false
 
 # Accessibility (a11y)
 
-## WCAG 2.2 Principles
+> **Documentation Freshness**: Always check the official W3C WCAG specification
+> (w3.org/WAI/WCAG22) and WAI-ARIA Authoring Practices (w3.org/WAI/ARIA/apg)
+> before generating accessibility code. Standards evolve — verify current
+> success criteria, conformance levels, and recommended patterns against the source.
+
+## File Guide
+- **This file** — Core principles, semantic HTML, and best practices
+- **checklist.md** — Pre-ship verification checklist
+- **aria-patterns.md** — ARIA widget implementations (tabs, dialogs, menus, comboboxes)
+- **compliance-frameworks/wcag** — WCAG conformance levels, commonly failed criteria, and 2.2 changes
+
+## WCAG Principles
 
 1. **Perceivable**: Content available to all senses (alt text, captions, contrast)
 2. **Operable**: All functionality via keyboard, sufficient time, no seizure triggers
 3. **Understandable**: Readable, predictable, input assistance
 4. **Robust**: Compatible with assistive technologies
 
-### New in WCAG 2.2
-
-- **Focus Not Obscured (2.4.11)** — Focused element not fully hidden by other content
-- **Focus Appearance (2.4.13)** — Focus indicator has sufficient area and contrast
-- **Dragging Movements (2.5.7)** — Single pointer alternative for drag operations
-- **Target Size Minimum (2.5.8)** — Interactive targets at least 24x24 CSS pixels
-- **Consistent Help (3.2.6)** — Help mechanisms in consistent location across pages
-- **Redundant Entry (3.3.7)** — Don't require re-entering previously submitted info
-- **Accessible Authentication (3.3.8)** — No cognitive function tests (puzzles, memorization)
+For WCAG 2.2 additions (Focus Appearance, Dragging Movements, Target Size, Accessible Authentication, etc.), see `compliance-frameworks/wcag`.
 
 ## Semantic HTML
 
@@ -46,6 +49,19 @@ Use native HTML elements — they have built-in accessibility.
 - `<h1>`-`<h6>` in logical order (don't skip levels)
 - `<label>` associated with form inputs
 - `<table>` with `<th>` for tabular data
+- `<dialog>` for modals (handles focus trapping and Escape natively)
+
+### Skip Link
+
+Provide a skip link as the first focusable element so keyboard users can bypass navigation.
+
+```html
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<nav><!-- navigation --></nav>
+<main id="main-content"><!-- page content --></main>
+```
+
+Visually hide the link off-screen; reveal it on focus with `position: fixed` or similar.
 
 ## Images
 
@@ -72,19 +88,7 @@ Tools: WebAIM Contrast Checker, Chrome DevTools Accessibility panel
 
 ## Keyboard Accessibility
 
-```html
-<!-- Ensure focus visibility -->
-<style>
-  :focus {
-    outline: 2px solid #005fcc;
-    outline-offset: 2px;
-  }
-  /* Only hide outline for mouse users */
-  :focus:not(:focus-visible) {
-    outline: none;
-  }
-</style>
-```
+Use `:focus-visible` to show focus rings for keyboard users while hiding them for mouse users. Provide a visible `outline` with sufficient contrast on `:focus`, then suppress it on `:focus:not(:focus-visible)`.
 
 ### Requirements
 - All interactive elements reachable via Tab
@@ -115,15 +119,7 @@ Tools: WebAIM Contrast Checker, Chrome DevTools Accessibility panel
 
 First rule of ARIA: Don't use ARIA if native HTML works.
 
-```html
-<!-- Custom tab panel -->
-<div role="tablist" aria-label="Settings tabs">
-  <button role="tab" aria-selected="true" aria-controls="panel-1" id="tab-1">General</button>
-  <button role="tab" aria-selected="false" aria-controls="panel-2" id="tab-2">Security</button>
-</div>
-<div role="tabpanel" id="panel-1" aria-labelledby="tab-1">...</div>
-<div role="tabpanel" id="panel-2" aria-labelledby="tab-2" hidden>...</div>
-```
+For full widget implementations (tabs, dialogs, menus, comboboxes, tooltips), see `aria-patterns.md`.
 
 ### Common ARIA Attributes
 - `aria-label`: Label when no visible text exists
@@ -135,44 +131,30 @@ First rule of ARIA: Don't use ARIA if native HTML works.
 
 ## Dynamic Content
 
-```javascript
-// Announce updates to screen readers
-<div aria-live="polite" aria-atomic="true">
-  {statusMessage}
-</div>
+Use `aria-live` regions to announce content changes to screen readers. For toast/alert patterns, see `aria-patterns.md`.
 
-// Manage focus for modals
-function openModal() {
-  modal.showModal(); // <dialog> handles focus automatically
-}
+```html
+<!-- Container must exist in DOM before content is injected -->
+<div aria-live="polite" aria-atomic="true">
+  <!-- Updated dynamically via JS -->
+</div>
 ```
 
 ## Mobile Accessibility
 
-- Touch targets minimum 44x44 CSS pixels (WCAG 2.2: 24x24 minimum for Level AA)
+- Touch targets minimum 44x44 CSS pixels (see `compliance-frameworks/wcag` for AA minimums)
 - Labels announce tap actions
-- Swipe gestures have button alternatives (WCAG 2.2 Dragging Movements)
+- Swipe and drag gestures have single-pointer alternatives
 - Text scales with user font size settings
 
 ## Testing
 
-### Manual Testing
-- Navigate with keyboard only (Tab, Enter, Escape, arrows)
-- Test with screen reader (VoiceOver, NVDA, JAWS)
-- Zoom to 200%, verify layout doesn't break
-- Disable CSS, verify content order makes sense
+Automated tests catch ~30% of issues. Always combine with keyboard and screen reader testing.
+For a full testing strategy breakdown, see `compliance-frameworks/wcag`.
 
-### Automated Testing
-```javascript
-// axe-core integration
-import { axe } from 'jest-axe';
-
-test('has no accessibility violations', async () => {
-  const { container } = render(<MyComponent />);
-  const results = await axe(container);
-  expect(results).toHaveNoViolations();
-});
-```
+- **Automated scanning**: Integrate axe-core (or similar) into your test suite — check their docs for current API
+- **Keyboard testing**: Navigate the full interface with Tab, Enter, Escape, arrow keys
+- **Screen reader testing**: VoiceOver (macOS/iOS), NVDA (Windows), TalkBack (Android)
 
 ## Avoid
 
@@ -181,8 +163,6 @@ test('has no accessibility violations', async () => {
 - **Color-only information** — Add text, icons, or patterns alongside color
 - **Auto-playing media** — Provide pause controls; avoid autoplay
 - **Positive `tabindex` values** — Use `0` or `-1` only; positive values break natural order
-- **ARIA roles on wrong elements** — `role="button"` on a div still needs keyboard handling
-- **Missing alt text** — Every `<img>` needs `alt`; empty for decorative
-- **Inaccessible custom widgets** — Use native elements or follow ARIA Authoring Practices
-- **Relying solely on automated tests** — Automated tests catch ~30% of issues; manual testing required
 - **Mouse-only interactions** — Hover effects need keyboard/focus equivalents
+
+For ARIA-specific mistakes (redundant roles, `aria-hidden` on focusable elements, etc.), see `aria-patterns.md` > Common Mistakes.

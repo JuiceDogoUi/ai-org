@@ -1,10 +1,11 @@
 ---
 name: reviewer-content
 description: >
-  Content review specialist for all content types: technical docs, articles,
-  marketing copy, and UX text. Reviews clarity, tone, accessibility, SEO, and
-  i18n readiness. Read-only.
+  Content review specialist. Use proactively to review technical docs, articles,
+  marketing copy, and UX text for clarity, tone, accessibility, SEO, and i18n.
+  Read-only.
 model: sonnet
+color: "#8B5CF6"
 memory: project
 tools:
   - Read

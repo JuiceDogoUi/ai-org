@@ -6,6 +6,10 @@ user-invocable: false
 
 # Rust Conventions
 
+> **Documentation Freshness**: Always check docs.rs for crate APIs and
+> doc.rust-lang.org for language features. The async ecosystem and error
+> handling crates evolve rapidly — verify current versions and patterns.
+
 ## Language
 
 - Prefer borrowing (`&T`, `&mut T`) over ownership transfer when possible
@@ -43,6 +47,7 @@ user-invocable: false
 - Return `Result<T, String>` or custom error types from commands
 - Use Tauri's state management for shared application state
 - Configure permissions explicitly in `tauri.conf.json`
+- For Tauri-specific frontend/backend integration patterns, see `tauri` skill
 
 ## Naming
 

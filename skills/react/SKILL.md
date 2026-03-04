@@ -6,6 +6,10 @@ user-invocable: false
 
 # React Conventions
 
+> **Documentation Freshness**: Always check the official React documentation
+> (react.dev) before generating code. React 19 introduced new hooks and patterns —
+> verify current APIs, especially Server Components and Actions.
+
 ## Components
 
 - Use functional components exclusively (no class components)

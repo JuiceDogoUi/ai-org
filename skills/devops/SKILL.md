@@ -6,93 +6,30 @@ user-invocable: false
 
 # DevOps Conventions
 
+> **Documentation Freshness**: DevOps tooling evolves rapidly. Always check official
+> docs for Terraform (developer.hashicorp.com), Kubernetes (kubernetes.io), Docker
+> (docs.docker.com), and your CI platform for current syntax and best practices.
+
+## File Guide
+- **ci-cd.md** — Pipeline structure, caching, deployment strategies, environment management
+- **docker.md** — Multi-stage builds, Docker Compose for development, .dockerignore
+
 ## CI/CD Pipelines
 
-### Pipeline Design
-- Keep pipelines fast: parallelize independent jobs
-- Fail fast: run linting and unit tests before expensive steps
+- Keep pipelines fast: parallelize independent jobs, fail fast
 - Cache dependencies between runs
-- Use environment-specific configs (never hardcode secrets)
 - Tag releases with semantic versioning
 
-### Pipeline Stages
-```yaml
-stages:
-  - lint        # Fast feedback (seconds)
-  - test        # Unit tests (minutes)
-  - build       # Compile, bundle
-  - security    # SAST, dependency scan
-  - deploy-staging
-  - integration # E2E tests against staging
-  - deploy-prod
-```
-
-### Caching
-```yaml
-# Cache node_modules based on lockfile
-cache:
-  key: $CI_COMMIT_REF_SLUG-$CI_PROJECT_DIR/package-lock.json
-  paths:
-    - node_modules/
-```
+See **ci-cd.md** for pipeline structure, caching patterns, deployment strategies, and environment management.
 
 ## Docker
 
-### Dockerfile Best Practices
-```dockerfile
-# Use specific version, not latest
-FROM node:20-alpine AS builder
+- Use multi-stage builds to minimize image size
+- Pin base image versions (not `latest`)
+- Run as non-root user
+- Order layers for cache efficiency (dependencies before source)
 
-WORKDIR /app
-
-# Copy dependency files first (cache layer)
-COPY package*.json ./
-RUN npm ci --only=production
-
-# Copy source after dependencies
-COPY . .
-RUN npm run build
-
-# Production image
-FROM node:20-alpine
-WORKDIR /app
-
-# Run as non-root
-RUN addgroup -g 1001 appgroup && adduser -u 1001 -G appgroup -s /bin/sh -D appuser
-USER appuser
-
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-
-EXPOSE 3000
-CMD ["node", "dist/server.js"]
-```
-
-### Docker Compose
-```yaml
-services:
-  app:
-    build: .
-    ports:
-      - "3000:3000"
-    environment:
-      - DATABASE_URL=postgres://db:5432/app
-    depends_on:
-      db:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  db:
-    image: postgres:16-alpine
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-```
+See **docker.md** for Dockerfile patterns, Compose configuration, and .dockerignore.
 
 ## Infrastructure as Code
 
@@ -122,22 +59,7 @@ module "vpc" {
 
 ## Deployment Strategies
 
-### Blue-Green
-- Two identical environments
-- Switch traffic at load balancer
-- Instant rollback capability
-- Double infrastructure cost
-
-### Canary
-- Route small percentage to new version
-- Monitor error rates and latency
-- Gradually increase traffic
-- Rollback if metrics degrade
-
-### Rolling
-- Update instances incrementally
-- Maintain availability during deploy
-- Slower rollback (must redeploy previous)
+Choose based on risk tolerance and infrastructure: Blue-Green (instant rollback), Canary (gradual traffic shift), or Rolling (incremental update). See **ci-cd.md** for detailed patterns.
 
 ## Kubernetes Essentials
 

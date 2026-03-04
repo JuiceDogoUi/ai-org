@@ -1,9 +1,10 @@
 ---
 name: eng-architect
 description: >
-  Engineering leadership for architecture, planning, and complex technical decisions.
-  Use for system design, technical strategy, cross-team coordination, and ADRs.
+  Engineering architect. Use proactively for system design, technical strategy,
+  architecture decisions, cross-team coordination, and ADRs.
 model: opus
+color: "#F59E0B"
 memory: project
 tools:
   - Read
@@ -17,6 +18,7 @@ skills:
   - database-design
   - security
   - performance
+  - testing-strategy
   - devops
 ---
 

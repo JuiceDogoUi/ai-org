@@ -6,6 +6,14 @@ user-invocable: false
 
 # TypeScript Conventions
 
+> **Documentation Freshness**: TypeScript adds features every minor release — `satisfies`
+> (4.9+), `const` type parameters (5.0+), decorator metadata (5.2+). Check
+> typescriptlang.org/docs for your project's TypeScript version.
+
+## File Guide
+- **patterns.md** — Discriminated unions, branded types, type-safe event emitter, exhaustive switch
+- **tsconfig-guide.md** — Recommended compiler options and project references
+
 ## Type System
 
 - Prefer `interface` over `type` for object shapes (interfaces are extendable)

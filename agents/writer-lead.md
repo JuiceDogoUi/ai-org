@@ -1,9 +1,10 @@
 ---
 name: writer-lead
 description: >
-  Writing leadership for all content types: technical docs, articles, marketing copy,
-  and UX microcopy. Adapts approach based on format and audience. Use for any writing task.
+  Writing specialist. Use proactively for technical docs, articles, marketing copy,
+  UX microcopy, and any content creation task.
 model: sonnet
+color: "#EC4899"
 memory: project
 tools:
   - Read

@@ -1,9 +1,10 @@
 ---
 name: product-lead
 description: >
-  Senior product leadership for PRDs, strategy, metrics, and roadmaps.
-  Combines product management, analytics, and strategic planning.
+  Senior product lead. Use proactively for PRDs, product strategy, metrics
+  definition, roadmap planning, and strategic analysis.
 model: sonnet
+color: "#F59E0B"
 memory: project
 tools:
   - Read

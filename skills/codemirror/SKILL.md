@@ -6,6 +6,10 @@ user-invocable: false
 
 # CodeMirror 6 Conventions
 
+> **Documentation Freshness**: Always check the official CodeMirror documentation
+> (codemirror.net) before generating code. CM6 is modular with many packages —
+> verify current package names, imports, and API signatures.
+
 ## Architecture
 
 CodeMirror 6 is modular and functional — compose features from small packages.

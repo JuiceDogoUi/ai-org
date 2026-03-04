@@ -6,6 +6,15 @@ user-invocable: false
 
 # Java Conventions
 
+> **Documentation Freshness**: Always check the official Java and Spring Boot documentation
+> (docs.oracle.com/en/java, docs.spring.io) before generating code. Java LTS versions
+> and Spring Boot releases introduce significant API changes.
+
+## File Guide
+- **This file** — Language conventions, architecture, and common pitfalls
+- **patterns.md** — Records, sealed types, repository, and builder patterns
+- **spring-boot.md** — Controller, service, exception handler, and configuration patterns
+
 ## Language
 
 - Use Java 17+ features: records, sealed classes, pattern matching, text blocks

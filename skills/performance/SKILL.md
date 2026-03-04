@@ -6,6 +6,14 @@ user-invocable: false
 
 # Performance Engineering
 
+> **Documentation Freshness**: Web Vitals metrics and thresholds evolve — check
+> web.dev/vitals for current targets. Browser APIs (Performance Observer, Navigation
+> Timing) change across versions; verify on MDN.
+
+## File Guide
+- **optimization.md** — Code splitting, rendering, image, caching, and memory optimization patterns
+- **profiling.md** — Browser profiling, Web Vitals tracking, database query profiling, bundle analysis
+
 ## Core Principle
 
 Measure first, then optimize. Never optimize without data. Complexity impacts performance
@@ -125,16 +133,9 @@ Cache-Control: private, max-age=0, must-revalidate  # Dynamic content
 ```javascript
 // Cache expensive computations
 const memoizedFn = useMemo(() => expensiveComputation(input), [input]);
-
-// Or manual caching
-const cache = new Map();
-function expensive(key) {
-  if (cache.has(key)) return cache.get(key);
-  const result = computeExpensive(key);
-  cache.set(key, result);
-  return result;
-}
 ```
+
+For manual caching, use a Map-based cache-aside pattern with TTL and bounded size. See **optimization.md** for implementation patterns.
 
 ## Measurement Tools
 

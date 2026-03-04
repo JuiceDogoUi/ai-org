@@ -6,6 +6,10 @@ user-invocable: false
 
 # Tauri Conventions
 
+> **Documentation Freshness**: Tauri v2 introduced a new permissions model, plugin
+> system, and mobile support. APIs differ significantly from v1. Check v2.tauri.app
+> for current documentation.
+
 ## Architecture
 
 - Tauri apps have two parts: Rust backend (`src-tauri/`) and web frontend (`src/`)

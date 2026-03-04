@@ -75,23 +75,9 @@ LIMIT 20;
 ## Memory Leak Detection
 
 ### Node.js
-```javascript
-// Take heap snapshots at intervals
-const v8 = require('v8');
-const fs = require('fs');
-
-function takeHeapSnapshot(label) {
-  const snapshotStream = v8.writeHeapSnapshot();
-  console.log(`Heap snapshot written: ${snapshotStream} (${label})`);
-}
-
-// Compare heap sizes over time
-setInterval(() => {
-  const usage = process.memoryUsage();
-  console.log(`RSS: ${(usage.rss / 1024 / 1024).toFixed(1)}MB, ` +
-              `Heap: ${(usage.heapUsed / 1024 / 1024).toFixed(1)}MB`);
-}, 30000);
-```
+- Use `v8.writeHeapSnapshot()` to capture heap snapshots for comparison
+- Track `process.memoryUsage()` over time (RSS and heap) to detect growth
+- Use `--inspect` flag with Chrome DevTools Memory tab for visual analysis
 
 ### Browser
 - DevTools → Memory → Take heap snapshot

@@ -6,6 +6,10 @@ user-invocable: false
 
 # C++ Conventions
 
+> **Documentation Freshness**: C++ standards evolve across compiler releases —
+> C++20 (modules, concepts, ranges) and C++23 (`std::expected`, `std::print`) support
+> varies. Check cppreference.com and your compiler's documentation for current support.
+
 ## Modern C++ (C++17/20/23)
 
 - Use `auto` for type deduction when type is obvious

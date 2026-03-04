@@ -6,6 +6,10 @@ user-invocable: false
 
 # Vue Conventions
 
+> **Documentation Freshness**: Always check the official Vue documentation (vuejs.org)
+> before generating code. Vue 3.5+ introduced reactive props destructuring and
+> watcher improvements — verify current APIs for your target version.
+
 ## Components
 
 - Use `<script setup>` syntax (Composition API)

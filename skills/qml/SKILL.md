@@ -6,6 +6,10 @@ user-invocable: false
 
 # QML Conventions
 
+> **Documentation Freshness**: Qt 6 introduced breaking changes from Qt 5 — QML
+> imports, Qt Quick Controls, and property syntax differ across versions. Check
+> doc.qt.io for your Qt version's documentation.
+
 ## Language Basics
 
 - QML is declarative — describe what, not how

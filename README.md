@@ -1,6 +1,6 @@
 # ai-org
 
-A reusable AI organization plugin for Claude Code. Provides **18 specialist agents**, **22 commands**, and **40 skill domains** — a complete foundation for AI-assisted software development, product management, content creation, and operations.
+A reusable AI organization plugin for Claude Code. Provides **18 specialist agents**, **13 commands**, and **40 skill domains** — a complete foundation for AI-assisted software development, product management, content creation, and operations.
 
 Install once, use across every project. Personalize per project with `/onboard` or `/migrate`.
 
@@ -28,7 +28,7 @@ All installation commands run **inside a Claude Code session** (not your regular
 /plugin install ai-org@ai-org --scope project
 ```
 
-Commands become available as `/ai-org:plan`, `/ai-org:build`, `/ai-org:review`, etc. When ai-org is the only plugin, you can also use shorthand: `/plan`, `/build`, `/review`.
+Commands become available as `/ai-org:explore`, `/ai-org:build`, `/ai-org:review`, etc. When ai-org is the only plugin, you can also use shorthand: `/explore`, `/build`, `/review`.
 
 ## Quick Start
 
@@ -84,15 +84,11 @@ Claude Code acts as the workflow coordinator. Commands define explicit stages an
 |---------|-------------|-------|
 | `/feature` | Full product workflow — understand, research, build, review | opus |
 
-### Planning
+### Discovery
 
 | Command | Description | Model |
 |---------|-------------|-------|
-| `/plan` | Create an implementation plan | sonnet |
-| `/research` | Deep research with synthesis | opus (researcher) |
-| `/prd` | Product requirements document | opus (product-lead) |
-| `/position` | Define product positioning | opus (positioning) |
-| `/refactor` | Refactor code with pre/post review | sonnet |
+| `/explore` | Research an idea from all angles before deciding to build | opus |
 
 ### Building
 
@@ -100,24 +96,19 @@ Claude Code acts as the workflow coordinator. Commands define explicit stages an
 |---------|-------------|-------|
 | `/build` | Build a feature end-to-end with agent spawning | opus |
 | `/component` | Scaffold a UI component (spawns eng-frontend) | sonnet |
-| `/db-migrate` | Create a database migration (spawns eng-backend) | sonnet |
 | `/test` | Write tests (spawns eng-testing) | sonnet |
-| `/deploy` | Deployment workflow (spawns eng-devops) | sonnet |
 
 ### Review & Quality
 
 | Command | Description | Model |
 |---------|-------------|-------|
 | `/review` | 3-round review — spawns reviewer agents | sonnet |
-| `/audit` | Security and accessibility audit with agent spawning | sonnet |
-| `/perf` | Performance analysis (spawns eng-performance) | sonnet |
+| `/refine` | Score your Claude Code setup across 8 dimensions | sonnet |
 
 ### Writing
 
 | Command | Description | Model |
 |---------|-------------|-------|
-| `/article` | Write a blog post or article | opus (writer-lead) |
-| `/docs` | Generate documentation | opus (writer-lead) |
 | `/copy` | Marketing or UX copy | opus (writer-lead) |
 | `/changelog` | Generate changelog from commits | haiku |
 
@@ -234,11 +225,13 @@ Skills are domain knowledge packages — conventions, patterns, and reference ma
 Claude Code itself acts as the workflow coordinator. Commands define explicit stages and spawn specialist agents via the Task tool at each stage. This removes the need for a separate orchestrator agent.
 
 ```
-/test      →  Claude Code spawns eng-testing
-/component →  Claude Code spawns eng-frontend
-/review    →  Claude Code spawns reviewer agents in 3 rounds
+/explore   →  Claude Code spawns researcher + product-lead for multi-angle discovery
 /build     →  Claude Code analyzes, decomposes, and spawns domain agents
 /feature   →  Claude Code orchestrates 4 stages: understand → research → build → review
+/test      →  Claude Code detects framework, spawns eng-testing, runs tests
+/component →  Claude Code scans conventions, spawns eng-frontend, validates
+/review    →  Claude Code spawns reviewer agents in 3 rounds
+/refine    →  Claude Code scans project config and scores setup maturity
 ```
 
 ### Model Tiers

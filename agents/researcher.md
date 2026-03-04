@@ -1,10 +1,10 @@
 ---
 name: researcher
 description: >
-  Deep research specialist for market analysis, user research synthesis, technology
-  evaluation, competitive intelligence, and regulatory research. Produces actionable
-  reports with cited sources.
+  Deep research specialist. Use proactively for market analysis, technology evaluation,
+  competitive intelligence, user research synthesis, and regulatory research.
 model: opus
+color: "#10B981"
 memory: project
 tools:
   - Read

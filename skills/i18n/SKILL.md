@@ -6,6 +6,15 @@ user-invocable: false
 
 # Internationalization (i18n) & Localization (l10n)
 
+> **Documentation Freshness**: ICU MessageFormat spec, `Intl` browser APIs, and
+> framework i18n libraries (Angular Localize, react-i18next, vue-i18n) evolve
+> across releases. Check MDN for `Intl` APIs and framework docs for current usage.
+
+## File Guide
+- **angular-i18n.md** — Angular-specific i18n with `@angular/localize`, ICU in templates, XLIFF workflow
+- **icu-messages.md** — ICU MessageFormat reference: plurals, selects, gender, nesting, common mistakes
+- **workflow.md** — Translation workflow, file formats, directory structure, CI integration, quality checks
+
 ## Core Principles
 
 1. **Externalize all user-facing strings** — no hardcoded text in templates or code
@@ -45,32 +54,7 @@ user-invocable: false
 
 ## ICU MessageFormat
 
-### Pluralization
-```
-{count, plural,
-  =0 {No items in cart}
-  one {# item in cart}
-  other {# items in cart}
-}
-```
-
-### Select (Gender/Category)
-```
-{gender, select,
-  female {She liked your post}
-  male {He liked your post}
-  other {They liked your post}
-}
-```
-
-### Combined
-```
-{name} has {count, plural,
-  =0 {no new messages}
-  one {# new message}
-  other {# new messages}
-}
-```
+Use ICU MessageFormat for pluralization, gender/category selection, and combined patterns. See **icu-messages.md** for the full reference including plural categories by language, selectordinal, nesting, and common mistakes.
 
 ## Date/Time Formatting
 
@@ -162,15 +146,8 @@ function Component() {
 ```
 
 ### Angular (@angular/localize)
-```typescript
-// Component
-import { $localize } from '@angular/localize';
 
-const message = $localize`:@@welcome.title:Welcome to our app`;
-
-// Template
-<h1 i18n="@@welcome.title">Welcome to our app</h1>
-```
+See **angular-i18n.md** for Angular-specific i18n with `@angular/localize`, ICU in templates, XLIFF extraction, locale configuration, and RTL support.
 
 ### Vue (vue-i18n)
 ```vue
@@ -182,11 +159,7 @@ const message = $localize`:@@welcome.title:Welcome to our app`;
 
 ## Translation Workflow
 
-1. **Develop** with source strings in code
-2. **Extract** strings to resource files (JSON, XLIFF)
-3. **Translate** via TMS (Crowdin, Lokalise, Phrase)
-4. **Review** translations in context
-5. **Deploy** with bundled or lazy-loaded translations
+See **workflow.md** for the full translation workflow: file formats, directory structure, key naming, CI integration, and quality checks.
 
 ## Testing
 

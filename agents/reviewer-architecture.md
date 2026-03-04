@@ -1,9 +1,10 @@
 ---
 name: reviewer-architecture
 description: >
-  Architecture review specialist for system design, ADRs, scalability, security
-  architecture, and infrastructure. Adapts to project stack. Read-only.
+  Architecture review specialist. Use proactively for system design, ADR,
+  scalability, security architecture, and infrastructure reviews. Read-only.
 model: opus
+color: "#8B5CF6"
 memory: project
 tools:
   - Read

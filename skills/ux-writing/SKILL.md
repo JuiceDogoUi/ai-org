@@ -6,6 +6,14 @@ user-invocable: false
 
 # UX Writing
 
+> **Documentation Freshness**: UX writing practices evolve with accessibility
+> standards (WCAG), platform guidelines (Material Design, HIG), and inclusive
+> language best practices. Check current platform guidelines for up-to-date conventions.
+
+## File Guide
+- **error-messages.md** — Error message structure, examples, and rules
+- **patterns.md** — Confirmation dialogs, success messages, form labels, tooltip patterns
+
 ## Core Principles
 
 - **Clear over clever** — Users are completing tasks, not reading for fun
@@ -29,22 +37,7 @@ user-invocable: false
 
 ## Error Messages
 
-### Structure
-1. **What happened** — Clear, specific description
-2. **Why** — Context if helpful (optional)
-3. **How to fix** — Actionable next step
-
-### Examples
-- Bad: "Error 500"
-- Good: "We couldn't save your changes. Please try again."
-
-- Bad: "Invalid input"
-- Good: "Enter a valid email address (e.g., name@company.com)"
-
-### Tone
-- No blame: "Please enter a valid email" not "You entered an invalid email"
-- No jargon: "Something went wrong" not "Exception in thread main"
-- Specific: "File must be under 10MB" not "File too large"
+What happened → Why → How to fix. See **error-messages.md** for structure, examples, and rules.
 
 ## Empty States
 
@@ -61,9 +54,7 @@ user-invocable: false
 
 ## Confirmations
 
-- Confirm what will happen before destructive actions
-- Use specific language: "Delete 'Project Alpha'? This cannot be undone."
-- Match button text to action: "Delete project" not "OK"
+See **patterns.md** for confirmation dialog structure: title, consequence, action and cancel button text.
 
 ## Onboarding
 
@@ -74,16 +65,11 @@ user-invocable: false
 
 ## Success Messages
 
-- Confirm the action completed: "Project created"
-- Suggest next step if relevant: "Project created. Invite your team to get started."
-- Don't over-celebrate routine actions
+Confirm the action, suggest a next step when relevant, and auto-dismiss for routine actions. See **patterns.md** for patterns and examples.
 
 ## Tooltips & Help Text
 
-- Keep under 150 characters
-- Answer "what is this?" or "why should I care?"
-- Use for non-obvious features, not obvious ones
-- Link to docs for complex topics
+See **patterns.md** for tooltip patterns. Keep under 150 characters, explain what something does, and link to docs for complex topics.
 
 ## Capitalization
 

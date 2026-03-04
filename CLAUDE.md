@@ -1,7 +1,7 @@
 # AI Organization Plugin
 
 ## Interaction Model
-- Users invoke slash commands (e.g., /plan, /build, /review) for known workflows
+- Users invoke slash commands (e.g., /explore, /build, /review) for known workflows
 - Claude Code acts as the workflow coordinator, spawning specialist agents via Task() at each stage
 - Commands define explicit stages with Task() spawns — no separate orchestrator agent
 - Agents invoke skills as domain references; skills are NOT absorbed into agent identity
@@ -25,6 +25,12 @@ Complex commands use a hybrid of subagents and teams:
 - Only one team can exist at a time — sequential phases use subagents, not teams
 - Engineering agents (eng-frontend, eng-backend, eng-api, eng-styles, eng-testing) are
   team-aware and can coordinate via SendMessage and shared task lists when spawned as teammates
+
+## Documentation Freshness
+When writing code that uses external libraries, agents must use WebSearch or WebFetch
+to verify current API signatures before generating code. Do not rely on training data
+for library APIs — always check official docs for accurate function signatures, parameters,
+and return types. If docs contradict training data, trust the docs.
 
 ## Skill Isolation
 Skills are domain knowledge containers -- reference material and conventions.

@@ -66,8 +66,10 @@ const response = await fetch('/api/data', {
 
 // Cancel from elsewhere
 controller.abort();
+```
 
-// Timeout pattern
+### Timeout with AbortController
+```javascript
 const controller = new AbortController();
 const timeoutId = setTimeout(() => controller.abort(), 5000);
 
@@ -93,53 +95,15 @@ const response = await fetch('/api/data', {
 ```
 
 ## Retry Pattern
-```javascript
-async function withRetry(fn, { maxAttempts = 3, delayMs = 1000, backoff = 2 } = {}) {
-  let lastError;
-  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-    try {
-      return await fn();
-    } catch (error) {
-      lastError = error;
-      if (attempt < maxAttempts) {
-        const delay = delayMs * Math.pow(backoff, attempt - 1);
-        await new Promise(resolve => setTimeout(resolve, delay));
-      }
-    }
-  }
-  throw lastError;
-}
 
-// Usage
-const data = await withRetry(() => fetch('/api/flaky-endpoint'), {
-  maxAttempts: 3,
-  delayMs: 500,
-});
-```
+Wrap async calls in a retry loop with exponential backoff. Accept `maxAttempts`, `delayMs`, and `backoff` multiplier as options. Multiply delay by the backoff factor on each attempt. Re-throw the last error after all attempts are exhausted.
 
 ## Throttle and Debounce
-```javascript
-// Debounce: wait until calls stop, then execute once
-function debounce(fn, ms) {
-  let timer;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn(...args), ms);
-  };
-}
 
-// Throttle: execute at most once per interval
-function throttle(fn, ms) {
-  let lastCall = 0;
-  return (...args) => {
-    const now = Date.now();
-    if (now - lastCall >= ms) {
-      lastCall = now;
-      fn(...args);
-    }
-  };
-}
-```
+- **Debounce**: Return a wrapper that clears and resets a `setTimeout` on each call — executes once after calls stop.
+- **Throttle**: Return a wrapper that tracks the last call time and only executes if the interval has elapsed.
+
+For production use, check if the project already has a utility library (lodash, etc.) before implementing from scratch.
 
 ## Async Iteration
 ```javascript
@@ -164,24 +128,5 @@ for await (const item of fetchAllPages('/api/products')) {
 ```
 
 ## Queue Pattern
-```javascript
-// Process items with concurrency limit
-async function processQueue(items, fn, concurrency = 5) {
-  const results = [];
-  let index = 0;
 
-  async function worker() {
-    while (index < items.length) {
-      const i = index++;
-      results[i] = await fn(items[i]);
-    }
-  }
-
-  const workers = Array.from({ length: concurrency }, () => worker());
-  await Promise.all(workers);
-  return results;
-}
-
-// Usage: process 100 items, 5 at a time
-await processQueue(urls, url => fetch(url), 5);
-```
+Process items with a concurrency limit: spawn N worker functions that pull from a shared index, each awaiting `fn(item)` in a loop. Use `Promise.all` on the workers. This bounds concurrent operations (e.g., 5 parallel fetches for 100 URLs). For production use, consider existing libraries like `p-limit` or `p-queue`.

@@ -1,11 +1,11 @@
 ---
 name: positioning
 description: >
-  Product positioning specialist using April Dunford's "Obviously Awesome"
-  methodology. Works through competitive alternatives, unique attributes,
-  value mapping, target customer characteristics, market category, and
-  relevant trends to produce defensible positioning.
+  Product positioning specialist using April Dunford's methodology. Use proactively
+  for competitive positioning, market category definition, and value proposition
+  development.
 model: opus
+color: "#10B981"
 memory: project
 tools:
   - Read

@@ -6,6 +6,10 @@ user-invocable: false
 
 # Kotlin Conventions
 
+> **Documentation Freshness**: Kotlin and Jetpack Compose evolve across releases —
+> new language features, Compose APIs, and coroutine patterns change frequently.
+> Check kotlinlang.org and developer.android.com for current APIs.
+
 ## Language
 
 - Use `val` over `var` — immutability by default

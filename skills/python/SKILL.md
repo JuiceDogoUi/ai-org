@@ -6,9 +6,13 @@ user-invocable: false
 
 # Python Conventions
 
+> **Documentation Freshness**: Always check docs.python.org for the target Python
+> version. Features like pattern matching (3.10+), `TaskGroup` (3.11+), and type
+> syntax (`X | Y`) are version-gated — verify availability for your project's minimum version.
+
 ## Language
 
-- Use Python 3.10+ features: pattern matching, structural typing, walrus operator
+- Use modern features: walrus operator (3.8+), pattern matching (3.10+), structural typing (3.10+)
 - Prefer f-strings over `.format()` or `%` formatting
 - Use type hints everywhere — `def func(name: str) -> int:`
 - Prefer `pathlib.Path` over `os.path` for file operations

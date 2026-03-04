@@ -6,11 +6,19 @@ user-invocable: false
 
 # Security Conventions
 
+> **Documentation Freshness**: Security threats and best practices evolve constantly.
+> Check OWASP (owasp.org) for current Top 10, cheat sheets, and testing guides.
+> Verify cryptographic recommendations against current NIST guidelines.
+
+## File Guide
+- **auth-patterns.md** — JWT flow, token guidelines, password rules, session management
+- **vulnerability-checklist.md** — Quick-scan security verification checklist
+
 ## OWASP Top 10 (2021)
 
 | ID | Category | Prevention |
 |----|----------|------------|
-| A01 | Broken Access Control | Check authz on every request, deny by default, RBAC. Includes SSRF—validate URLs, allowlist destinations |
+| A01 | Broken Access Control | Check authz on every request, deny by default, RBAC |
 | A02 | Cryptographic Failures | TLS everywhere, AES-256/RSA-2048+, secure key storage |
 | A03 | Injection | Parameterized queries, input validation, output encoding |
 | A04 | Insecure Design | Threat modeling, secure defaults, least privilege |
@@ -44,28 +52,7 @@ const validated = schema.parse(input);
 
 ## Authentication
 
-### Password Handling
-```javascript
-// Preferred: Argon2id (OWASP recommendation)
-const hash = await argon2.hash(password, { type: argon2.argon2id });
-const valid = await argon2.verify(hash, password);
-
-// Alternative: bcrypt (still acceptable)
-const hash = await bcrypt.hash(password, 12); // cost factor 12+
-const valid = await bcrypt.compare(password, hash);
-```
-
-### Token Patterns
-- Short-lived JWTs (15min) with refresh tokens (7 days)
-- Store refresh tokens securely (httpOnly cookie or secure storage)
-- Include minimal claims in JWT (user ID, roles)
-- Validate signature, expiration, issuer, audience
-
-### Session Security
-- Regenerate session ID on login
-- Expire sessions after inactivity
-- Single session or explicit multi-session management
-- Invalidate sessions on password change
+See **auth-patterns.md** for JWT flow, token guidelines, password hashing (Argon2id preferred, bcrypt acceptable), and session management patterns.
 
 ## Authorization
 

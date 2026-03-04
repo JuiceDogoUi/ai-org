@@ -26,20 +26,31 @@ Common accessible widget implementations following WAI-ARIA Authoring Practices.
 
 ## Modal Dialog
 
+Prefer the native `<dialog>` element — it handles focus trapping, Escape to close, and background scroll prevention automatically.
+
 ```html
-<div role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+<dialog id="confirm-dialog" aria-labelledby="dialog-title">
   <h2 id="dialog-title">Confirm deletion</h2>
   <p>Are you sure you want to delete this item?</p>
-  <button>Cancel</button>
-  <button>Delete</button>
-</div>
+  <button value="cancel">Cancel</button>
+  <button value="confirm">Delete</button>
+</dialog>
 ```
 
-**Requirements**:
-- Trap focus inside the dialog (Tab cycles within)
-- Close on Escape key
-- Return focus to the trigger element on close
-- Prevent scroll on background content
+```javascript
+// Open: focus moves into dialog automatically
+document.getElementById('confirm-dialog').showModal();
+
+// Close: focus returns to the trigger element automatically
+document.getElementById('confirm-dialog').close();
+```
+
+**What `<dialog>` gives you for free**: focus trapping, Escape key close, background inert, focus restoration on close.
+
+**Still required**:
+- Set `aria-labelledby` to reference the dialog heading
+- Style the `::backdrop` for visual contrast
+- Handle the `close` event for cleanup logic
 
 ## Disclosure (Accordion)
 
@@ -95,20 +106,21 @@ Update `aria-expanded` when list opens/closes. Update `aria-activedescendant` to
 ## Toast / Alert
 
 ```html
-<!-- Polite: announced after current speech -->
-<div role="status" aria-live="polite">
+<!-- role="status" implies aria-live="polite" — announced after current speech -->
+<div role="status">
   Settings saved successfully.
 </div>
 
-<!-- Assertive: interrupts current speech (use sparingly) -->
-<div role="alert" aria-live="assertive">
+<!-- role="alert" implies aria-live="assertive" — interrupts current speech (use sparingly) -->
+<div role="alert">
   Error: Payment failed. Please try again.
 </div>
 ```
 
 **Rules**:
 - The live region container must exist in DOM before content is added
-- Use `polite` for success messages, `assertive` for errors
+- Use `role="status"` for success messages, `role="alert"` for errors
+- Don't add explicit `aria-live` when the role already implies it
 - Don't overuse -- too many announcements overwhelm screen reader users
 
 ## Tooltip

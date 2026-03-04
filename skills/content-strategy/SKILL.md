@@ -6,12 +6,17 @@ user-invocable: false
 
 # Content Strategy
 
+> **Documentation Freshness**: SEO algorithms and ranking factors change frequently —
+> check Google Search Central and industry sources for current best practices.
+> Content format preferences evolve with platform changes.
+
+## File Guide
+- **article-structure.md** — Templates for How-To, Comparison, and Thought Leadership articles
+- **seo-guidelines.md** — On-page SEO, content optimization, and technical SEO checklist
+
 ## Article Structure
 
-1. **Hook** — Open with a problem, question, or surprising fact
-2. **Context** — Why this matters to the reader right now
-3. **Body** — Deliver value with clear sections and examples
-4. **Conclusion** — Summarize key takeaways, include CTA
+Hook → Context → Body → Conclusion. See **article-structure.md** for templates by article type (How-To, Comparison, Thought Leadership).
 
 ## Writing Style
 
@@ -51,29 +56,7 @@ user-invocable: false
 
 ## SEO Fundamentals
 
-### Keywords
-- Primary keyword in title, first paragraph, and 1-2 subheadings
-- Secondary keywords naturally throughout
-- Long-tail variations for depth
-- Search intent match (informational vs. transactional)
-
-### On-Page Elements
-- Title tag: Under 60 characters, keyword near front
-- Meta description: Under 160 characters, includes keyword, compelling
-- URL slug: Short, descriptive, includes keyword
-- Image alt text: Descriptive, keyword-relevant
-
-### Structure
-- H1 for title (one per page)
-- H2 for major sections
-- H3 for subsections
-- Internal links to 2-3 related articles
-- External links to 1-2 authoritative sources
-
-### Technical
-- Page load speed matters for ranking
-- Mobile-friendly layout
-- Schema markup for rich results (FAQ, HowTo, Article)
+Target one primary keyword per article, match search intent, and optimize on-page elements. See **seo-guidelines.md** for the full SEO checklist (on-page, content optimization, technical SEO).
 
 ## Editorial Calendar
 

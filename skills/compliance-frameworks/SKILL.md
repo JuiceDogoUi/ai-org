@@ -6,7 +6,21 @@ user-invocable: false
 
 # Compliance Frameworks
 
+> **Documentation Freshness**: Regulations change frequently. Always research current
+> requirements from official regulatory body websites before conducting audits.
+> Do not rely on this skill alone — verify every requirement against the official
+> source for the applicable jurisdiction and version.
+
 A methodology-first approach to regulatory compliance. Regulations vary by jurisdiction, industry, data type, and project scope — this skill teaches how to identify what applies, how to audit against it, and how to report findings. The compliance agent uses web research to pull current, jurisdiction-specific requirements from official sources at audit time.
+
+## File Guide
+- **This file** — Concern overview, principles, and common pitfalls
+- **concerns.md** — What to audit in each concern area (privacy, data security, licensing, cookies)
+- **regulatory-landscape.md** — Regulation map with jurisdictions, applicability, and official sources
+- **audit-methodology.md** — 4-phase audit process (scope → analyze → assess → report) with templates
+- **gdpr.md** — GDPR quick reference (EU privacy)
+- **wcag.md** — WCAG quick reference (accessibility standards and testing)
+- **sox.md** — SOX quick reference (US financial reporting IT controls)
 
 ## Concern Areas
 
@@ -47,12 +61,8 @@ See [Audit Methodology](audit-methodology.md) for the full workflow and report t
 ## Avoid
 
 - **Assuming regulations** — Always verify which regulations apply to specific jurisdictions and data types
-- **Blog posts as sources** — Use official regulatory body websites, not third-party summaries
-- **Conflating requirement with recommendation** — Clearly distinguish legal mandates from best practices
-- **Providing legal advice** — Flag ambiguous areas for qualified legal counsel
 - **One-time audits** — Regulations change; schedule periodic reviews
 - **Checkbox compliance** — Implement the spirit, not just the letter of requirements
 - **Ignoring enforcement actions** — Regulatory fines and decisions clarify interpretation
 - **Siloed compliance** — Privacy, accessibility, and security overlap; coordinate efforts
-- **Documentation gaps** — Maintain audit trails and evidence of compliance measures
 - **Vendor assumption** — Third-party tools don't guarantee compliance; verify their claims

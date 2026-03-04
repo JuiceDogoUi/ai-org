@@ -21,23 +21,19 @@ async function renderChart(data: ChartData) {
 ```
 
 ### Rendering Performance
-```typescript
-// Debounce expensive operations
-function debounce<T extends (...args: any[]) => void>(fn: T, ms: number): T {
-  let timer: ReturnType<typeof setTimeout>;
-  return ((...args: any[]) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn(...args), ms);
-  }) as T;
-}
 
-// Virtual scrolling for large lists (Angular CDK)
+Debounce expensive operations — clear and reset a `setTimeout` on each call. Use a library like `lodash-es/debounce` if available.
+
+```html
+<!-- Virtual scrolling for large lists (Angular CDK) -->
 <cdk-virtual-scroll-viewport itemSize="48" class="list">
   <div *cdkVirtualFor="let item of items" class="item">
     {{ item.name }}
   </div>
 </cdk-virtual-scroll-viewport>
+```
 
+```typescript
 // Avoid layout thrashing: batch reads, then batch writes
 const heights = elements.map(el => el.offsetHeight); // batch read
 elements.forEach((el, i) => {
@@ -83,41 +79,12 @@ LIMIT 20;
 ```
 
 ### N+1 Query Elimination
-```typescript
-// BAD: N+1 queries
-const users = await db.query('SELECT * FROM users LIMIT 100');
-for (const user of users) {
-  user.orders = await db.query('SELECT * FROM orders WHERE user_id = ?', [user.id]);
-}
 
-// GOOD: Batch load with IN clause
-const users = await db.query('SELECT * FROM users LIMIT 100');
-const userIds = users.map(u => u.id);
-const orders = await db.query('SELECT * FROM orders WHERE user_id IN (?)', [userIds]);
-const ordersByUser = groupBy(orders, 'user_id');
-users.forEach(u => u.orders = ordersByUser[u.id] || []);
-```
+Use JOINs, IN clauses, or eager loading to batch related data fetches. See the `database-design` skill for SQL patterns and examples.
 
 ### Caching Patterns
-```typescript
-// Cache-aside pattern with TTL
-class CacheAside<T> {
-  constructor(
-    private cache: Map<string, { value: T; expires: number }>,
-    private ttlMs: number
-  ) {}
 
-  async get(key: string, loader: () => Promise<T>): Promise<T> {
-    const cached = this.cache.get(key);
-    if (cached && cached.expires > Date.now()) {
-      return cached.value;
-    }
-    const value = await loader();
-    this.cache.set(key, { value, expires: Date.now() + this.ttlMs });
-    return value;
-  }
-}
-```
+**Cache-aside with TTL**: Check cache first; on miss, load from source, store with expiration. Use a `Map<string, { value: T; expires: number }>` or a library like `node-cache` or `lru-cache`.
 
 ### Connection Pooling
 ```typescript
@@ -156,28 +123,6 @@ class MyComponent implements OnDestroy {
 
 // Use WeakMap/WeakRef for caches keyed by objects
 const metadata = new WeakMap<Element, Metadata>();
-
-// Bound size for LRU caches
-class LRUCache<K, V> {
-  private map = new Map<K, V>();
-  constructor(private maxSize: number) {}
-
-  get(key: K): V | undefined {
-    const value = this.map.get(key);
-    if (value !== undefined) {
-      this.map.delete(key);
-      this.map.set(key, value);
-    }
-    return value;
-  }
-
-  set(key: K, value: V): void {
-    this.map.delete(key);
-    this.map.set(key, value);
-    if (this.map.size > this.maxSize) {
-      const oldest = this.map.keys().next().value;
-      this.map.delete(oldest);
-    }
-  }
-}
 ```
+
+Bound LRU caches with a max size — use a `Map` where `get` re-inserts to maintain recency, and `set` evicts the oldest entry when full. For production use, consider `lru-cache` from npm.

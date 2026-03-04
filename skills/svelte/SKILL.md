@@ -6,6 +6,10 @@ user-invocable: false
 
 # Svelte Conventions
 
+> **Documentation Freshness**: Svelte 5 introduced runes (`$state`, `$derived`,
+> `$effect`) replacing the `$:` reactive syntax. SvelteKit APIs evolve across
+> releases. Check svelte.dev for current syntax and migration guidance.
+
 ## Components
 
 - One component per `.svelte` file

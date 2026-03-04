@@ -6,6 +6,14 @@ user-invocable: false
 
 # Competitive Analysis
 
+> **Documentation Freshness**: Competitive analysis frameworks are well-established,
+> but market dynamics, review platforms, and data sources evolve. Verify competitor
+> data against current sources and refresh analysis quarterly.
+
+## File Guide
+- **frameworks.md** — Porter's Five Forces, SWOT, JTBD, Value Chain Analysis, and Competitive Response Matrix
+- **analysis-template.md** — Fill-in template for competitive analysis reports
+
 ## Research Framework
 
 1. **Identify competitors** — Direct, indirect, and potential
@@ -72,30 +80,13 @@ user-invocable: false
 
 ## Strategic Frameworks
 
-### SWOT
-- **Strengths** — Internal advantages
-- **Weaknesses** — Internal disadvantages
-- **Opportunities** — External factors to exploit
-- **Threats** — External factors to mitigate
-
-### Porter's Five Forces
-- Threat of new entrants
-- Bargaining power of suppliers
-- Bargaining power of buyers
-- Threat of substitutes
-- Competitive rivalry
-
-### Jobs to Be Done
-- What job is the customer hiring the product to do?
-- What are the functional, emotional, and social dimensions?
-- Where do competitors over-serve or under-serve?
+See **frameworks.md** for detailed frameworks: SWOT, Porter's Five Forces, Jobs to Be Done, Value Chain Analysis, and Competitive Response Matrix.
 
 ## Output Formats
 
 ### Comparison Matrix
-| Feature | Us | Competitor A | Competitor B |
-|---------|-----|--------------|--------------|
-| Feature 1 | ✓ | ✓ | ✗ |
+
+See **analysis-template.md** for the feature comparison template and full report structure.
 
 ### Competitive Landscape Map
 - Plot competitors on 2x2 matrix (e.g., price vs. complexity)
