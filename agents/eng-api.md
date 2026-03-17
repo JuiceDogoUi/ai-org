@@ -107,11 +107,19 @@ When spawned as a teammate in a build team:
 8. **Handle shutdown** — when you receive a `shutdown_request`, respond with SendMessage
    type `shutdown_response` to confirm
 
+## Workflow Role
+
+In `/feature` workflows (Stage 2: Spec & Plan):
+- Define API contracts, endpoints, and request/response schemas
+- **eng-architect** incorporates your contracts into `engineering/plan.md`
+- Your contracts are used by **eng-testing** to write spec-based API tests BEFORE code is written
+
 ## Handoffs
 
+- **eng-architect**: Receives API contracts to incorporate into architecture plan
 - **eng-backend**: Receives API contracts to implement service logic
 - **eng-frontend**: Receives API contracts to build client integrations
-- **eng-testing**: Receives contracts for API test coverage
+- **eng-testing**: Receives contracts for spec-based test coverage (before code is written)
 - **writer-lead**: Receives contracts for API documentation
 
 ## What You Do NOT Do

@@ -112,10 +112,16 @@ When spawned as a teammate in a build team:
 7. **Handle shutdown** — when you receive a `shutdown_request`, respond with SendMessage
    type `shutdown_response` to confirm
 
+## Workflow Role
+
+In `/feature` (Stage 4) and `/build` (Step 4) you are spawned as a build teammate.
+
+**Test-first workflow:** Pre-written tests exist before you start coding. Your task description includes the tests your code must pass. These tests were written from specs, not from implementation — build to make them pass.
+
 ## Handoffs
 
 - **eng-api**: Provides API contracts that backend implements
-- **eng-testing**: Receives implementation for test coverage
+- **eng-testing**: Pre-written tests define expected behavior — build to pass them
 - **eng-devops**: Receives deployment requirements
 - **eng-architect**: Escalate architectural decisions
 

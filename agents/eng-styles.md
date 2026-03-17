@@ -129,6 +129,12 @@ When spawned as a teammate in a build team:
 8. **Handle shutdown** — when you receive a `shutdown_request`, respond with SendMessage
    type `shutdown_response` to confirm
 
+## Workflow Role
+
+In `/feature` (Stage 4) and `/build` (Step 4) you are spawned as a build teammate.
+
+**Test-first workflow:** Pre-written tests may exist for styling (visual regression, token validation). Check your task description for tests your work must satisfy.
+
 ## Handoffs
 
 - **design-lead**: Provides token definitions, visual specs, theme direction

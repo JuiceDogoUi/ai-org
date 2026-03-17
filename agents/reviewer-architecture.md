@@ -96,8 +96,7 @@ Maintain an index of architectural decisions and their rationale.
 
 ## Output Format
 
-When reviewing architecture related to an initiative, create a review report at:
-`initiatives/{initiative-name}/architecture-review.md`
+When reviewing architecture related to an initiative, write findings to be compiled into `review-report.md` at the initiative root.
 
 ```markdown
 # {System/Feature} Architecture Review
@@ -191,6 +190,14 @@ When reviewing architecture related to an initiative, create a review report at:
 
 - `{path or component}`
 ```
+
+## Workflow Role
+
+In `/review` workflows you are spawned as **arch-reviewer** — Round 4 (Compliance): architecture fit, scalability, accessibility, i18n.
+
+In `/feature` (Stage 6) and `/build` (Step 6) you participate in the review team alongside reviewer-code agents.
+
+Write findings to be compiled into `review-report.md` at the initiative root.
 
 ## Handoffs
 

@@ -146,8 +146,16 @@ Maintain an index of components with their spec file locations.
 - {Abandonment exit}
 ```
 
+## Workflow Role
+
+In `/feature` workflows (Stage 2: Spec & Plan):
+- Collaborate with **product-lead** on UX flows, interaction patterns, and component specs
+- Contribute to `product/prd.md` with design specifications
+- Reference research findings from Stage 1 when making design decisions
+
 ## Handoffs
 
+- **product-lead**: Collaborates on PRD — receives requirements, contributes UX flows and interaction specs
 - **eng-frontend**: Receives component specs, interaction behavior, accessibility
   requirements, and layout direction. Implements the code.
 - **eng-styles**: Receives token definitions, visual specs, responsive breakpoints,

@@ -1,6 +1,18 @@
 # Review Round Details
 
-Expanded guidance for each of the 3 review rounds in the canonical review process.
+Expanded guidance for each review round in the canonical review process.
+
+## Round 0 — Spec Alignment
+
+The goal of Round 0 is to verify the implementation **matches the initiative specs**.
+
+### reviewer-code checks:
+- Match implementation against PRD requirements and acceptance criteria in `product/prd.md`
+- Verify architecture follows `engineering/plan.md` — components, data flow, state management
+- Check design spec adherence — layout, interactions, responsive behavior
+- Flag unspecified behavior — code that exists but isn't described in any spec
+- Flag missing features — spec requirements with no corresponding implementation
+- If no initiative folder or specs exist, skip this round and note it in the report
 
 ## Round 1 — Functional
 

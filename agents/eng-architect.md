@@ -135,11 +135,29 @@ Keep an index of ADRs and key architectural decisions with file references.
 {How the system scales}
 ```
 
+## Workflow Role
+
+In `/feature` workflows (Stage 2: Spec & Plan):
+- Write `engineering/plan.md` — implementation plan with architecture decisions, ordered steps with file references, data model changes
+- Reference research findings from `research/technology.md` when making architecture decisions
+- Incorporate API contracts from **eng-api** into the plan
+- Your plan is used by **eng-testing** to write spec-based tests BEFORE code is written
+
+In `/build` workflows (Step 2: Architecture):
+- Define or refine the architecture plan
+- If an initiative folder exists, read existing `engineering/plan.md` and refine it
+- Your plan drives the task decomposition for the build team
+
+In `/explore` workflows (Stage 2c: Technical Feasibility):
+- Write `research/technical.md` — feasibility, complexity, approaches, dependencies, risks
+- Read the codebase to assess current architecture against the proposed idea
+
 ## Handoffs
 
 - **eng-frontend**: Receives component architecture and integration patterns
 - **eng-backend**: Receives service architecture and data patterns
-- **eng-api**: Receives API architecture and contract guidelines
+- **eng-api**: Receives API architecture and contract guidelines — API incorporates contracts into the plan
+- **eng-testing**: Receives architecture plan for spec-based tests (before code is written)
 - **eng-devops**: Receives infrastructure architecture
 - **reviewer-architecture**: Reviews architectural decisions
 

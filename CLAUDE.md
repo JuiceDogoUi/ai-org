@@ -2,8 +2,8 @@
 
 ## Interaction Model
 - Users invoke slash commands (e.g., /explore, /build, /review) for known workflows
-- Claude Code acts as the workflow coordinator, spawning specialist agents via Task() at each stage
-- Commands define explicit stages with Task() spawns — no separate orchestrator agent
+- Claude Code acts as the team lead, creating agent teams for complex workflows and spawning single agents for simple tasks
+- Workflow commands use TeamCreate/TeamDelete for parallel phases, subagents for sequential work
 - Agents invoke skills as domain references; skills are NOT absorbed into agent identity
 - Each agent has scoped skills declared in its frontmatter
 
@@ -13,18 +13,17 @@
 - **Haiku**: Fast lookup, code exploration, simple formatting, status checks
 
 ## Coordination Principle
-Commands define explicit workflows. Simple commands spawn a single agent directly.
-Complex commands (like /build, /feature, /review) define stages and spawn multiple agents.
-Claude Code coordinates the workflow — there is no separate orchestrator agent.
+Claude Code acts as the team lead. Workflow commands create agent teams with shared task
+lists, direct messaging, and parallel execution. Simple commands spawn a single agent.
 
-## Hybrid Coordination Model
-Complex commands use a hybrid of subagents and teams:
-- **Subagents** for sequential phases (research, review) where peer communication is not needed
-- **Teams** for parallel build phases where engineers need to coordinate directly
-- Claude Code creates one team per build phase, manages its lifecycle, and tears it down after
-- Only one team can exist at a time — sequential phases use subagents, not teams
-- Engineering agents (eng-frontend, eng-backend, eng-api, eng-styles, eng-testing) are
-  team-aware and can coordinate via SendMessage and shared task lists when spawned as teammates
+## Team Orchestration Model
+Complex commands (/feature, /build, /review) use agent teams:
+- **Team lead** (Claude Code) creates teams, spawns teammates, coordinates work
+- **Teammates** work in parallel, communicate directly via SendMessage
+- **Shared task list** with TaskCreate/TaskUpdate — teammates self-claim unblocked tasks
+- **Challenger** is a permanent team member, not a separate gate — reviews at key inflection points
+- Teams are created per phase (build team, review team) and torn down after
+- Subagents used for sequential single-agent work (research, testing) where peer communication is not needed
 
 ## Documentation Freshness
 When writing code that uses external libraries, agents must use WebSearch or WebFetch

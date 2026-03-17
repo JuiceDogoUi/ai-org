@@ -90,12 +90,10 @@ Scan the project without asking the user anything. Gather all available context:
 - List `.claude/` directory if it exists
 - Read ALL files in `.claude/agents/` — note each agent's name, model, tools, skills, and system prompt
 - Read ALL files in `.claude/commands/` — note each command's routing
-- Read ALL files in `.claude/guides/` — note what topics they cover
 - List all directories in `.claude/agent-memory/` — note which agents have memory (PRESERVE these)
 - Check `strategy/` at the project root — note what exists (foundation, research, etc.)
 - Check `.claude/strategy/` — detect if strategy is in the old location
 - Check `initiatives/` at the project root — note if it exists and what initiatives are present
-- Check `.claude/plans/` — note any existing plans
 
 ### 1.3 Understand Project Context
 
@@ -168,7 +166,6 @@ Present a clear summary to the user:
 - CLAUDE.md: {found/not found} ({line count} lines)
 - Agents: {count} found ({list names})
 - Commands: {count} found ({list names})
-- Guides: {count} found ({list names})
 - Agent Memory: {count} agents with memory in .claude/agent-memory/ — will be PRESERVED
 - Strategy: {found at strategy/ / found at .claude/strategy/ (old location) / not found}
 
@@ -199,6 +196,9 @@ Then ask:
    - **Tier 3 (Full stack)** — adds strategy, positioning, content writing, marketing, compliance
    - **Tier 4 (Product & Strategy only)** — no coding agents; only product, design, strategy, and writing
 3. Do you want agents created for the uncovered roles within the chosen tier?
+4. **If Tier 3 is selected**: Does this project have a blog or social media presence? (yes / no)
+   - If yes → install the `marketing` skill and include it in writer-lead's skill list
+   - If no → skip the `marketing` skill
 
 The confirmed tier controls which uncovered roles get offered for creation. Do NOT offer to create agents outside the chosen tier scope (e.g., don't offer eng-frontend for Tier 4, don't offer positioning for Tier 1).
 
@@ -211,7 +211,7 @@ Based on scan results, role mapping, and user answers, create a categorized migr
 **PRESERVE** — Existing files that will be left completely untouched:
 - All existing agent files that cover an ai-org role (they already work — do not create duplicates)
 - All existing commands that reference existing agents
-- All existing guides and strategy documents
+- All existing strategy documents
 - List each file and why it's being preserved
 
 **ENHANCE** — Existing files that will have ai-org enhancements added:
@@ -227,7 +227,7 @@ Based on scan results, role mapping, and user answers, create a categorized migr
 
 **CREATE** — New files only for UNCOVERED roles within the chosen tier:
 - Only create new ai-org agents for roles that NO existing agent covers AND that fall within the user's chosen workspace scope tier
-- Use the tier-to-agent mapping defined in section 4.7 below
+- Use the tier-to-agent mapping defined in section 4.6 below
 - New agents get project-specific system prompts based on scan results
 - Each new agent's prompt includes: "Always read CLAUDE.md for project conventions before starting work."
 - List each file and its purpose
@@ -308,7 +308,7 @@ For each existing agent that maps to an ai-org role:
 - Installed Skills table
 - Agent Memory section (as described above)
 - Project structure section explaining:
-  - `.claude/` — Claude Code configuration only (agents, commands, guides, plans, agent-memory)
+  - `.claude/` — Claude Code configuration only (agents, commands, skills, agent-memory)
   - `.claude/agent-memory/` — Persistent agent memory (committed to git for team sharing)
   - `initiatives/` — Feature work with research, specs, and review reports (at project root)
   - `strategy/` — Product and research team documents (at project root, Tiers 2, 3, 4 only)
@@ -321,10 +321,10 @@ For uncovered roles only (roles where NO existing agent was mapped) AND within t
 
 | Tier | Agents Included |
 |------|-----------------|
-| **Tier 1 (Coding only)** | eng-architect, eng-testing, eng-security, reviewer-code, reviewer-architecture, writer-lead (technical-writing only), + stack-conditional: eng-frontend, eng-styles (if UI), eng-backend, eng-api (if backend), eng-devops, eng-performance (if team 2+) |
+| **Tier 1 (Coding only)** | eng-architect, eng-testing, eng-security, challenger, reviewer-code, reviewer-architecture, writer-lead (technical-writing only), + stack-conditional: eng-frontend, eng-styles (if UI), eng-backend, eng-api (if backend), eng-devops, eng-performance (if team 2+) |
 | **Tier 2 (Coding + Product)** | All Tier 1 + product-lead, design-lead. writer-lead gains full skills. |
 | **Tier 3 (Full stack)** | All Tier 2 + positioning, researcher, reviewer-content, compliance |
-| **Tier 4 (Product & Strategy)** | writer-lead, product-lead, design-lead, positioning, researcher, reviewer-content, compliance. NO eng-* agents. |
+| **Tier 4 (Product & Strategy)** | writer-lead, challenger, product-lead, design-lead, positioning, researcher, reviewer-content, compliance. NO eng-* agents. |
 
 **Creation rules**:
 - For Tier 1: do NOT create positioning, researcher, reviewer-content, compliance, or product/design agents
@@ -336,11 +336,6 @@ For uncovered roles only (roles where NO existing agent was mapped) AND within t
 - Reference the actual project name, tech stack, and conventions detected
 
 ### 4.7 Create Missing Structure
-
-**Guides** (if `.claude/guides/` is missing or incomplete):
-- `development.md` — For Tiers 1-3: populated from detected package.json scripts, build tools, linting config. For Tier 4: document workflow overview, folder structure conventions, available slash commands.
-- `contributing.md` — populated from detected code quality tools and conventions
-- `content-creation.md` — Tiers 3 and 4 only. Content workflow: brand voice, target personas, SEO, review process, publishing checklist.
 
 **Strategy** (Tiers 2, 3, and 4 only — skip for Tier 1):
 If `strategy/` is missing or incomplete at the project root:
@@ -362,7 +357,7 @@ Generate project-level commands that route to the project's agents (using actual
 | build.md | All | opus | Build a feature with agent spawning |
 | feature.md | All | opus | Full product workflow with stages |
 | explore.md | All | opus | Multi-angle exploration with agent spawning |
-| review.md | All | sonnet | 3-round review with agent spawning |
+| review.md | All | opus | 4-round review — spec alignment, functional, quality, compliance |
 | docs.md | All | sonnet | Generate documentation (spawns writer-lead) |
 | changelog.md | All | haiku | Generate changelog |
 | status.md | All | haiku | Project status report |
@@ -376,7 +371,7 @@ Generate project-level commands that route to the project's agents (using actual
 | prd.md | 2, 3, 4 | sonnet | Product requirements (spawns product-lead) |
 | position.md | 3, 4 | sonnet | Product positioning (spawns positioning) |
 | research.md | 3, 4 | sonnet | Deep research (spawns researcher) |
-| article.md | 3, 4 | sonnet | Blog post or article (spawns writer-lead) |
+| article.md | 3, 4 | sonnet | Blog post or article (spawns writer-lead) — Tier 3: only if blog/social confirmed |
 | copy.md | 3, 4 | sonnet | Marketing or UX copy (spawns writer-lead) |
 
 Each command includes project-specific context (detected tech stack, project name from README).
@@ -388,14 +383,13 @@ Commands with plugin templates (build, changelog, component, copy, explore, feat
 All other commands are single-agent spawns — generate using the detected project context. The command should spawn the listed agent via Task(), pass it $ARGUMENTS with project context, and present the result. Exception: `refactor.md` is multi-stage — spawn reviewer-code for pre-review, then the refactoring agent, then reviewer-code for post-review.
 
 **Directories** (if missing):
-- `.claude/plans/`
 - `initiatives/`
 
 **Version file**:
 Create `.claude/version.json`:
 ```json
 {
-  "aiOrgVersion": "1.0.0",
+  "aiOrgVersion": "2.0.0",
   "installedAt": "{ISO timestamp}",
   "migratedFrom": "existing-project"
 }

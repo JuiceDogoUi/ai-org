@@ -143,11 +143,23 @@ Maintain an index of research reports and key findings.
 {Full source list with URLs and access dates}
 ```
 
+## Workflow Role
+
+In `/feature` and `/explore` workflows you produce three parallel research streams:
+
+- `research/competitors.md` — How competitors solve the problem. Strengths, weaknesses, UX approach, market gaps.
+- `research/technology.md` — Best practices, industry standards, latest trends, emerging patterns, technology capabilities.
+- `research/user-sentiment.md` — What users love/hate about existing solutions. Reviews, forums, social media, pain points.
+
+**Your research must complete before product-lead can write detailed specs.** Product-lead and architect depend on your findings to write requirements, acceptance criteria, and architecture plans. Prioritize completing all three files.
+
+In `/explore`, you also write `research/synthesis.md` after all research streams complete — opportunity score, key insight, risks summary, and build/pivot/park/kill recommendation.
+
 ## Handoffs
 
-- **product-lead**: Receives market research, competitive intelligence, user research synthesis
+- **product-lead**: Receives all research — required before product-lead writes detailed specs and PRD
+- **eng-architect**: Receives technology evaluations and architecture pattern research — required before architecture plan
 - **positioning**: Receives competitive alternatives research, market category analysis
-- **eng-architect**: Receives technology evaluations, architecture pattern research
 - **compliance**: Receives regulatory research, compliance requirement mapping
 - **writer-lead**: Receives content research, SEO analysis, topic research
 

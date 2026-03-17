@@ -96,84 +96,40 @@ Build a checklist of project-specific review points over time.
 
 ## Output Format
 
-When reviewing code related to an initiative, create a review report at:
-`initiatives/{initiative-name}/review.md`
+When reviewing code related to an initiative, write findings to be compiled into `review-report.md` at the initiative root.
+
+## Workflow Role
+
+In `/review` workflows you may be spawned as one of several specialized reviewers in a team:
+- **spec-reviewer**: Verify implementation matches `product/prd.md` and `engineering/plan.md`
+- **func-reviewer**: Verify correctness, edge cases, error handling
+- **quality-reviewer**: Assess code patterns, performance, security
+
+In `/feature` (Stage 6) and `/build` (Step 6) you participate in the review team alongside reviewer-architecture.
 
 ```markdown
-# {Feature} Code Review
+# {Review Type} Findings
 
-**Date:** {YYYY-MM-DD}
-**Reviewer:** reviewer-code
-**Status:** {READY | NOT READY | NEEDS FIXES}
+**Reviewer:** reviewer-code ({role})
 
-## Summary
+## Issues
 
-| Metric | Value |
-|--------|-------|
-| Total Issues | {N} |
-| Critical | {N} |
-| Major | {N} |
-| Minor | {N} |
-
----
-
-## Round 1: Functional Review
-
-Does the code work correctly?
-
-### Critical Issues
-#### 1.1 {Issue Title}
+### Critical
+#### {Issue Title}
 **File:** `{path}:{line}`
-**Severity:** Critical
 **Issue:** {description}
 **Fix:** {suggested fix}
 
-### Major Issues
+### Major
 {...}
 
-### Minor Issues
+### Minor
 {...}
-
----
-
-## Round 2: Quality Review
-
-Is the code well-written?
-
-### Security Issues
-{...}
-
-### Performance Issues
-{...}
-
-### Maintainability Issues
-{...}
-
----
 
 ## Positive Notes
-
 {Well-implemented patterns worth highlighting}
 
----
-
-## Action Plan
-
-### Priority 1 (Blockers)
-1. {Critical fix}
-2. {Critical fix}
-
-### Priority 2 (Should Fix)
-1. {Major fix}
-
-### Priority 3 (Nice to Have)
-1. {Minor fix}
-
----
-
 ## Files Reviewed
-
-- `{path}`
 - `{path}`
 ```
 

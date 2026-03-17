@@ -1,6 +1,6 @@
 # ai-org
 
-A reusable AI organization plugin for Claude Code. Provides **18 specialist agents**, **13 commands**, and **40 skill domains** — a complete foundation for AI-assisted software development, product management, content creation, and operations.
+A reusable AI organization plugin for Claude Code. Provides **19 specialist agents**, **13 commands**, and **41 skill domains** — a complete foundation for AI-assisted software development, product management, content creation, and operations.
 
 Install once, use across every project. Personalize per project with `/onboard` or `/migrate`.
 
@@ -51,7 +51,6 @@ Then it generates a complete personalized structure:
 
 - **CLAUDE.md** — project playbook with tech stack, commands, conventions, agent reference
 - **Project-specific agents** — scaled to team size (5 core agents plus stack-specific agents for solo developers, additional operational and review agents for teams), each with project-specific system prompts referencing your stack and business context
-- **Guides** — development setup, contributing guidelines (for teams), deployment checklist
 - **Strategy skeleton** — persona and positioning templates pre-populated from your business context
 - **Project scaffold** — directories and config files for your chosen framework (skipped if project files already exist)
 
@@ -66,7 +65,7 @@ cd my-existing-project
 The `/migrate` command scans your project automatically — no questions needed upfront:
 
 1. **Detects tech stack** from config files (package.json, tsconfig, angular.json, etc.)
-2. **Reads existing Claude configuration** (CLAUDE.md, agents, guides, strategy)
+2. **Reads existing Claude configuration** (CLAUDE.md, agents, strategy)
 3. **Maps existing agents to ai-org roles** by reading their system prompts (not name matching)
 4. **Presents a categorized migration plan**: preserve existing agents that already cover roles, enhance them with skill references, create agents only for uncovered roles
 5. **Backs up every file** before modifying anything
@@ -76,13 +75,13 @@ Existing agents are never duplicated, renamed, or overwritten. ai-org fills gaps
 
 ## Commands
 
-Claude Code acts as the workflow coordinator. Commands define explicit stages and spawn specialist agents via Task() as needed.
+Claude Code acts as the team lead. Workflow commands create agent teams with shared task lists, direct messaging, and parallel execution. Simple commands spawn a single agent.
 
 ### Workflow
 
 | Command | Description | Model |
 |---------|-------------|-------|
-| `/feature` | Full product workflow — understand, research, build, review | opus |
+| `/feature` | Full product workflow — discover, spec, test, build, validate, review | opus |
 
 ### Discovery
 
@@ -102,7 +101,7 @@ Claude Code acts as the workflow coordinator. Commands define explicit stages an
 
 | Command | Description | Model |
 |---------|-------------|-------|
-| `/review` | 3-round review — spawns reviewer agents | sonnet |
+| `/review` | 4-round review — spec alignment, functional, quality, compliance | opus |
 | `/refine` | Score your Claude Code setup across 8 dimensions | sonnet |
 
 ### Writing
@@ -163,6 +162,12 @@ Claude Code acts as the workflow coordinator. Commands define explicit stages an
 | researcher | opus | research-methodology, competitive-analysis, product-analytics, positioning, content-strategy, compliance-frameworks, security, performance, accessibility | All research: market, user, technology, competitive, regulatory |
 | compliance | opus | compliance-frameworks, accessibility, review-process | Regulatory compliance audits with web research (read-only) |
 
+### Quality Assurance (1)
+
+| Agent | Model | Skills | Role |
+|-------|-------|--------|------|
+| challenger | opus | (context-adaptive) | Devil's advocate — challenges assumptions, decisions, and outputs at every workflow stage (read-only) |
+
 ### Review (3)
 
 | Agent | Model | Skills | Role |
@@ -194,6 +199,7 @@ Skills are domain knowledge packages — conventions, patterns, and reference ma
 | java | Java 17+ patterns, records, sealed interfaces, Spring Boot conventions |
 | javascript | Modern JS patterns, async/await, DOM APIs, module patterns |
 | kotlin | Kotlin language patterns, Jetpack Compose, Android conventions |
+| marketing | Blog articles, social media posts, content planning — Tier 3 only, requires blog/social presence |
 | marketing-copy | Landing page frameworks, email templates, conversion copy |
 | performance | Core Web Vitals, profiling patterns, optimization techniques |
 | positioning | April Dunford's "Obviously Awesome" positioning methodology |
@@ -204,7 +210,7 @@ Skills are domain knowledge packages — conventions, patterns, and reference ma
 | qml | QML and Qt Quick conventions, component patterns, property bindings |
 | react | React patterns, hooks, Server Components, state management |
 | research-methodology | Research frameworks, literature review methods, source evaluation, synthesis |
-| review-process | 3-round review framework, round details, output format |
+| review-process | 4-round review framework — spec alignment, functional, quality, compliance |
 | rust | Rust language patterns, ownership, lifetimes, Tauri integration |
 | security | OWASP Top 10, auth patterns (JWT, OAuth), vulnerability checklist |
 | sql | SQL query patterns, optimization, and database best practices |
@@ -220,25 +226,25 @@ Skills are domain knowledge packages — conventions, patterns, and reference ma
 
 ## Architecture
 
-### Claude Code as Coordinator
+### Claude Code as Team Lead
 
-Claude Code itself acts as the workflow coordinator. Commands define explicit stages and spawn specialist agents via the Task tool at each stage. This removes the need for a separate orchestrator agent.
+Claude Code acts as the team lead. Workflow commands create agent teams with shared task lists, direct messaging between teammates, and parallel execution. Simple commands spawn a single agent via Task().
 
 ```
-/explore   →  Claude Code spawns researcher + product-lead for multi-angle discovery
-/build     →  Claude Code analyzes, decomposes, and spawns domain agents
-/feature   →  Claude Code orchestrates 4 stages: understand → research → build → review
-/test      →  Claude Code detects framework, spawns eng-testing, runs tests
-/component →  Claude Code scans conventions, spawns eng-frontend, validates
-/review    →  Claude Code spawns reviewer agents in 3 rounds
-/refine    →  Claude Code scans project config and scores setup maturity
+/feature   →  6-stage team workflow: discover → spec → test → build → validate → review
+/build     →  Team build: analyze → architecture → test → build → validate → review
+/explore   →  Parallel research: market + competitors + technical → synthesis → challenge
+/review    →  4-round team review: spec alignment → functional → quality → compliance
+/test      →  Spawns eng-testing, runs tests
+/component →  Scans conventions, spawns eng-frontend, validates
+/refine    →  Scans project config and scores setup maturity
 ```
 
 ### Model Tiers
 
 | Tier | Agents | Use Case |
 |------|--------|----------|
-| Opus (8) | eng-architect, product-lead, design-lead, writer-lead, positioning, researcher, reviewer-architecture, compliance | Complex reasoning, architecture, strategy, regulatory analysis |
+| Opus (9) | eng-architect, product-lead, design-lead, writer-lead, positioning, researcher, reviewer-architecture, compliance, challenger | Complex reasoning, architecture, strategy, regulatory analysis, devil's advocacy |
 | Sonnet (10) | eng-frontend, eng-backend, eng-api, eng-styles, eng-devops, eng-testing, eng-security, eng-performance, reviewer-code, reviewer-content | Standard implementation, focused tasks |
 | Haiku (2 commands) | changelog, status | Fast lookup, simple aggregation |
 
@@ -252,10 +258,10 @@ Skills are reference material, not identity. An agent's system prompt defines HO
 
 ### Direct vs Delegated Agents
 
-Commands are workflows — they trigger teams, flows, and multi-agent processes, not single agents. Of the 18 agents, 11 have direct command spawning and 7 are delegation-only, reached when Claude Code or a workflow decomposes work via the Task tool:
+Commands are workflows — they trigger teams, flows, and multi-agent processes, not single agents. Of the 19 agents, 11 have direct command spawning and 8 are delegation-only, reached when Claude Code or a workflow decomposes work via the Task tool:
 
 - **Direct** (11): eng-architect, eng-frontend, eng-backend, eng-api, eng-devops, eng-testing, eng-performance, positioning, product-lead, researcher, writer-lead
-- **Delegated** (7): eng-styles, eng-security, design-lead, compliance, reviewer-code, reviewer-content, reviewer-architecture
+- **Delegated** (8): eng-styles, eng-security, design-lead, compliance, challenger, reviewer-code, reviewer-content, reviewer-architecture
 
 Delegated agents are fully functional — they simply participate in multi-agent workflows (like `/review`, `/build`, `/feature`) rather than owning a standalone command.
 
@@ -264,6 +270,7 @@ Delegated agents are fully functional — they simply participate in multi-agent
 These agents have no Write or Edit tools — they analyze and recommend but cannot modify code:
 
 - **Security-sensitive**: eng-security, eng-performance, compliance
+- **Quality assurance**: challenger
 - **Review**: reviewer-code, reviewer-content, reviewer-architecture
 - **Design**: design-lead
 
@@ -275,7 +282,7 @@ ai-org provides a general foundation. Real projects need specific context — yo
 
 ```
 Project root
-├── .claude/                  ←  Agent infrastructure: agents, guides, commands, plans
+├── .claude/                  ←  Agent infrastructure: agents, commands, skills
 ├── strategy/                 ←  Product artifacts: personas, positioning, research
 ├── initiatives/              ←  Feature workflows: initiative docs, specs, reviews
 │
@@ -289,7 +296,7 @@ Project root
 2. **Project agents** in `.claude/agents/` shadow ai-org's generic agents with project-specific system prompts
 3. **Project agents reference ai-org skills** via the `skills:` frontmatter field — they get the knowledge without losing project context
 4. **Strategy docs** (personas, positioning, competitive research) give agents business context that no generic plugin can provide
-5. **Guides** encode your team's specific workflows (how to create content, how to deploy, how to contribute)
+5. **Skills** can be customized per project — the `marketing` skill (Tier 3, blog/social) provides article and social media guidelines that you adapt to your brand
 
 ### What Each Layer Provides
 

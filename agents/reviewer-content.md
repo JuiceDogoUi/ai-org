@@ -114,8 +114,7 @@ Build a project-specific content checklist over time.
 
 ## Output Format
 
-When reviewing content related to an initiative, create a review report at:
-`initiatives/{initiative-name}/content-review.md`
+When reviewing content related to an initiative, write findings to be compiled into `review-report.md` at the initiative root.
 
 ```markdown
 # {Content Title} Review

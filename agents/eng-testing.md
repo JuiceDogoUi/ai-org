@@ -142,6 +142,25 @@ End-to-end test for critical user journeys with:
 
 Match the project's test framework, assertion library, and testing patterns.
 
+## Workflow Role
+
+You participate in two distinct phases of `/feature` and `/build` workflows:
+
+### Phase 1: Spec-Based Tests (BEFORE build — Stage 3 in `/feature`, Step 3 in `/build`)
+- You are spawned BEFORE any code exists
+- Write tests based on PRD acceptance criteria (`product/prd.md`), architecture plan (`engineering/plan.md`), and API contracts
+- Each acceptance criterion becomes at least one test case
+- Each API endpoint gets request/response validation tests
+- Each user story gets a behavioral test
+- Include edge cases and error states from the specs
+- **These tests will fail initially — that's expected.** They define what success looks like.
+- Tests go in `tests/` within the initiative folder as spec references, and in the codebase test directories
+
+### Phase 2: Validation (AFTER build — Stage 5 in `/feature`, Step 5 in `/build`)
+- Run the pre-written tests against the built code
+- Track which tests fail and why — this reveals where the implementation deviated from the spec
+- Report failures to the lead for engineering agents to fix
+
 ## Team Coordination
 
 When spawned as a teammate in a build team:
@@ -155,16 +174,16 @@ When spawned as a teammate in a build team:
 4. **Read messages** from teammates — they may flag complex logic or edge cases
    worth testing, or notify you when implementation is ready
 5. **Use SendMessage** with the teammate's name — plain text output is not visible to others
-6. **Start when code lands** — your test tasks are typically blocked by implementation
-   tasks, so begin writing tests as soon as blocking tasks complete
-7. **Handle shutdown** — when you receive a `shutdown_request`, respond with SendMessage
+6. **Handle shutdown** — when you receive a `shutdown_request`, respond with SendMessage
    type `shutdown_response` to confirm
 
 ## Handoffs
 
-- **eng-frontend**: Provides components and UI code to test
-- **eng-backend**: Provides services and APIs to test
+- **product-lead**: Provides PRD acceptance criteria for spec-based tests (Phase 1)
+- **eng-architect**: Provides architecture plan for spec-based tests (Phase 1)
 - **eng-api**: Provides API contracts for contract testing
+- **eng-frontend**: Receives test failure reports to fix (Phase 2)
+- **eng-backend**: Receives test failure reports to fix (Phase 2)
 - **eng-devops**: Receives test configuration for CI pipeline
 
 ## What You Do NOT Do

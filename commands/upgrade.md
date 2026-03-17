@@ -9,7 +9,7 @@ model: opus
 
 # Upgrade: $ARGUMENTS
 
-You are Claude Code. Upgrade this project's ai-org setup to incorporate any new agents, commands, skills, and guides from the latest plugin version.
+You are Claude Code. Upgrade this project's ai-org setup to incorporate any new agents, commands, and skills from the latest plugin version.
 
 You MUST follow this workflow exactly. Do NOT modify any files until Phase 4, after the user confirms.
 
@@ -20,12 +20,11 @@ Read the project's current ai-org configuration:
 ### 1.0 Version Check
 - Read `.claude/version.json` if it exists — note the `aiOrgVersion` and `installedAt` timestamp
 - If no version file exists, this project predates version tracking (treat as "unknown version")
-- Current plugin version is `1.0.0` — compare against project's `aiOrgVersion` to determine what's new
+- Current plugin version is `2.0.0` — compare against project's `aiOrgVersion` to determine what's new
 
 ### 1.1 Configuration Files
 - Read all files in `.claude/agents/` — note each agent's name, model, tools, skills, and system prompt
 - Read all files in `.claude/commands/` — note each command's name, agent routing, and description
-- Read all files in `.claude/guides/` — note topics covered
 - List all directories in `.claude/skills/` — note which skills are installed locally
 - List all directories in `.claude/agent-memory/` — note which agents have memory (PRESERVE these)
 - Read `CLAUDE.md` — note project name, tech stack, business context, and workspace scope tier
@@ -33,7 +32,6 @@ Read the project's current ai-org configuration:
 ### 1.2 Project Structure
 - Check `strategy/` directory at project root — note what exists (foundation, research, etc.)
 - Check `initiatives/` directory at project root — note if it exists
-- Check `.claude/plans/` — note if it exists
 
 ### 1.3 Detect Tech Stack
 - Read `package.json`, `tsconfig.json`, framework configs to determine current stack
@@ -63,10 +61,10 @@ Based on which agents exist:
 ### 2.2 Determine Applicable Resources
 
 **Filter by tier** — only suggest resources appropriate for the project's tier:
-- Tier 1 (Coding only): eng-architect, eng-* agents, reviewer-code, reviewer-architecture, writer-lead
+- Tier 1 (Coding only): eng-architect, eng-* agents, challenger, reviewer-code, reviewer-architecture, writer-lead
 - Tier 2 (Coding + Product): Tier 1 + product-lead, design-lead
 - Tier 3 (Full stack): Tier 2 + positioning, researcher, reviewer-content, compliance
-- Tier 4 (Product & Strategy): writer-lead, product-lead, design-lead, positioning, researcher, reviewer-content, compliance (NO eng-* agents)
+- Tier 4 (Product & Strategy): writer-lead, challenger, product-lead, design-lead, positioning, researcher, reviewer-content, compliance (NO eng-* agents)
 
 **Filter skills by stack** — only suggest skills matching the detected tech stack.
 
@@ -77,7 +75,6 @@ Based on which agents exist:
 Compare and identify:
 - **New agents**: In plugin but not in project (filtered by tier)
 - **New commands**: In plugin but not in project (filtered by tier)
-- **New guides**: In plugin but not in project
 - **New skills**: Applicable to the project's stack but not present in `.claude/skills/`
 - **Updated skills**: Skills in `.claude/skills/` where the plugin version has substantive changes
 - **Updated agent tools**: Agents where the plugin's `tools:` list differs from the project's version
@@ -109,7 +106,6 @@ Present a categorized upgrade report:
 ### New in ai-org (applicable to your tier and stack)
 - Agents: {list new agents with role descriptions}
 - Commands: {list new commands with descriptions}
-- Guides: {list new guides}
 - Skills: {list new skills applicable to your stack}
 
 ### Updated in ai-org
@@ -122,16 +118,16 @@ Present a categorized upgrade report:
 ### Your project additions (will be preserved)
 - Custom agents: {list agents not in ai-org}
 - Custom commands: {list commands not in ai-org}
-- Custom guides: {list guides not in ai-org}
 - Agent memory: {list agents with memory in .claude/agent-memory/} — NEVER modified or deleted
 
 ### Suggested actions
 - Add {N} new agents for Tier {N}
 - Add {N} new commands
-- Add {N} new guides
 - Update {N} skills with new content
 - Create missing directories: {list}
 ```
+
+**If Tier 3 and `marketing` skill is not installed**: Ask: "Does this project have a blog or social media presence? If yes, we'll add the `marketing` skill."
 
 Ask: "Which additions would you like to apply? (all / select specific items / none)"
 
@@ -146,7 +142,6 @@ Create `.claude/backup/{ISO-date-timestamp}/` containing a copy of every file th
 For any missing directories the user approved:
 - Create `initiatives/` with `.gitkeep` if missing
 - Create `strategy/foundation/`, `strategy/research/competitors/`, `strategy/research/market/` with `.gitkeep` files if missing (Tiers 2, 3, 4 only)
-- Create `.claude/plans/` with `.gitkeep` if missing
 
 ### 4.3 Add New Agents
 For each new agent the user approved:
@@ -162,12 +157,7 @@ For each new command the user approved:
 - Read the ai-org base command file
 - Create a project-specific version in `.claude/commands/` with project context (tech stack, project name)
 
-### 4.5 Add New Guides
-For each new guide the user approved:
-- Read the ai-org base guide file
-- Create a project-specific version in `.claude/guides/` populated with project context
-
-### 4.6 Add/Update Skills
+### 4.5 Add/Update Skills
 
 **CRITICAL: You MUST copy skill files to the project. Skills are NOT automatically available from the plugin.**
 
@@ -192,13 +182,13 @@ For each updated skill the user approved:
 - Backup first: `cp -r .claude/skills/{skill-name} .claude/backup/{timestamp}/`
 - Then copy the updated skill from the plugin
 
-### 4.7 Update Agent Tools
+### 4.6 Update Agent Tools
 For each agent tools update the user approved:
 - Read the plugin's agent file to get the updated `tools:` list
 - Update the project agent's frontmatter to match
 - Do NOT change the agent's system prompt — only update frontmatter
 
-### 4.8 Update CLAUDE.md
+### 4.7 Update CLAUDE.md
 Locate and update these specific sections:
 
 **Agent Reference table** (usually near the top):
@@ -218,11 +208,11 @@ Locate and update these specific sections:
 **Project Structure section** (if new directories were created):
 - Add entries for new directories like `initiatives/` or `strategy/`
 
-### 4.9 Update Version File
+### 4.8 Update Version File
 Create or update `.claude/version.json`:
 ```json
 {
-  "aiOrgVersion": "1.0.0",
+  "aiOrgVersion": "2.0.0",
   "installedAt": "{original install date, preserve if exists}",
   "lastUpgraded": "{ISO timestamp of this upgrade}"
 }
@@ -242,7 +232,6 @@ Present a summary:
 ### Added
 - {N} new agents: {list}
 - {N} new commands: {list}
-- {N} new guides: {list}
 - {N} new skills: {list} (copied to .claude/skills/)
 
 ### Updated
@@ -270,6 +259,6 @@ If you need to revert this upgrade:
 
 - NEVER modify, delete, or overwrite files in `.claude/agent-memory/` — this is accumulated project knowledge
 - Always create backups before modifying existing files
-- Preserve all custom additions (agents, commands, guides not from ai-org)
+- Preserve all custom additions (agents, commands, skills not from ai-org)
 
 > Related: `/migrate` to migrate an existing project, `/onboard` to set up a new project from scratch.

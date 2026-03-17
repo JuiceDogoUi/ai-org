@@ -1,7 +1,7 @@
 {
   "name": "ai-org",
-  "description": "Comprehensive AI organization with agents for engineering, product, design, writing, strategy, and operations. Claude Code coordinates workflows, spawning specialist agents at each stage.",
-  "version": "1.0.0",
+  "description": "Comprehensive AI organization with agents for engineering, product, design, writing, strategy, and operations. Claude Code acts as team lead, creating agent teams for complex workflows.",
+  "version": "2.0.0",
   "author": {
     "name": "Manuel Rocco"
   },

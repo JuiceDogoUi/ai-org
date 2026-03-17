@@ -41,3 +41,7 @@ Reference table mapping tech stacks to their applicable ai-org skills. Used by `
 - positioning, research-methodology, competitive-analysis
 - content-strategy, ux-writing, marketing-copy, technical-writing
 - compliance-frameworks, review-process
+
+## Conditional Skills
+
+- **marketing** — Tier 3 only, installed when the user confirms the project has a blog or social media presence. Assigned to writer-lead.

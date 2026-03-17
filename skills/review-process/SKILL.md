@@ -1,10 +1,10 @@
 ---
 name: review-process
-description: 3-round review methodology for functional, quality, and compliance review
+description: 4-round review methodology — spec alignment, functional, quality, and compliance review
 user-invocable: false
 ---
 
-# 3-Round Review Methodology
+# 4-Round Review Methodology
 
 > **Documentation Freshness**: Review practices evolve with tooling — automated
 > code analysis, AI-assisted review, and CI integration change how reviews are
@@ -14,7 +14,17 @@ user-invocable: false
 - **review-output-format.md** — Severity classification rules, finding format, summary template
 - **round-details.md** — Expanded guidance for each review round with role-specific checks
 
-A structured approach to code and content review covering three dimensions: functional correctness, quality standards, and compliance requirements.
+A structured approach to code and content review covering four dimensions: spec alignment, functional correctness, quality standards, and compliance requirements.
+
+## Round 0 — Spec Alignment
+
+Verify the implementation matches the initiative specs.
+
+- **PRD requirements met** — All acceptance criteria from `product/prd.md` are implemented
+- **Architecture matches plan** — Components, data flow, and state management follow `engineering/plan.md`
+- **Design spec followed** — Layout, interactions, and responsive behavior match design documents
+- **No unspecified behavior** — Flag behavior that exists in code but not in any spec
+- **Skip if no specs** — If no matching initiative or specs folder exists, skip this round and note it
 
 ## Round 1 — Functional Review
 

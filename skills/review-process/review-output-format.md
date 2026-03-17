@@ -1,6 +1,6 @@
 # Review Output Format
 
-Structured output template for review findings across all three rounds.
+Structured output template for review findings across all four rounds.
 
 ## Severity Classification
 
@@ -78,10 +78,10 @@ At the end of the review, include a consolidated summary:
 
 ## Organizing Multi-Round Output
 
-When presenting findings from all three rounds together:
+When presenting findings from all four rounds together:
 
-1. **Lead with the summary** — pass/fail and finding counts
+1. **Lead with the summary** — pass/fail and finding counts, spec coverage % (if Round 0 ran)
 2. **Group by severity** (Critical first, then Warning, then Suggestion) — not by round
-3. **Tag each finding with its round** for context: `[Round 1]`, `[Round 2]`, `[Round 3]`
+3. **Tag each finding with its round** for context: `[Round 0]`, `[Round 1]`, `[Round 2]`, `[Round 3]`
 4. **De-duplicate** — if the same issue is caught by multiple reviewers, combine into one finding
 5. **End with the action checklist** — ordered by priority

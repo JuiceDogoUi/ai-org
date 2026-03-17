@@ -1,6 +1,6 @@
 ---
 name: onboard
-description: Set up a new project with personalized ai-org agents, guides, and structure
+description: Set up a new project with personalized ai-org agents and structure
 argument-hint: "[project name]"
 user-invocable: true
 context: fork
@@ -174,6 +174,12 @@ R2. **Primary app type** (the main app in the monorepo):
     - **Tier 3 (Full stack)** — adds strategy, positioning, content writing, marketing, compliance (everything lives together)
     - **Tier 4 (Product & Strategy only)** — no coding agents; only product, design, strategy, and writing (doc management or strategy repo)
 
+**If Tier 3 is selected**, ask:
+
+11. **Does this project have a blog or social media presence?** (yes / no)
+    - If yes → install the `marketing` skill and include it in writer-lead's skill list
+    - If no → skip the `marketing` skill
+
 ## Phase 3.5: Confirm Before Proceeding
 
 Before generating any files, present a summary of all gathered information and ask for confirmation:
@@ -199,7 +205,7 @@ Wait for confirmation before proceeding. If the user wants changes, ask which sp
 
 ## Phase 4: Generate Project Structure
 
-After ALL answers are collected, generate the following. Use the workspace scope tier from question 10 to determine which agents, commands, guides, and strategy files to install. Check if `package.json` or other project files already exist — if so, SKIP the project scaffold (section 4.8) and tell the user you detected an existing project and only generated the `.claude/` structure. Warn if any `.claude/` files already exist and ask before overwriting.
+After ALL answers are collected, generate the following. Use the workspace scope tier from question 10 to determine which agents, commands, and strategy files to install. Check if `package.json` or other project files already exist — if so, SKIP the project scaffold (section 4.7) and tell the user you detected an existing project and only generated the `.claude/` structure. Warn if any `.claude/` files already exist and ask before overwriting.
 
 ### 4.1 Determine Skills to Install
 
@@ -241,7 +247,6 @@ This allows users to:
 ```
 .claude/
 ├── agents/          # Project-specific agents
-├── guides/          # Project guides
 └── skills/          # Copied and customizable skills
     ├── typescript/
     │   ├── SKILL.md
@@ -281,12 +286,12 @@ Content:
   - Populate for any stack chosen.
   - For Tier 4: replace with a **Workflows section** listing available slash commands (`/feature`, `/explore`, `/copy`, etc.) instead of dev commands
 - **Project structure** section describing the directory layout:
-  - `.claude/` — Claude Code configuration only (agents, commands, guides, plans)
+  - `.claude/` — Claude Code configuration only (agents, commands, skills)
   - `initiatives/` — Feature work with research, specs, and review reports (at project root)
   - `strategy/` — Product and research team documents: personas, positioning, competitive analysis, market research (at project root, Tiers 2, 3, 4 only)
   - Source code directories as appropriate for the stack
 - **Agent reference table** listing ALL generated agents with name, model, and one-line purpose
-- **Interaction model**: Claude Code coordinates workflows, spawning specialist agents via Task() at each stage
+- **Interaction model**: Claude Code acts as the team lead, creating agent teams for complex workflows and spawning single agents for simple tasks
 - **Model tiers**: opus/sonnet/haiku
 - **Skill isolation**: skills are knowledge, not identity
 - **Agent memory section** explaining:
@@ -308,7 +313,7 @@ Create agents in `.claude/agents/`. Use the workspace scope tier and team size t
 #### Tier 1 (Coding only)
 
 **Core agents (always):**
-- eng-architect.md, eng-testing.md, eng-security.md, reviewer-code.md, reviewer-architecture.md, writer-lead.md
+- eng-architect.md, eng-testing.md, eng-security.md, challenger.md, reviewer-code.md, reviewer-architecture.md, writer-lead.md
 
 **writer-lead scope for Tier 1**: In Tier 1, writer-lead handles only technical documentation (README, API docs, code comments, architecture docs). Assign only the `technical-writing` skill. Do NOT assign content-strategy, ux-writing, or marketing-copy skills — those are Tier 2+ only.
 
@@ -336,7 +341,7 @@ Everything from Tier 2, PLUS:
 #### Tier 4 (Product & Strategy only)
 
 **Core:**
-- writer-lead.md
+- writer-lead.md, challenger.md
 
 **Product & Design:**
 - product-lead.md, design-lead.md
@@ -360,31 +365,11 @@ For EACH agent:
    - (Tiers 1, 2, 3 only) Mention the specific tech stack: "This project uses {framework} with {language} and {css approach}."
    - Include the business context and target audience
    - Add: "Always read `CLAUDE.md` for project conventions before starting work."
-   - (Tiers 2, 3, 4 only) Add: "Read relevant files in `.claude/guides/` and `strategy/` for additional context."
-   - (Tier 1 only) Add: "Read relevant files in `.claude/guides/` for additional context."
+   - (Tiers 2, 3, 4 only) Add: "Read relevant files in `strategy/` for additional context."
 4. Keep the same section structure: intro paragraph, ## Approach, ## Standards, ## What You Do NOT Do
 5. Preserve read-only restrictions for security/performance/compliance/reviewer agents
 
-### 4.6 Guides
-
-Create in `.claude/guides/`:
-
-**Generate for Tiers 1, 2, 3 (code projects):**
-- `development.md` — Local setup, environment variables, dev/build/test/lint commands. Include `.env.example` content listing required variables (e.g., `DATABASE_URL` for database projects). Populated with actual commands for the chosen stack.
-
-**Generate for Tier 4 (documentation/strategy repos):**
-- `development.md` — Document workflow overview, tool setup (if any), folder structure conventions, and available slash commands for content creation and review.
-
-**Generate for team (2+ developers):**
-- `contributing.md` — For Tiers 1-3: code style conventions, PR process template, commit message format. Populated from the stack's conventions. For Tier 4: document style conventions, naming rules, PR process template, commit message format.
-
-**If project has backend/infrastructure:**
-- `deployment.md` — Deployment checklist skeleton, environment config, health check verification.
-
-**If workspace scope is Tier 3 (Full stack) or Tier 4 (Product & Strategy only):**
-- `content-creation.md` — Content workflow with sections for: brand voice and tone guidelines, target personas (reference `strategy/foundation/personas.md`), SEO requirements, review process, publishing checklist.
-
-### 4.7 Strategy Skeleton
+### 4.6 Strategy Skeleton
 
 **Skip this section entirely for Tier 1 (Coding only)** — coding-only repos don't need positioning or personas.
 
@@ -396,7 +381,7 @@ For Tiers 2, 3, and 4, create in `strategy/` (at the project root, NOT inside `.
 
 **`research/competitors/.gitkeep`** and **`research/market/.gitkeep`**
 
-### 4.8 Project Scaffold
+### 4.7 Project Scaffold
 
 **Skip this section entirely for Tier 4 (Product & Strategy only)** — no code scaffold for product-only repos.
 
@@ -431,7 +416,7 @@ Generate config files with sensible defaults. Include `.gitignore` with appropri
 
 **Important**: Do NOT add `.claude/agent-memory/` to `.gitignore` — agent memory should be committed so team members share accumulated knowledge about the codebase.
 
-### 4.9 Project Commands
+### 4.8 Project Commands
 
 Generate project-level commands in `.claude/commands/`. These commands include project-specific context (tech stack, conventions) and route to the project's agents. They shadow the plugin's generic commands with tailored versions.
 
@@ -444,8 +429,8 @@ Each command file has YAML frontmatter (name, description, argument-hint if appl
 | `explore.md` | opus | Multi-angle exploration — market, competitors, technical feasibility |
 | `plan.md` | sonnet | Create an implementation plan for {project name} |
 | `build.md` | opus | Build a feature end-to-end with agent spawning |
-| `feature.md` | opus | Full product workflow — understand, research, build, review |
-| `review.md` | sonnet | 3-round review — functional, quality, compliance |
+| `feature.md` | opus | Full product workflow — discover, spec, test, build, validate, review |
+| `review.md` | opus | 4-round review — spec alignment, functional, quality, compliance |
 | `docs.md` | sonnet | Generate documentation (spawns writer-lead) |
 | `changelog.md` | haiku | Generate a changelog from recent commits |
 | `status.md` | haiku | Generate project status report |
@@ -482,10 +467,10 @@ Each command file has YAML frontmatter (name, description, argument-hint if appl
 
 **Tiers 3 and 4 only (content, marketing commands):**
 
-| Command | Model | Description |
-|---------|-------|-------------|
-| `article.md` | sonnet | Write a blog post or article (spawns writer-lead) |
-| `copy.md` | sonnet | Marketing or UX copy (spawns writer-lead/design-lead) |
+| Command | Model | Description | Condition |
+|---------|-------|-------------|-----------|
+| `article.md` | sonnet | Write a blog post or article (spawns writer-lead) | Tier 3: only if user confirmed blog/social presence (question 11). Tier 4: always. |
+| `copy.md` | sonnet | Marketing or UX copy (spawns writer-lead/design-lead) | Always for Tiers 3, 4 |
 
 Each command prompt should follow this template:
 
@@ -516,18 +501,17 @@ Commands with plugin templates (build, changelog, component, copy, explore, feat
 
 All other commands are single-agent spawns — generate using the template above. The command should spawn the listed agent via Task(), pass it $ARGUMENTS with project context, and present the result. Exception: `refactor.md` is multi-stage — spawn reviewer-code for pre-review, then the refactoring agent, then reviewer-code for post-review.
 
-### 4.10 Empty Directories
+### 4.9 Empty Directories
 
 Create with `.gitkeep`:
-- `.claude/plans/`
 - `initiatives/`
 
-### 4.11 Version File
+### 4.10 Version File
 
 Create `.claude/version.json`:
 ```json
 {
-  "aiOrgVersion": "1.0.0",
+  "aiOrgVersion": "2.0.0",
   "installedAt": "{ISO timestamp}",
   "createdWith": "onboard"
 }
@@ -540,10 +524,10 @@ After generating everything, present:
 2. The total number of agents, commands, and skills generated:
    - Agents: {count} — {list names}
    - Commands: {count} — {list names}
-   - Skills: {count} copied to .claude/skills/ — {list names}
+   - Skills: {count} copied to .claude/skills/ — {list names} (includes `marketing` if blog/social confirmed)
 3. How to start using the project (adapt to tier):
    - (Tiers 1, 2, 3 only) "Run `{dev command}` to start the dev server"
-   - "Use `/feature` to run the full product workflow (understand → research → build → review)"
+   - "Use `/feature` to run the full product workflow (discover → spec → test → build → validate → review)"
    - "Use `/explore` to research an idea before building"
    - (Tiers 1, 2, 3 only) "Use `/build` to implement it"
    - (Tiers 1, 2, 3 only) "Use `/review` to review your code before committing"
